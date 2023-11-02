@@ -10,4 +10,20 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig);
+
+function registerUser(email, password) {
+    firebase.auth().createUserWithEmailandPassword(email, password)
+    .then((userCredential) => {
+        //user registered successfully
+        const User = userCredential.user;
+        console.log('User registered:', user);
+    })
+    .catch((error) => {
+        //handle errors during registration
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error('Error: ${errorCode} - ${errorMessage}');
+    });
+}
 export default firebase;
+export { registerUser };
