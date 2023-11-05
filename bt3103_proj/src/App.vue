@@ -1,16 +1,16 @@
-<script setup>
-import login_sidebar from './components/login_sidebar.vue'
-</script>
-
 <template>
-  <login_sidebar/>
+  <div id="app-container">
+    <!-- <LoginSidebar/> -->
+    <div class="router-view-container">
+      <RouterView/>
+    </div>
+  </div>
 </template>
 
-<style>
-#patientBlock {
-  background-color: white;
-  p {
-    font-weight: bold;
-  }
-}
+<script setup>
+// import LoginSidebar from './components/LoginSidebar.vue'
+</script>
+
+<style scoped>
+
 </style>
