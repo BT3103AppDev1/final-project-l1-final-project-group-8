@@ -21,7 +21,7 @@
 
 <script>
 import { getAuth,onAuthStateChanged } from 'firebase/auth';
-import firebaseApp from 'D:\\hạnh\\NUS\\BT3103\\final_project\\firebase.js'
+import firebaseApp from '@/firebase.js'
 import {getFirestore} from 'firebase/firestore'
 import {collection, getDocs, doc, deleteDoc} from 'firebase/firestore'
 

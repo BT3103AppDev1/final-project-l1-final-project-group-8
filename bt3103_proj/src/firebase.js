@@ -27,7 +27,7 @@ createUserWithEmailAndPassword(auth, email, password)
 })
 
 // Sign-in Users
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {signInWithEmailAndPassword } from "firebase/auth";
 
 signInWithEmailAndPassword(auth, email, password)
 .then((userCredential) => {
@@ -35,7 +35,7 @@ signInWithEmailAndPassword(auth, email, password)
   const user = userCredential.user;
 })
 
-import { getAuth, signOut } from "firebase/auth";
+import {signOut } from "firebase/auth";
 
 signOut(auth).then(() => {
   //Sign out successful.

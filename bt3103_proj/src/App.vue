@@ -5,6 +5,10 @@
       <div class="login-sidebar-container"><login_sidebar/></div>
       <div class="main-page-elements"><AssignPatient/></div>
       <!-- <div class="main-page-elements"><LoginFields/></div> -->
+
+      <!-- <div class="main-page-elements"><DoctorAppointment/></div> -->
+      <!-- <div class="main-page-elements"><EditAppointment/></div> -->
+      <!-- <div class="main-page-elements"><PatientDetails/></div> -->
     </div>
   </div>
 </template>
@@ -15,12 +19,18 @@ import login_sidebar from './components/login_sidebar.vue'
 // import Patient_edit from './components/Patient_edit.vue'
 import AssignPatient from './components/AssignPatient.vue'
 import LoginFields from './components/LoginFields.vue'
+// import DoctorAppointment from './components/DoctorAppointment.vue'
+// import EditAppointment from './components/EditAppointment.vue'
+// import PatientDetails from './components/PatientDetails.vue'
 
 export default {
   components: {
     login_sidebar,
     AssignPatient,
-    LoginFields
+    LoginFields,
+    // DoctorAppointment,
+    // EditAppointment,
+    // PatientDetails
   }
 }
 </script>
