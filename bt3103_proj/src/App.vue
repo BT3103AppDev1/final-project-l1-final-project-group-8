@@ -3,12 +3,14 @@
     <div id="app-container">
       <!--<Appointment_form/>-->
       <div class="login-sidebar-container"><login_sidebar/></div>
-      <div class="main-page-elements"><AssignPatient/></div>
+      <!---<div class="main-page-elements"><AssignPatient/></div>-->
+      <!--<div class="main-page-elements"><AddDoctor/></div>-->
       <!-- <div class="main-page-elements"><LoginFields/></div> -->
 
       <!-- <div class="main-page-elements"><DoctorAppointment/></div> -->
       <!-- <div class="main-page-elements"><EditAppointment/></div> -->
       <!-- <div class="main-page-elements"><PatientDetails/></div> -->
+      <div class="main-page-elements"><AddPeople/></div>
     </div>
   </div>
 </template>
@@ -22,12 +24,15 @@ import LoginFields from './components/LoginFields.vue'
 // import DoctorAppointment from './components/DoctorAppointment.vue'
 // import EditAppointment from './components/EditAppointment.vue'
 // import PatientDetails from './components/PatientDetails.vue'
+import AddDoctor from './components/AddDoctor.vue'
+import AddPeople from './views/AddPeople.vue'
 
 export default {
   components: {
     login_sidebar,
     AssignPatient,
     LoginFields,
+    AddPeople
     // DoctorAppointment,
     // EditAppointment,
     // PatientDetails
