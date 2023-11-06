@@ -48,13 +48,8 @@
 <style scoped>
 
 #mega {
-    /**margin: 104px 411px 189px 630px;**/
-    /**margin-top: 7px;**/
-    margin-right: 20%;
-    margin-left: 20%;
-    /**bottom: 189px;**/
-    left: 450px;
-    bottom: 80px;
+    left: 30em;
+    bottom: 15em;
     position: absolute;
     max-width:50%;
 
@@ -112,14 +107,9 @@
 }
 
 #buttonWrapper {
-    margin-top: 10px;
     position: absolute;
-    right: 13%;
-    bottom: 3%;
-    /**width: 200px;
-    margin: 0 auto;
-    display: inline;
-    right: 18%;**/
+    right: 38em;
+    bottom: 12em;
 }
 
 
@@ -204,6 +194,10 @@ button {
 #cancelButton {
     background: #FF0000;
     margin-left: 0.5em;
+}
+
+#saveButton:hover {
+    
 }
 /**#saveButton {
     width: 50px; 
