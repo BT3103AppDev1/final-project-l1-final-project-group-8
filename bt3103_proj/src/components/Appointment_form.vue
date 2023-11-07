@@ -199,36 +199,6 @@ button {
 #saveButton:hover {
     
 }
-/**#saveButton {
-    width: 50px; 
-    /**height: 100%; 
-    padding-left: 2px; 
-    padding-right: 2px; 
-    padding-top: 5px; 
-    padding-bottom: 5px; 
-    background: #6DA34D; 
-    border-radius: 4px; 
-    overflow: hidden; 
-    justify-content: center; 
-    align-items: center; 
-    display: inline;
-
-}**/
-
-/**#cancelButton {
-    width: 50px; 
-    height: 30px; 
-    padding-left: 2px; 
-    padding-right: 2px; 
-    padding-top: 5px; 
-    padding-bottom: 5px; 
-    background: #FF0000; 
-    border-radius: 4px; 
-    overflow: hidden; 
-    justify-content: center; 
-    align-items: center; 
-    display: inline;
-}**/
 
 #actionBtn {
     width: 200px;

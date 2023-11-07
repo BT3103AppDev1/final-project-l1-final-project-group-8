@@ -19,6 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 //create Users
+
 const auth = getAuth(app);
 createUserWithEmailAndPassword(auth, email, password)
 .then((userCredential) => {
@@ -42,3 +43,4 @@ signOut(auth).then(() => {
 })
 
 export { auth }
+//export default app;//might remove later

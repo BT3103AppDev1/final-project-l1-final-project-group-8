@@ -2,16 +2,16 @@
 <div id = "mega">
     <div id = "rectangle">
         <div id = "Content">
-            <div id = "title">Add Doctor</div>
+            <div id = "title">Add Patient</div>
             
-            <div id = "DocInfo">
+            <div id = "PatInfo">
                 <form action="">
-                    <input type="text" name="docName" id="docName" placeholder="Enter Name">
+                    <input type="text" name="patName" id="patName" placeholder="Enter Name">
                 </form>
             </div>
 
             <div id = "buttonWrapper">
-                <button id = "submitButt" type = "button" @click="newDoc">Submit</button>
+                <button id = "submitButt" type = "button" @click="">Submit</button>
             </div>
         </div>
     </div>
@@ -19,29 +19,8 @@
 </template>
 
 <script>
-import firebaseApp from '../firebase.js';
-import {getFirestore, setDoc} from "firebase/firestore"
-import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
-const db = getFirestore(firebaseApp);
 
-export default {
-    methods : {
-        async newDoc() {
-            let doctName = document.getElementById("docName").value;
-            let docRef = doc(db,"clinic1","doctors") //clinic1 is hardcoded for now. will be email later
-            console.log(doctName)
-            const newData = {
-                [doctName] : []
-            }
-            await setDoc(docRef, newData, {merge : true})
-
-            alert("Added " + doctName + " as a doctor")
-            window.location.reload()
-        }
-    }
-}
 </script>
-
 
 <style scoped>
 #rectangle {
@@ -62,7 +41,7 @@ export default {
     word-wrap: break-word;
 }
 
-#docName {
+#patName {
     margin: 10px 0 10px 0;
     width: 300px;
     height: 20px;
@@ -88,4 +67,3 @@ export default {
     font-weight: 300;
 }
 </style>
-

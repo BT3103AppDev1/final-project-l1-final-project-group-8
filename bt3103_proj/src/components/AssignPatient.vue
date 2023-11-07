@@ -22,18 +22,6 @@
         </div>
     </div>
 
-    <!--<div id = "resultRect">
-        <div id = "resultTable">
-            <table>
-                <tr id="tableHeadRow">
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>Phone Number</th>
-                    <th>Add Patient</th>
-                </tr>
-            </table>
-        </div>
-    </div>-->
 </div>
 
 </template>
