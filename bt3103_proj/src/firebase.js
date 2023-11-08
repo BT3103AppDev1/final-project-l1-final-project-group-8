@@ -20,27 +20,27 @@ const app = initializeApp(firebaseConfig);
 
 //create Users
 
-const auth = getAuth(app);
-createUserWithEmailAndPassword(auth, email, password)
-.then((userCredential) => {
-  //Signed in
-  const user = userCredential.user;
-})
+// const auth = getAuth(app);
+// createUserWithEmailAndPassword(auth, email, password)
+// .then((userCredential) => {
+//   //Signed in
+//   const user = userCredential.user;
+// })
 
 // Sign-in Users
-import {signInWithEmailAndPassword } from "firebase/auth";
+// import {signInWithEmailAndPassword } from "firebase/auth";
 
-signInWithEmailAndPassword(auth, email, password)
-.then((userCredential) => {
-  //Signed in 
-  const user = userCredential.user;
-})
+// signInWithEmailAndPassword(auth, email, password)
+// .then((userCredential) => {
+//   //Signed in 
+//   const user = userCredential.user;
+// })
 
-import {signOut } from "firebase/auth";
+// import {signOut } from "firebase/auth";
 
-signOut(auth).then(() => {
-  //Sign out successful.
-})
+// signOut(auth).then(() => {
+//   //Sign out successful.
+// })
 
-export { auth }
-//export default app;//might remove later
+// export { auth }
+export default app;//might remove later
