@@ -290,4 +290,13 @@ button {
     background: #4B772B;
 }
 
+#actionBtn {
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+}
+
+
+
+
 </style>

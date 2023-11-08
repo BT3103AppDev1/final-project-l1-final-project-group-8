@@ -85,7 +85,7 @@ export default {
             const docRef = doc(db,"clinic1","patients")
             const patID = document.getElementById("icText")
             await updateDoc(docRef, {
-                "pat1.contact_num" : Number(newNum)
+                "pat1.contact_num" : Number(newNum) //hardcode id of patient for now
             })
             window.location.reload()
         }        

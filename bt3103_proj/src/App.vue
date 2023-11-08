@@ -3,9 +3,8 @@
     <div id="app-container">
       <!--<Appointment_form/>-->
       <div class="login-sidebar-container"><login_sidebar/></div>
-      <!-- -<div class="main-page-elements"><AssignPatient/></div> -->
-      <!-- <div class="main-page-elements"><AddDoctor/></div> -->
-      <!-- <div class="main-page-elements"><AddPatient/></div> -->
+      <!---<div class="main-page-elements"><AssignPatient/></div>-->
+      <div class="main-page-elements"><AddPatient/></div>
       <!-- <div class="main-page-elements"><LoginFields/></div> -->
       <div class="main-page-elements"><Appointment_form/></div>
       <!--<div class="main-page-elements"><patient_edit/></div>-->
@@ -28,10 +27,10 @@ import AssignPatient from './components/AssignPatient.vue'
 import LoginFields from './components/LoginFields.vue'
 // import DoctorAppointment from './components/DoctorAppointment.vue'
 // import EditAppointment from './components/EditAppointment.vue'
-// import PatientDetails from './components/PatientDetails.vue'
-import AddDoctor from './components/AddDoctor.vue'
+import PatientDetails from './components/PatientDetails.vue'
+//import AddDoctor from './components/AddDoctor.vue'
 import AddPatient from './components/AddPatient.vue'
-// import AddPeople from './views/AddPeople.vue'
+//import AddPeople from './views/AddPeople.vue'
 
 export default {
   components: {
@@ -44,7 +43,7 @@ export default {
     // EditAppointment,
     //  PatientDetails,
      //patient_edit,
-     AddDoctor,
+     //AddDoctor,
      AddPatient
   }
 }
