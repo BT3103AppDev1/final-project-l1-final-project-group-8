@@ -25,6 +25,11 @@ import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
+    data() {
+        return {
+            close : true
+        }
+    },
     methods : {
         async newDoc() {
             let doctName = document.getElementById("docName").value;
@@ -37,6 +42,10 @@ export default {
 
             alert("Added " + doctName + " as a doctor")
             window.location.reload()
+        },
+
+        cancelAdd() {
+            this.close = false
         }
     }
 }
@@ -86,6 +95,9 @@ export default {
 #submitButt:hover {
     background: #d7e7d9; 
     font-weight: 300;
+    
 }
+
+
 </style>
 
