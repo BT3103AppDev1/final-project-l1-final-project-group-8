@@ -9,24 +9,30 @@
 
     <div id = "output">
         <div id = "PatientForm" v-if="patient = patient">
-
+            <AddPatient/>
         </div>
         <div id = "DoctorForm" v-if = "doctor = doctor">
             <AddDoctor/>
         </div>
     </div>
+
+    <!---<div id = "toGoBack" v-if="cancel = cancel">
+        <button id = "back" type="button" @click="closeAdd">Cancel</button>
+    </div>-->
 </div>
 
 </template>
 
 <script>
 import AddDoctor from '../components/AddDoctor.vue'
+import AddPatient from '../components/AddPatient.vue'
 
 export default {
     data() {
         return {
             patient : false,
-            doctor : false
+            doctor : false,
+            cancel : false
         }
     },
 
@@ -34,16 +40,23 @@ export default {
         createPatient() {
             this.patient = true
             this.doctor = false
+            this.cancel = true
         },
 
         createDoctor() {
             this.doctor = true
             this.patient = false
+            this.cancel = true
+        },
+
+        closeAdd() {
+            this.cancel = false
         }
     },
 
     components: {
-        AddDoctor
+        AddDoctor,
+        AddPatient
     }
 }
 </script>
@@ -77,6 +90,13 @@ button:hover {
 #AddPat {
     position: relative;
     right:1rem;
+}
+
+#back {
+    background: red;
+    position: relative;
+    left: 40rem;
+    bottom: 2rem;
 }
 
 </style>
