@@ -1,37 +1,35 @@
 <template>
-    <div id="mega">
-        <div id = "rectangle">
-            <div id = "apptTitle">Editing Apointment - ID</div>
-            <div id = "apptDetail">
-                <div id = "doctorName">
-                    <div class = "title">Doctor Name</div>
-                    <div id = "nameText">DOCTORNAME</div> <!--Hard code for now-->
-                </div>
-                <div id = "patientName">
-                    <div class = "title">Patient Name</div>
-                    <div id = "nameText">PATIENTNAME</div> <!--Hard code for now-->
-                </div>
-                <div>
-                    <div class="title">Select Appointment Date & Time</div>
-                    <form action="">
-                        <input type="datetime-local" requred placeholder="D/M/YYYY H:MM:SS"/>
-                    </form>
-                    <div class="subtitle">Set apppointment date for the patient and the doctor</div><br>
-                    <div class="subtitle">Please select a date and time slot where the doctor is free</div> 
-                </div>
+    <div id = "rectangle">
+        <div id = "apptTitle">Editing Apointment - APPOINTMENT ID</div>
+        <div id = "apptDetail">
+            <div id = "doctorName">
+                <div class = "title">Doctor Name</div>
+                <div id = "doctorName">DOCTORNAME</div> <!--Hard code for now-->
+            </div>><br>
+            <div id = "patientName">
+                <div class = "title">Patient Name</div>
+                <div id = "patientName">PATIENTNAME</div> <!--Hard code for now-->
+            </div><br>
+            <div>
+                <div class="title">Select Appointment Date & Time</div>
+                <div class="subtitle">Set apppointment date for the patient and the doctor</div>
+                <div class="subtitle">Please select a date and time slot where the doctor is free</div> 
+                <form action="">
+                    <input type="datetime-local" requred placeholder="D/M/YYYY H:MM:SS"/>
+                </form> 
             </div>
+        </div>
 
-            <div id = "button" v-if="edit = edit">
-                <div id = "actionEditBtn">
-                    <button id = "submitButton" type="button">Submit</button>
-                    <button id = "cancelButton" type = "button" @click="cancelEdit">Cancel</button>
-                </div>
+        <div id = "button" v-if="edit = edit">
+            <div id = "actionEditBtn">
+                <button id = "submitButton" type="button">Submit</button>
+                <button id = "cancelButton" type = "button" @click="cancelEdit">Cancel</button>
             </div>
+        </div>
             
-            <div v-else id="button">
-                <div id = "actionBtn">
-                    <button id = "editButton" type="button" v-on:click="allowEdit">Edit Details</button>
-                </div>
+        <div v-else id="button">
+            <div id = "actionBtn">
+                <button id = "editButton" type="button" v-on:click="allowEdit">Edit Details</button>
             </div>
         </div>
     </div>
@@ -60,10 +58,15 @@ export default {
 <style scoped>
 #rectangle {
     width: 951px;
-    height: 344px;
+    height: 400px;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     border-radius: 67px;
+    align-content: center;
+    position: absolute;
+    left: 20em;
+    top:2em;
+    overflow:auto
 }
 
 button {
@@ -108,12 +111,6 @@ button:hover {
     background-color: #ffaeae;
 }
 
-#mega {
-    position: absolute;
-    left: 20em;
-    top:2em;
-}
-
 .title {
     white-space: nowrap;
     color: #464E5F;
@@ -123,24 +120,28 @@ button:hover {
     word-wrap: break-word;
 }
 #apptDetail {
-    position: absolute;
+    position:relative;
     left: 5em;
     top: 5em;
 }
 
-#nameText {
-    position: absolute;
-    left: 10rem;
+#doctorName {
+    left: 4.9rem;
     top: 0.01em;
     overflow: visible;
+    color:black
+}
+
+#patientName {
+    left: 4.9rem;
+    top: 0.01em;
+    overflow: visible;
+    color:black
 }
 
 .subtitle {
-    position: absolute;
-    left: 10rem;
-    top: 0.01em;
-    overflow: visible;
-    font-size: 50%;
+    color:black;
+    font-size: 80%;
 }
 
 #apptTitle {
