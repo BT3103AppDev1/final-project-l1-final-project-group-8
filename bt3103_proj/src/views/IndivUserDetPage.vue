@@ -2,37 +2,36 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><Appointment_form/></div>  
+        <div class="main-page-elements"><Patient_edit/></div>  
   
       </div>
     </div>
 </template>
-  
-<script>
+    
+<script scoped>
 import InternalSidebar from '@/components/InternalSidebar.vue'
-import Appointment_form from '@/components/Appointment_form.vue'
+import Patient_edit from '@/components/Patient_edit.vue'
 
 export default {
-  components: {
-    InternalSidebar,
-    Appointment_form,
-  }, 
+    components : {
+        InternalSidebar,
+        Patient_edit
+    },
 
-  data() {
-      return {
-          isMounted: false,
-          name: "createApptBlock"
-      }
-  },
+    data() {
+        return {
+            isMounted: false,
+            name: "indivUserDetBlock"
+        }
+    },
 
-  mounted() {
-      this.isMounted = true
-  }
+    mounted() {
+        this.isMounted = true
+    }
 }
 </script>
 
 <style scoped>
-
 #app-container {
     display: flex;
     height: 100vh;

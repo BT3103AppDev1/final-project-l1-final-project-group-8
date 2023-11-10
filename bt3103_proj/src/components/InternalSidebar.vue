@@ -26,6 +26,14 @@
             <div id="addPeopleBlock"><p>Add Doctors/Patients</p></div>
         </router-link>
 
+        <router-link class="routerElement" style="text-decoration: none;" to="/assign_pat_doc_page">
+            <div id="assignPatDocBlock"><p>Assign Patients to Doctors</p></div>
+        </router-link>
+
+        <router-link class="routerElement" style="text-decoration: none;" to="/indiv_user_det_page">
+            <div id="indivUserDetBlock"><p>View Indiv. User Details</p></div>
+        </router-link>
+
     </div>
 </template>
 

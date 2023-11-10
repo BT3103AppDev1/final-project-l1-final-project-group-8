@@ -7,6 +7,8 @@ import CreateAppointPage from '@/views/CreateAppointPage.vue';
 import AllAppointPage from '@/views/AllAppointPage.vue';
 import AddPeoplePage from '@/views/AddPeoplePage.vue';
 import ViewPatientAppointPage from '@/views/ViewPatientAppointPage.vue';
+import AssignPatDocPage from '@/views/AssignPatDocPage.vue';
+import IndivUserDetPage from '@/views/IndivUserDetPage.vue';
 
 // Vue.use(Router);
 
@@ -35,6 +37,16 @@ const router = createRouter({
       {
         path: '/view_patient_appt_page',
         component: ViewPatientAppointPage
+      },
+
+      {
+        path: '/assign_pat_doc_page',
+        component: AssignPatDocPage
+      },
+
+      {
+        path: '/indiv_user_det_page',
+        component: IndivUserDetPage
       }
       // other routes...
   ],

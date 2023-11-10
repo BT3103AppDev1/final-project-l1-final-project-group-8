@@ -8,7 +8,7 @@
   
       </div>
     </div>
-  </template>
+</template>
   
   <script>
   import login_sidebar from '@/components/login_sidebar.vue'

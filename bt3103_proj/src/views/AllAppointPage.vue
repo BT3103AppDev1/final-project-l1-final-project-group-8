@@ -6,43 +6,43 @@
   
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  import InternalSidebar from '@/components/InternalSidebar.vue'
-  
-  export default {
-    components: {
-      InternalSidebar,
-    }, 
+<script>
+import InternalSidebar from '@/components/InternalSidebar.vue'
 
-    data() {
-        return {
-            isMounted: false,
-            name: "allApptBlock"
-        }
-    },
+export default {
+  components: {
+    InternalSidebar,
+  }, 
 
-    mounted() {
-        this.isMounted = true
-    },
-  }
-  </script>
-  
-  <style scoped>
-  
-  #app-container {
-      display: flex;
-      height: 100vh;
-  }
-  
-  .sidebar-container {
-      display: block;
-  }
-  
-  .main-page-elements {
-      display: block;
-      padding-left: 6em;
-      padding-top: 6em;
-  }
-  </style>
+  data() {
+      return {
+          isMounted: false,
+          name: "allApptBlock"
+      }
+  },
+
+  mounted() {
+      this.isMounted = true
+  },
+}
+</script>
+
+<style scoped>
+
+#app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar-container {
+    display: block;
+}
+
+.main-page-elements {
+    display: block;
+    padding-left: 6em;
+    padding-top: 6em;
+}
+</style>
