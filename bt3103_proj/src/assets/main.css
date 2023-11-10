@@ -1,4 +1,4 @@
-
+@import './base.css';
 
 #app {
   height: 100%
@@ -6,4 +6,5 @@
 
 body {
   height: 100vh;
+  font-family: "Helvetica";
 }

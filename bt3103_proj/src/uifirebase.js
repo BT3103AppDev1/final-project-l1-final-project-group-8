@@ -25,5 +25,28 @@ function registerUser(email, password) {
         console.error('Error: ${errorCode} - ${errorMessage}');
     });
 }
+
+function loginUser(email, password) {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('User logged in:', user);
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error('Error: ${errorCode} - ${errorMessage}');
+    });
+}
+
+function logoutUser() {
+    firebase.auth().signOut()
+    .then(() => {
+        console.log('User logged out successfully');
+    })
+    .catch((error) => {
+        console.error('Error during logout:', error);
+    });
+}
+export { registerUser, loginUser, logoutUser };
 export default firebase;
-export { registerUser };

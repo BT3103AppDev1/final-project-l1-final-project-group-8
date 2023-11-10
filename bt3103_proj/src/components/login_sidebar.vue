@@ -5,9 +5,7 @@
 
         <br>
 
-        <div id="patientBlock"><p>For Patients</p></div>
-        <div id="doctorBlock"><p>For Doctors</p></div>
-        <div id="clinicBlock"><p>For Clinic Staff</p></div>
+        <div id="patientBlock"><p>Staff Login</p></div>
     </div>
 </template>
 
@@ -18,8 +16,16 @@ export default {
 </script>
 
 <style scoped>
+#patientBlock {
+  background-color: white;
+  p {
+    font-weight: bold;
+  }
+}
+
 body {
-    height: 100%
+    font-family: "Helvetica";
+    height: 100%;
 }
 
 #clinic_logo {
@@ -35,6 +41,8 @@ body {
     height: 100%;
     top: 0;
     left: 0;
+
+    overflow-y: auto;
 }
 
 #lineDiv {
@@ -42,9 +50,7 @@ body {
     height: 1px;
 }
 
-#patientBlock,
-#doctorBlock,
-#clinicBlock {
+#patientBlock {
     text-align: left;
     padding-top: 15px;
     padding-bottom: 15px;

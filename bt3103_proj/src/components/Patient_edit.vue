@@ -1,11 +1,25 @@
 <template>
     <div id = "mega">
+        <div id = "searchBar">
+            <div id = "smallRec">
+                <div id = "searchContent">
+                    <label>Enter Patient's IC Number</label>
+                    <form action="">
+                                <input type="text" name="patID" id="patID" placeholder="Enter Patient IC" size="25">
+                    </form>
+                    <button id = "submit" type="button">Search</button>
+                </div>
+            </div>
+
+        </div>
+
+
         <div id = "rectangle">
-            <div id = "patTitle">Patient's Health Records - NAME</div>
+            <div id = "patTitle">Patient's Health Records - </div>
             <div id = "patDet">
                 <div id = "name">
                     <div class = "title">NAME:</div>
-                    <div id = "nameText">test</div> <!--Hard code for now-->
+                    <div id = "nameText">x</div> <!--Hard code for now-->
                 </div>
 
                 <div id = "dob">
@@ -43,7 +57,7 @@
 
             <div  id = "button" v-if="edit = edit">
                 <div id = "actionEditBtn">
-                    <button id = "submitButton" type="button">Submit</button>
+                    <button id = "submitButton" type="button" @click="saveInput">Submit</button>
                     <button id = "cancelButton" type = "button" @click="cancelEdit">Cancel</button>
                 </div>
             </div>
@@ -54,14 +68,68 @@
                 </div>
             </div>
         </div>
+
+        <div id = "rectangle2">
+            <div class = "textContent" v-if="edit2 = edit2"> <!--form version to edit-->
+                <div class = "DiagTreat">
+                    <label id = "diagTreatLabel">Diagnosis & Treatment:</label>
+                    <form action="">
+                        <textarea name="newDiag" id="newDiag" cols="50" rows="4" placeholder="Enter Diagnosis"></textarea>
+                        <textarea name="newTreat" id="newTreat" cols="50" rows="4" placeholder="Enter Treatment"></textarea>
+                    </form>
+                </div>
+
+                <div class = "logText">
+                    <label id = "logLabel">Log</label>
+                    <form action="">
+                        <textarea name="newLog" id="newLog" cols="30" rows="4" placeholder="Enter Log"></textarea>
+                    </form>
+                </div>
+                
+                <div id = "buttonWrapper2Edit">
+                    <div id = "actionEditBtn2">
+                        <button id = "submitButton2" type="button" @click="saveText">Submit</button>
+                        <button id = "cancelButton2" type = "button" @click="cancelEdit2">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class = "textContent" v-else> <!--display version (default)-->
+                <div class = "DiagTreat">
+                    <label id = "diagTreatLabel">Diagnosis & Treatment:</label>
+                    <div id = "diagContent">loremipsum</div>
+                    <div id = "treatContent">loremipsum</div>
+                </div>
+
+                <div class = "logText">
+                    <label id = "logLabel">Log</label>
+                    <div id = "logContent">loremipsum</div>
+                </div>
+
+                <div id = "buttonWrapper2">
+                    <div id = "buttonEdit2">
+                        <button id = "editButton2" type="button" @click="allowEdit2">Edit Details</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </div>
 </template>
 
 <script>
+import firebaseApp from '../firebase.js';
+import {getFirestore, setDoc} from "firebase/firestore"
+import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
+
 export default {
     data() {
         return {
             edit : false,
+            pat : false,
+            edit2: false
         }
     },
 
@@ -72,7 +140,135 @@ export default {
 
         cancelEdit() {
             this.edit = false
+        },
+
+        allowEdit2() {
+            this.edit2 = true
+        },
+
+        cancelEdit2() {
+            this.edit2 = false
+        },
+
+        async saveInput() {
+            let newNum = document.getElementById("phoneNum").value;
+            const docRef = doc(db,"clinic1","patients")
+            let patID = document.getElementById("icText").innerHTML
+
+            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            //should be email in actual
+            allDocs = allDocs.data()
+
+            let docData = allDocs[patID]
+            let name = docData.name
+            let dob = docData.dob
+            let gender = docData.gender
+            let blood = docData.blood
+            let diagnosis = docData.diagnosis
+            let treatment = docData.treatment
+            let logs = docData.logs
+            let upcoming_appoint = docData.upcoming_appoint
+            let appoint_date = docData.appoint_date 
+
+            let updateData = {
+                [patID] : {
+                    "appoint_date" : appoint_date,
+                    "blood" : blood,
+                    "diagnosis" : diagnosis,
+                    "dob" : dob,
+                    "gender" : gender,
+                    "id" : patID,
+                    "logs" : logs,
+                    "name" : name,
+                    "treatment" : treatment,
+                    "upcoming_appoint" : upcoming_appoint,
+                    "contact_num" : Number(newNum)
+                }
+            }
+
+            await setDoc(docRef, updateData,{merge : true})
+
+            //await updateDoc(docRef, {
+            //    "[patID].contact_num" : Number(newNum) //hardcode id of patient for now
+            //})
+            window.location.reload()
+        },
+        
+        async saveText() {
+            let newDiag = document.getElementById("newDiag").value
+            let newTreat = document.getElementById("newTreat").value
+            let newLog = document.getElementById("newLog").value
+
+            const docRef = doc(db,"clinic1","patients") //climic1 hardcoded. Will be email
+            let patID = document.getElementById("icText").innerHTML
+
+            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            //should be email in actual
+            allDocs = allDocs.data()
+
+            let docData = allDocs[patID]
+            let name = docData.name
+            let dob = docData.dob
+            let gender = docData.gender
+            let blood = docData.blood
+            let upcoming_appoint = docData.upcoming_appoint
+            let appoint_date = docData.appoint_date 
+            let contact_num = docData.contact_num
+
+            let updateData = {
+                [patID] : {
+                    "appoint_date" : appoint_date,
+                    "blood" : blood,
+                    "diagnosis" : newDiag,
+                    "dob" : dob,
+                    "gender" : gender,
+                    "id" : patID,
+                    "logs" : newLog,
+                    "name" : name,
+                    "treatment" : newTreat,
+                    "upcoming_appoint" : upcoming_appoint,
+                    "contact_num" : contact_num
+                }
+            }
+
+            await setDoc(docRef, updateData,{merge : true})
+            alert("Update Succesful")
+            window.location.reload()
         }
+    },
+    mounted() {
+        async function display() {
+            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            //should be email in actual
+            allDocs = allDocs.data();
+            let docData = allDocs["11"]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
+            let id = docData.id
+            let name = docData.name
+            let contact_num = docData.contact_num
+            let dob = docData.dob
+            dob = dob.slice(0,10)
+            //dob = dob.toDate().toDateString()
+            let gender = docData.gender
+            let blood = docData.blood
+            let diagnosis = docData.diagnosis
+            let treatment = docData.treatment
+            let logs = docData.logs
+            let upcoming_appoint = docData.upcoming_appoint
+            let appoint_date = docData.appoint_date 
+            document.getElementById("nameText").innerHTML=name   
+            document.getElementById("dobText").innerHTML=dob
+            document.getElementById("numText").innerHTML=contact_num
+            document.getElementById("icText").innerHTML=id
+            document.getElementById("genderText").innerHTML=gender
+            document.getElementById("bloodText").innerHTML=blood
+            document.getElementById("patTitle").innerHTML="Patient's Health Records - " + name
+
+            document.getElementById("diagContent").innerHTML = "Diagnosis: " + diagnosis
+            document.getElementById("treatContent").innerHTML = "Current Treatment: " + treatment
+            document.getElementById("logContent").innerHTML = logs
+
+        }
+        display()
     }
 }
 </script>
@@ -84,6 +280,53 @@ export default {
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     border-radius: 67px;
+}
+
+#smallRec {
+    position: absolute;
+    bottom: 23em;
+    width: 300px;
+    height: 100px;
+    background: #F7F7F7; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
+    border-radius: 40px;
+
+}
+
+#rectangle2 {
+    position: absolute;
+    top:24em;
+    width: 951px;
+    height: 300px;
+    background: #ECFFD6; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
+    border-radius: 67px;
+}
+
+#searchContent {
+    position: absolute;
+    left:2em;
+    top:1em;
+}
+
+#submit {
+    position: relative;
+    top:0.5em;
+}
+
+label {
+    white-space: nowrap;
+    color: #464E5F;
+    font-size: 16px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    word-wrap: break-word;
+}
+
+#buttonWrapper2 {
+    position: inherit;
+    left: 20.3em;
+    top: 12.5em;
 }
 
 button {
@@ -131,7 +374,7 @@ button:hover {
 #mega {
     position: absolute;
     left: 20em;
-    top:2em;
+    top:13em;
 }
 
 .title {
@@ -182,7 +425,8 @@ button:hover {
     position: absolute;
     left: 10rem;
     top: 0.01em;
-    overflow: visible;
+    word-wrap: break-word;
+    width: 10em;
 
 }
 
@@ -222,6 +466,49 @@ button:hover {
     position: inherit;
     left : 10em;
     bottom: 0.01em;
+}
+
+.logText {
+    position: absolute;
+    top: 8em;
+}
+
+.textContent {
+    position: absolute;
+    top: 2em;
+    left:5em;
+}
+
+#nameText, #dobText, #numText, #icText, #genderText, #bloodText, #diagContent, #treatContent, #logContent {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#buttonWrapper2Edit {
+    position: absolute;
+    top: 13em;
+    left: 16em;
+}
+
+#cancelButton2 {
+    position:absolute;
+    background: #FF0000;
+    left:11em;
+}
+
+#cancelButton2:hover {
+    background-color: #ffaeae;
+}
+
+#newDiag, #newTreat, #newLog {
+    font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;
+}
+
+#newDiag {
+    margin-right: 5px;
+}
+
+#newTreat {
+    margin-left: 5px;
 }
 
 </style>

@@ -5,55 +5,70 @@
             <div id = "Title">
                 Assign Patient to Doctor
             </div>
-            <div id = "searchBar">
-                <form action="">
-                        <input type="text" name="docID" id="docID" placeholder="Enter Doctor ID">
-                        <input type="text" name="patID" id="patID" placeholder="Enter Patient IC">
-                </form>
+
+            <div id="searchContainer">
+                <div id = "searchBar">
+                    <form action="">
+                            <input type="text" name="docID" id="docID" placeholder="Enter Doctor ID" size="25">
+                            <input type="text" name="patID" id="patID" placeholder="Enter Patient IC" size="25">
+                    </form>
+                </div>
+                
+                <div id = "searchButt">
+                    <button id = "searchButton" type="button" @click="assignPat">Add</button>
+                </div>
             </div>
-            <div id = "searchButt">
-                <button id = "searchButton" type="button">Add</button>
-            </div>
+        
         </div>
     </div>
 
-    <!--<div id = "resultRect">
-        <div id = "resultTable">
-            <table>
-                <tr id="tableHeadRow">
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>Phone Number</th>
-                    <th>Add Patient</th>
-                </tr>
-            </table>
-        </div>
-    </div>-->
 </div>
 
 </template>
 
-<style scoped>
-#mega {
-    position: absolute;
-    left: 20em;
-    top:5em;
-}
+<script>
+import firebaseApp from '../firebase.js';
+import {arrayUnion, getFirestore, setDoc} from "firebase/firestore"
+import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
 
+export default {
+    methods: {
+        async assignPat() {
+            let docID = document.getElementById("docID").value
+            let patID = document.getElementById("patID").value
+            let docRef = doc(db,"clinic1","doctors") //clinic1 hardcoded, will be email
+
+            try {
+                const updateData = {
+                [docID] : arrayUnion(patID)
+            }
+                await updateDoc(docRef,updateData, {merge : true})
+                alert("Assigned patient " + patID + " to "+ docID)
+                window.location.reload()
+
+            } catch (error) {
+                alert("ID incorrect. Please try again")
+                window.location.reload()
+            } //this doesn't work it just creates a new doctor bruh wtv
+            
+
+        }
+    }
+}
+</script>
+
+<style scoped>
 #rectangle {
-    height: 150px;
+    /* height: 150px; */
     width: 400px;
     background: #F7F7F7; 
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
-
+    padding: 20px;
 }
 
-#content {
-    left:1em;
-    top:1em;
-    position: relative;
-}
+
 
 #Title {
     color: #212121;
@@ -63,11 +78,11 @@
     line-height: 21px;
     word-wrap: break-word;
     font-weight:600;
+    margin-bottom: 15px;
 }
 
 #searchBar {
-    position: relative;
-    top: 0.5em;
+    margin: 10px 0 20px 0
 }
 
 #patID {
@@ -75,7 +90,8 @@
     border-radius: 10px; 
     border: 1px #C5C5C5 solid;
     height: 25px;
-    width: 200px;
+    /* width: 200px; */
+    
 }
 
 #docID {
@@ -83,14 +99,9 @@
     border-radius: 10px; 
     border: 1px #C5C5C5 solid;
     height: 25px;
-    width: 200px;
+    /* width: 200px; */
     margin-bottom: 1em;
-}
-
-#searchButt {
-    position: relative;
-    left: 16rem;
-    bottom: 1.44rem;
+    margin-right: 20px;
 }
 
 #searchButton {
