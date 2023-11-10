@@ -1,43 +1,36 @@
 <template>
     <div id="rectangle">
-        <div id="apptTitle">Doctor's Appointment - DOCTORNAME</div>
-        <div id="apptDetail">Showing N appointment</div><br>
-        <div id="content">
-            <table id="table">
-                    <tr>
-                        <th>APPT.ID</th>
-                        <th>DATE</th>
-                        <th>TIME</th>
-                        <th>PATIENT NAME</th>
-                        <th>PATIENT ID</th>
-                        <th>DOCTOR NAME</th>
-                        <th>DOCTOR ID</th>
-                        <th>STATUS</th>
-                        <th>ACTIONS</th>
-                    </tr>
-            </table>
-        </div><br>
-
+        <div id="apptTitle">Doctor's Appointment - {{doctorName}}</div>
+        <!-- <div id="apptDetail">Showing N appointment</div><br> -->
+        
         <div id="button">
             <button id="backButton" type="button">Back to All Doctors</button>
         </div>
+        
+        <table id="table">
+                <tr>
+                    <th>DATE</th>
+                    <th>TIME</th>
+                    <th>PATIENT NAME</th>
+                    <th>PATIENT ID</th>
+                    <th>ACTIONS</th>
+                </tr>
+        </table><br>
     </div>
 </template>
 
 <script>
-// import { getAuth,onAuthStateChanged } from 'firebase/auth';
-// import firebaseApp from 'D:\\hạnh\\NUS\\BT3103\\final_project\\firebase.js';
-// import {getFirestore} from 'firebase/firestore'
-// import {collection, getDocs, doc, deleteDoc} from 'firebase/firestore'
-
-// const db = getFirestore(firebaseApp);
+import firebaseApp from '../firebase.js';
+import {getFirestore, setDoc, Timestamp, deleteField, deleteDoc} from "firebase/firestore"
+import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
 
 export default {
-    // data() {
-    //     return {
-    //         useremail: '',
-    //     };
-    // },
+    data() {
+        return {
+            doctorName: 'Adam',
+        };
+    },
 
     // methods: {
     //     async fetchAndUpdateData(useremail) {
@@ -56,64 +49,63 @@ export default {
 //         // })
 
         async function display() {
-            let allDocuments = await getDocs(collection(db, 'Appointment'))
+            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+            allDoctorDocuments = allDoctorDocuments.data()
+            let doctorDocuments = allDoctorDocuments['Adam']
+            
+            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients"))
+            allPatientDocuments = allPatientDocuments.data()
+            
             let index = 1
+
             // this.patientName = data.patientName
             // this.count = allDocuments.size
-
-            allDocuments.forEach((docs) => {
-                let data = docs.data()
-
-                let apptId = data.apptId
-                let date = data.date
-                let time = data.time
-                let patientName = data.patientName
-                let patientId = data.patientId
-                let doctorName = data.doctorName
-                let doctorId = data.doctorId
-                let status = data.status
+        
+            doctorDocuments.forEach((docs) => {
+                // let data = docs.data()
+                let patientId = docs
+                let patientData = allPatientDocuments[patientId]
+                let patientName = patientData.name
+                const apptDateTime = patientData.appoint_date
+                let apptDate = apptDateTime.toDate().toLocaleDateString()
+                let apptTime = apptDateTime.toDate().toLocaleTimeString()
 
                 let table = document.getElementById("table")
                 let row = table.insertRow(index)
                 
-                let cell1 = row.insertCell(0);
-                let cell2 = row.insertCell(1);
-                let cell3 = row.insertCell(2);
-                let cell4 = row.insertCell(3);     
-                let cell5 = row.insertCell(4);
-                let cell6 = row.insertCell(5);
-                let cell7 = row.insertCell(6);
-                let cell8 = row.insertCell(7);
-                let cell9 = row.insertCell(8);
+                let infoArray = [
+                    apptDate,
+                    apptTime,
+                    patientName,
+                    patientId,
+                ]
 
-                cell1.innerHTML = apptId;
-                cell2.innerHTML = date;
-                cell3.innerHTML = time;
-                cell4.innerHTML = patientName;
-                cell5.innerHTML = patientId;
-                cell6.innerHTML = doctorName;
-                cell7.innerHTML = doctorId;
-                cell8.innerHTML = status;
+                for (let cellIndex = 0; cellIndex < 4; cellIndex++) {
+                    let currCell = row.insertCell(cellIndex);
+                    currCell.innerHTML = infoArray[cellIndex];
+                }
 
-                // let cell10 = row.insertCell();
+                let cell9 = row.insertCell();
                 
                 let deleteButton = document.createElement("button")
-                deleteButton.id = String(apptId)
+                deleteButton.id = String(patientId)
                 deleteButton.className = "bwt"
                 deleteButton.innerHTML = "Delete Appointment"
+                deleteButton.style.cssText = 'width:190px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; left: 50px'
 
                 let editButton = document.createElement("button")
-                editButton.id = String(apptId)
+                editButton.id = String(patientId)
                 editButton.className = "bwt"
                 editButton.innerHTML = "Edit Appointment"
+                editButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
 
                 cell9.appendChild(editButton)
-                cell9.appendChild(deleteButton)
                 editButton.onclick = function() {
                     this.$router.push("/editAppointment")
                 }
+                cell9.appendChild(deleteButton)
                 deleteButton.onclick = function() {
-                    deleteEntry(apptId)
+                    deleteEntry(patientId)
                 }
 
                 index += 1
@@ -122,12 +114,43 @@ export default {
 
         display()
 
-        async function deleteEntry(apptId) {
-            alert("Deleting appointment " + apptId)
-            await deleteDoc(doc(db, 'Appointment', apptId))
-            console.log("Succesfully deleted appointment ", apptId)
+        async function deleteEntry(patientId) {
+            alert("Deleting appointment with patient " + patientId)
+            const doctorRef = doc(db, 'clinic1', 'doctors')
+            const doctorSnapshot = await getDoc(doctorRef)
+            const doctorData = doctorSnapshot.data()
+            let updatedDoctorData = doctorData['Adam'].filter(function(e) { return e != patientId })
+            console.log(updatedDoctorData)
+            await updateDoc(doctorRef, {
+                ['Adam']: updatedDoctorData,
+            });
+
+            const patientRef = doc(db, 'clinic1', 'patients')
+            const patientSnapshot = await getDoc(patientId)
+            const patientData = patientSnapshot.data()
+            let updatedPatientData = {
+                [patientID] : {
+                    "appoint_date" : null,
+                    "blood" : patientData[patientId].blood,
+                    "diagnosis" : patientData[patientId].diagnosis,
+                    "dob" : patientData[patientId].dob,
+                    "gender" : patientData[patientId].gender,
+                    "id" : patientId,
+                    "logs" : patientData[patientId].logs,
+                    "name" : patientData[patientId].name,
+                    "treatment" : patientData[patientId].treatment,
+                    "upcoming_appoint" : false,
+                    "contact_num" : patientData[patientId].contact_num
+                }
+            }
+            console.log(updatedPatientData)
+            await updateDoc(patientRef, {
+                [patientId]: updatedPatientData,
+            });
+
+            console.log("Succesfully deleted appointment with patient ", patientId)
             let tb = document.getElementById("table")
-            while (tb.rows.length > 1) {
+            while (tb.rows.length >= 1) {
                 tb.deleteRow(1)
             }
             display()
@@ -138,14 +161,15 @@ export default {
 
 <style scoped>
 #rectangle {
-    width: 1200px;
-    height: 700px;
+    width: 80%;
+    height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
     border-radius: 67px;
     align-content: center;
-    left: 20em;
-    top:2em;
+    position: absolute;
+    left: 15em;
+    top: 0.5em;
 }
 
 #apptTitle {
@@ -160,44 +184,55 @@ export default {
     word-wrap: break-word
 }
 
-#apptDetail {
+/* #apptDetail {
     position:relative;
     color: black;
     font-size: 20px;
     font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;   
     top: 4.5em;
     left: 4.9rem;
-}
+} */
 
 #table {
     font-family: Poppins, Arial, Helvetica, sans-serif;
-    border-spacing: 2px;
-    width: 1200px;
-    height: 30%;
+    /* border-top: 1px solid;
+    border-bottom: 1px solid; */
+    border-collapse: collapse;
+    width: 100%;
+    /* height: 10%; */
     align-content: center;
-    background-color: white;
+    text-align: center;
+    line-height: 350%;
+    padding: 5px;
+    background-color:white;
     color: black;
     position: relative;
-    top: 6em;
+    top: 10em;
     left: 0rem;
 }
 
 button {
-    width:137px;
-    height: 29px;
+    width:200px;
+    height: 35px;
     background: #8FBC94; 
     border: none;
     border-radius: 6px;
     font-weight:600;
+    font-size: 16px;
 }
 
 #button {
     position: relative;
-    top: 6em;
+    top: 7em;
     left: 4.9rem;
 }
 
 button:hover {
+    background: #d7e7d9;
+    font-weight: 600; 
+}
+
+tr {
     background: #d7e7d9;
     font-weight: 600; 
 }
