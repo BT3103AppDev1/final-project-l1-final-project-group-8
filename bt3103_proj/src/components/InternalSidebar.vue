@@ -10,12 +10,16 @@
         <div><p>Option 3</p></div>
         <div><p>Option 4</p></div> -->
 
-        <router-link class="routerElement" style="text-decoration: none;" to="all_appoint_page">
-            <div id="allApptBlock"><p>All Appts</p></div>
+        <router-link class="routerElement" style="text-decoration: none;" to="/all_appoint_page">
+            <div id="allApptBlock"><p>All Appoinments</p></div>
         </router-link>
 
         <router-link class="routerElement" style="text-decoration: none;" to="/create_appoint_page">
-            <div id="createApptBlock"><p>Create Appt</p></div>
+            <div id="createApptBlock"><p>Create Appointment</p></div>
+        </router-link>
+
+        <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
+            <div id="viewPatientApptBlock"><p>View Patient Appointments</p></div>
         </router-link>
 
         <router-link class="routerElement" style="text-decoration: none;" to="/add_people_page">
@@ -78,7 +82,7 @@ body {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: rgb(140, 195, 140);
-    width: 200px;
+    width: 220px;
     height: 100%;
     top: 0;
     left: 0;

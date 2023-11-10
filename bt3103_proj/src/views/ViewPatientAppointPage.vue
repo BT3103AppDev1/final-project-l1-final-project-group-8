@@ -2,7 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><h1>[All appointments component goes here]</h1></div>  
+        <div class="main-page-elements"><h1>[Retrieve and view individual patient appointments component goes here]</h1></div>  
   
       </div>
     </div>
@@ -19,7 +19,7 @@
     data() {
         return {
             isMounted: false,
-            name: "allApptBlock"
+            name: "viewPatientApptBlock"
         }
     },
 
