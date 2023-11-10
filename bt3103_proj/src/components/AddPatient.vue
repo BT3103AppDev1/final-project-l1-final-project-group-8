@@ -65,7 +65,7 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import {getFirestore, setDoc} from "firebase/firestore"
+import {getFirestore, setDoc, Timestamp} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
@@ -74,6 +74,8 @@ export default {
         async newPat() {
             let name = document.getElementById("name").value;
             let dob = document.getElementById("dob").value;
+            //dob = Date(dob)
+            //dob = dob.toString().toISOString();
             let phoneNum = document.getElementById("phoneNum").value;
             let icNum = document.getElementById("icNum").value;
             let gender = document.getElementById("gender").value;
@@ -127,7 +129,7 @@ export default {
 }
 
 #patTitle {
-    position: relative;
+    position: absolute;
     top: 1em;
     left:4.9rem;
     color: black;
@@ -148,8 +150,8 @@ export default {
 }
 
 #buttonWrapper {
-    position: relative;
-    bottom: 9rem;
+    position: absolute;
+    bottom: 8em;
 }
 
 #submitButt {

@@ -15,7 +15,7 @@
                 </div>
                 
                 <div id = "searchButt">
-                    <button id = "searchButton" type="button">Add</button>
+                    <button id = "searchButton" type="button" @click="assignPat">Add</button>
                 </div>
             </div>
         
@@ -25,6 +25,38 @@
 </div>
 
 </template>
+
+<script>
+import firebaseApp from '../firebase.js';
+import {arrayUnion, getFirestore, setDoc} from "firebase/firestore"
+import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
+
+export default {
+    methods: {
+        async assignPat() {
+            let docID = document.getElementById("docID").value
+            let patID = document.getElementById("patID").value
+            let docRef = doc(db,"clinic1","doctors") //clinic1 hardcoded, will be email
+
+            try {
+                const updateData = {
+                [docID] : arrayUnion(patID)
+            }
+                await updateDoc(docRef,updateData, {merge : true})
+                alert("Assigned patient " + patID + " to "+ docID)
+                window.location.reload()
+
+            } catch (error) {
+                alert("ID incorrect. Please try again")
+                window.location.reload()
+            } //this doesn't work it just creates a new doctor bruh wtv
+            
+
+        }
+    }
+}
+</script>
 
 <style scoped>
 #rectangle {
@@ -36,9 +68,7 @@
     padding: 20px;
 }
 
-/* #content {
-    margin: 20px;
-} */
+
 
 #Title {
     color: #212121;
