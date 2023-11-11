@@ -17,9 +17,17 @@
         <router-link class="routerElement" style="text-decoration: none;" to="/create_appoint_page">
             <div id="createApptBlock"><p>Create Appointment</p></div>
         </router-link>
+        
+        <router-link class="routerElement" style="text-decoration: none;" to="/edit_appoint_page">
+            <div id="editApptBlock"><p>Edit Appointment</p></div>
+        </router-link>
 
         <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
             <div id="viewPatientApptBlock"><p>View Patient Appointments</p></div>
+        </router-link>
+
+        <router-link class="routerElement" style="text-decoration: none;" to="/view_doctor_appt_page">
+            <div id="viewDoctorApptBlock"><p>View Doctor Appointments</p></div>
         </router-link>
 
         <router-link class="routerElement" style="text-decoration: none;" to="/add_people_page">

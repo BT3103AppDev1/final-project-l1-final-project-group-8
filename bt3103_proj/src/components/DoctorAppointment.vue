@@ -48,21 +48,23 @@ export default {
     // },
 
     mounted() {
-//         // const auth = getAuth();
-//         // onAuthStateChanged(auth, (user) => {
-//         //     if (user) {
-//         //         this.user = user;
-//         //         this.useremail = auth.currentUser.email;
-//         //         display(this.useremail)
-//         //     }
-//         // })
+        // const auth = getAuth();
+        // onAuthStateChanged(auth, (user) => {
+        //     if (user) {
+        //         this.user = user;
+        //         this.useremail = auth.currentUser.email;
+        //         display(this.useremail)
+        //     }
+        // })
+
+        const self = this;
 
         async function display() {
-            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors")) // hardcoded for now
             allDoctorDocuments = allDoctorDocuments.data()
-            let doctorDocuments = allDoctorDocuments['Adam']
+            let doctorDocuments = allDoctorDocuments['Adam'] // hardcoded for now
             
-            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients"))
+            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             
             let index = 1
@@ -75,9 +77,10 @@ export default {
                 let patientId = docs
                 let patientData = allPatientDocuments[patientId]
                 let patientName = patientData.name
-                const apptDateTime = new Date(patientData.appoint_date)
-                let apptDate = apptDateTime.toLocaleDateString()
-                let apptTime = apptDateTime.toLocaleTimeString()
+                const apptDateTime = patientData.appoint_date
+                console.log(apptDateTime)
+                let apptDate = apptDateTime.slice(0, 10)
+                let apptTime = apptDateTime.slice(11, )
 
                 let table = document.getElementById("table")
                 let row = table.insertRow(index)
@@ -109,20 +112,12 @@ export default {
                 editButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
 
                 cell9.appendChild(editButton)
-                editButton.onclick = 
-                // function() {
-                    // this.selectedPatientId = patientId;
-                    this.$router.push({
-                        name:'edit_doctor_appt',
-                        params: {
-                            doctorName: 'Adam',
-                            patientId: 'pat1',
-                        }
-                    })
-                // }
+                editButton.onclick = function() {
+                    self.$router.push("/edit_appoint_page")
+                }
                 cell9.appendChild(deleteButton)
                 deleteButton.onclick = function() {
-                    deleteEntry(patientId)
+                    self.deleteEntry(patientId)
                 }
 
                 index += 1

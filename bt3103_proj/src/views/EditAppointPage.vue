@@ -2,7 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><h1><ViewAppointments/></h1></div>  
+        <div class="main-page-elements"><EditAppointment/></div>  
   
       </div>
     </div>
@@ -10,24 +10,24 @@
   
 <script>
 import InternalSidebar from '@/components/InternalSidebar.vue'
-import ViewAppointments from '@/components/ViewAppointments.vue'
+import EditAppointment from '@/components/EditAppointment.vue'
 
 export default {
   components: {
     InternalSidebar,
-    ViewAppointments
+    EditAppointment,
   }, 
 
   data() {
       return {
           isMounted: false,
-          name: "allApptBlock"
+          name: "editApptBlock"
       }
   },
 
   mounted() {
       this.isMounted = true
-  },
+  }
 }
 </script>
 
