@@ -1,0 +1,41 @@
+<template>
+    <div>
+      <div id="app-container">
+        <!--<Appointment_form/>-->
+        <div class="login-sidebar-container"><login_sidebar/></div>
+        <div class="main-page-elements"><LoginFields/></div>
+  
+  
+      </div>
+    </div>
+</template>
+  
+  <script>
+  import login_sidebar from '@/components/login_sidebar.vue'
+  import LoginFields from '@/components/LoginFields.vue'
+  
+  export default {
+    components: {
+      login_sidebar,
+      LoginFields,
+    }
+  }
+  </script>
+  
+  <style scoped>
+  
+  #app-container {
+      display: flex;
+      height: 100vh;
+  }
+  
+  .login-sidebar-container {
+      display: block;
+  }
+  
+  .main-page-elements {
+      display: block;
+      padding-left: 6em;
+      padding-top: 6em;
+  }
+  </style>
