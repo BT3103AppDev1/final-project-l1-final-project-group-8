@@ -9,6 +9,9 @@ import AddPeoplePage from '@/views/AddPeoplePage.vue';
 import ViewPatientAppointPage from '@/views/ViewPatientAppointPage.vue';
 import AssignPatDocPage from '@/views/AssignPatDocPage.vue';
 import IndivUserDetPage from '@/views/IndivUserDetPage.vue';
+import EditDoctorAppointment from '@/views/EditDoctorAppointment.vue';
+
+import { extractIdentifiers } from 'vue/compiler-sfc';
 
 // Vue.use(Router);
 
@@ -47,8 +50,15 @@ const router = createRouter({
       {
         path: '/indiv_user_det_page',
         component: IndivUserDetPage
-      }
-      // other routes...
+      },
+
+      { 
+        path: '/edit_doctor_appt/:doctorName/:patientId',
+        name: 'edit_doctor_appt',
+        component: EditDoctorAppointment,
+        props: true
+      },
+      
   ],
   history: createWebHistory(),
 });

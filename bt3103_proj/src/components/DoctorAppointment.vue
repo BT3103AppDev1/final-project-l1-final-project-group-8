@@ -23,12 +23,21 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp, deleteField, deleteDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+// import router from "@/router/index.js"
 const db = getFirestore(firebaseApp);
 
 export default {
+    // props: {
+    //     doctorName: {
+    //         type: String,
+    //         required: true,
+    //     },
+    // },
+
     data() {
         return {
             doctorName: 'Adam',
+            // selectedPatientId: '',
         };
     },
 
@@ -66,9 +75,9 @@ export default {
                 let patientId = docs
                 let patientData = allPatientDocuments[patientId]
                 let patientName = patientData.name
-                const apptDateTime = patientData.appoint_date
-                let apptDate = apptDateTime.toDate().toLocaleDateString()
-                let apptTime = apptDateTime.toDate().toLocaleTimeString()
+                const apptDateTime = new Date(patientData.appoint_date)
+                let apptDate = apptDateTime.toLocaleDateString()
+                let apptTime = apptDateTime.toLocaleTimeString()
 
                 let table = document.getElementById("table")
                 let row = table.insertRow(index)
@@ -100,9 +109,17 @@ export default {
                 editButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
 
                 cell9.appendChild(editButton)
-                editButton.onclick = function() {
-                    this.$router.push("/editAppointment")
-                }
+                editButton.onclick = 
+                // function() {
+                    // this.selectedPatientId = patientId;
+                    this.$router.push({
+                        name:'edit_doctor_appt',
+                        params: {
+                            doctorName: 'Adam',
+                            patientId: 'pat1',
+                        }
+                    })
+                // }
                 cell9.appendChild(deleteButton)
                 deleteButton.onclick = function() {
                     deleteEntry(patientId)
@@ -165,11 +182,11 @@ export default {
     height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
-    border-radius: 67px;
+    border-radius: 20px;
     align-content: center;
     position: absolute;
     left: 15em;
-    top: 0.5em;
+    top: 0em;
 }
 
 #apptTitle {
