@@ -2,7 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><h1>[All appointments component goes here]</h1></div>  
+        <div class="main-page-elements"><h1><ViewAppointments/></h1></div>  
   
       </div>
     </div>
@@ -10,10 +10,12 @@
   
 <script>
 import InternalSidebar from '@/components/InternalSidebar.vue'
+import ViewAppointments from '@/components/ViewAppointments.vue'
 
 export default {
   components: {
     InternalSidebar,
+    ViewAppointments
   }, 
 
   data() {
