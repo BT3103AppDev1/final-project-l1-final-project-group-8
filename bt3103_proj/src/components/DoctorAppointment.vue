@@ -39,21 +39,23 @@ export default {
     // },
 
     mounted() {
-//         // const auth = getAuth();
-//         // onAuthStateChanged(auth, (user) => {
-//         //     if (user) {
-//         //         this.user = user;
-//         //         this.useremail = auth.currentUser.email;
-//         //         display(this.useremail)
-//         //     }
-//         // })
+        // const auth = getAuth();
+        // onAuthStateChanged(auth, (user) => {
+        //     if (user) {
+        //         this.user = user;
+        //         this.useremail = auth.currentUser.email;
+        //         display(this.useremail)
+        //     }
+        // })
+
+        const self = this;
 
         async function display() {
-            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors")) // hardcoded for now
             allDoctorDocuments = allDoctorDocuments.data()
-            let doctorDocuments = allDoctorDocuments['Adam']
+            let doctorDocuments = allDoctorDocuments['Adam'] // hardcoded for now
             
-            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients"))
+            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             
             let index = 1
@@ -67,8 +69,9 @@ export default {
                 let patientData = allPatientDocuments[patientId]
                 let patientName = patientData.name
                 const apptDateTime = patientData.appoint_date
-                let apptDate = apptDateTime.toDate().toLocaleDateString()
-                let apptTime = apptDateTime.toDate().toLocaleTimeString()
+                console.log(apptDateTime)
+                let apptDate = apptDateTime.slice(0, 10)
+                let apptTime = apptDateTime.slice(11, )
 
                 let table = document.getElementById("table")
                 let row = table.insertRow(index)
@@ -101,11 +104,11 @@ export default {
 
                 cell9.appendChild(editButton)
                 editButton.onclick = function() {
-                    this.$router.push("/editAppointment")
+                    self.$router.push("/edit_appoint_page")
                 }
                 cell9.appendChild(deleteButton)
                 deleteButton.onclick = function() {
-                    deleteEntry(patientId)
+                    self.deleteEntry(patientId)
                 }
 
                 index += 1

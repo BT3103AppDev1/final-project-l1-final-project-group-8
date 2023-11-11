@@ -4,9 +4,11 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import LoginPage from '@/views/LoginPage.vue';
 import CreateAppointPage from '@/views/CreateAppointPage.vue';
+import EditAppointPage from '@/views/EditAppointPage.vue';
 import AllAppointPage from '@/views/AllAppointPage.vue';
 import AddPeoplePage from '@/views/AddPeoplePage.vue';
 import ViewPatientAppointPage from '@/views/ViewPatientAppointPage.vue';
+import ViewDoctorAppointPage from '@/views/ViewDoctorAppointPage.vue';
 import AssignPatDocPage from '@/views/AssignPatDocPage.vue';
 import IndivUserDetPage from '@/views/IndivUserDetPage.vue';
 
@@ -30,6 +32,11 @@ const router = createRouter({
       },
 
       {
+        path: '/edit_appoint_page',
+        component: EditAppointPage
+      },
+
+      {
         path: '/add_people_page',
         component: AddPeoplePage
       },
@@ -37,6 +44,11 @@ const router = createRouter({
       {
         path: '/view_patient_appt_page',
         component: ViewPatientAppointPage
+      },
+
+      {
+        path: '/view_doctor_appt_page',
+        component: ViewDoctorAppointPage
       },
 
       {
