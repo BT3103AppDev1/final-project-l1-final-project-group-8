@@ -2,8 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><EditAppointment/></div>  
-  
+        <div class="main-page-elements"><EditAppointment :infoArray="{doctorName: this.doctorName, patientId: String(this.patientId)}"/></div>  
       </div>
     </div>
 </template>
@@ -17,15 +16,28 @@ export default {
     InternalSidebar,
     EditAppointment,
   }, 
+  props: {
+    doctorName: {
+      type:String,
+      required:true
+    },
+    patientId: {
+      type:String,
+      required:true
+    }
+  },
 
   data() {
       return {
           isMounted: false,
-          name: "editApptBlock"
+          name: "editApptBlock",
       }
   },
 
   mounted() {
+    // console.log(this.$router.params.doctorName, this.$router.params.patientId)
+    console.log(this.doctorName, this.patientId)
+    this.$emit(this.doctorName, this.patientId)
       this.isMounted = true
   }
 }

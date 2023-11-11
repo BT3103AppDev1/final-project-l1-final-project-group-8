@@ -155,7 +155,7 @@ export default {
 }
 
 #submitButt {
-    width: 60px;
+    width: 70px;
     border-radius: 4px;
     border-radius: 4px;
     overflow: hidden; 
@@ -164,14 +164,14 @@ export default {
     display: inline;
     border: none;
     padding: 7px;
-    font-family: Inter-Regular, Arial, Helvetica, sans-serif;
-    background: #6DA34D;
-    font-weight: 300;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    background: #8FBC94;
+    font-weight: 3600;
 }
 
 #submitButt:hover {
     background: #d7e7d9; 
-    font-weight: 300;
+    font-weight: 3600;
 }
 
 .title {

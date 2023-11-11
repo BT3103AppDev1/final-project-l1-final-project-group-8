@@ -2,9 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements">
-          <DoctorAppointment :info="{doctorName: this.doctorName}"/>
-        </div>  
+        <div class="main-page-elements"><DoctorDetails/>></div>  
   
       </div>
     </div>
@@ -12,31 +10,22 @@
   
   <script>
   import InternalSidebar from '@/components/InternalSidebar.vue'
-  import DoctorAppointment from '@/components/DoctorAppointment.vue'
+  import DoctorDetails from '@/components/DoctorDetails.vue'
   
   export default {
     components: {
       InternalSidebar,
-      DoctorAppointment
+      DoctorDetails
     }, 
-    props: {
-      doctorName: {
-        type:String,
-        required:true
-    }
-  },
 
     data() {
         return {
             isMounted: false,
-            name: "viewDoctorApptBlock",
-          tabName: 'viewAllDoctorsBlock'
+            name: "viewAllDoctorsBlock"
         }
     },
 
     mounted() {
-      console.log(this.doctorName)
-      this.$emit(this.doctorName)
         this.isMounted = true
     },
   }

@@ -2,13 +2,13 @@
 <div id = "mega">
     <div id = "rectangle">
         <div id = "Content">
-            <div id = "title">Add Doctor</div>
+            <div id = "title">Add Doctor</div><br>
             
             <div id = "DocInfo">
                 <form action="">
                     <input type="text" name="docName" id="docName" placeholder="Enter Name">
                 </form>
-            </div>
+            </div><br>
 
             <div id = "buttonWrapper">
                 <button id = "submitButt" type = "button" @click="newDoc">Submit</button>
@@ -55,12 +55,14 @@ export default {
 <style scoped>
 #rectangle {
     /* height: 150px; */
-    width: 350px;
+    width: 700px;
     background: #F7F7F7; 
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     padding: 20px;
-
+    position: relative;
+    left: 250px;
+    top: 100px
 }
 
 #title {
@@ -74,11 +76,11 @@ export default {
 #docName {
     margin: 10px 0 10px 0;
     width: 300px;
-    height: 20px;
+    height: 30px;
 }
 
 #submitButt{
-    width: 60px;
+    width: 70px;
     border-radius: 4px;
     border-radius: 4px;
     overflow: hidden; 
@@ -87,14 +89,14 @@ export default {
     display: inline;
     border: none;
     padding: 7px;
-    font-family: Inter-Regular, Arial, Helvetica, sans-serif;
-    background: #6DA34D;
-    font-weight: 300;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    background: #8FBC94;
+    font-weight: 600;
 }
 
 #submitButt:hover {
     background: #d7e7d9; 
-    font-weight: 300;
+    font-weight: 600;
     
 }
 
