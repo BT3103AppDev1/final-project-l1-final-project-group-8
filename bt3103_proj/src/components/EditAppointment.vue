@@ -124,6 +124,16 @@ export default {
             console.log("Succesfully updated appointment with patient", this.patientId)
         }
     },
+
+    mounted() {
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    this.user = user;
+                    this.useremail = auth.currentUser.email;
+            }
+        })
+    }
 }
 </script>
 
