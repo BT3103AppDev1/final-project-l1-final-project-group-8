@@ -118,13 +118,15 @@ body {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: rgb(140, 195, 140);
-    width: 15%;
+    /* width: 15%;
+    height: 100%; */
+    width: 220px;
     height: 100%;
     top: 0;
     left: 0;
-    position:absolute;
+    /* position:absolute; */
 
-    /* overflow-y: auto; */
+    overflow-y: auto;
 }
 
 #lineDiv {
