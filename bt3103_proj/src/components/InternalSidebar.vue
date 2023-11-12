@@ -33,19 +33,40 @@
         <router-link class="routerElement" style="text-decoration: none;" to="/assign_pat_doc_page">
             <div id="assignPatDocBlock"><p>Assign Patients to Doctors</p></div>
         </router-link>
+
+        <br>
+        <button id = "button" @click="signOut" v-if="user"> Logout </button>
+
     </div>
+
 </template>
 
 <script>
-// import { or } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
 export default {
     name: "internal_sidebar",
+
+    data() {
+        return {
+            user: false,
+        }
+    },
 
     props: {
         tabName: String
     },
 
     methods: {
+        signOut() {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            if (confirm("Logging out of clinic account")) {
+                signOut(auth, user)
+                this.$router.push({name:'Login'})
+            }
+        },
+
         changeSelection() {
             console.log(this.tabName)
             let tname = this.tabName
@@ -78,6 +99,12 @@ export default {
     },
 
     mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => { 
+        if (user) {
+            this.user = user;
+        }
+        })
         this.changeSelection()
     }
 }
@@ -111,8 +138,25 @@ body {
 }
 
 #lineDiv {
-    background-color: white;
+    background-color: #d7e7d9;
     height: 1px;
 }
 
+#button {
+    background-color: #d7e7d9;
+    padding: 10px 15px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    border: solid 1px grey;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    left: 10%;
+  }
+  
+  #button:hover {
+    background-color: #8FBC94;
+    color:white
+  }
 </style>

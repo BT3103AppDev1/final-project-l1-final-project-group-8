@@ -148,6 +148,8 @@ export default {
     width: 400px;
     background: #F7F7F7; 
     border-radius: 20px;
+    font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;
+    font-size: 32px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     padding: 20px;
     position: absolute;
