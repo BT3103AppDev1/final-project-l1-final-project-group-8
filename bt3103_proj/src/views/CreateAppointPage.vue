@@ -44,7 +44,7 @@ export default {
 
 .main-page-elements {
     display: block;
-    padding-left: 6em;
+    padding-left: 20em;
     padding-top: 6em;
 }
 </style>
