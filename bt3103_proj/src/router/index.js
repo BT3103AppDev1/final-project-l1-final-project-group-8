@@ -24,21 +24,25 @@ const router = createRouter({
   routes: [
       {
         path: '/',
-        component: LoginPage
+        name: "Login",
+        component: LoginPage,
       },
 
       {
         path: '/signup',
+        name: "signup",
         component: SignUpPage,
       },
 
       {
         path: '/all_appoint_page',
+        name: "AllAppointPage",
         component: AllAppointPage
       },
       
       {
         path: '/create_appoint_page',
+        name: "CreateAppointPage",
         component: CreateAppointPage
       },
 
@@ -62,6 +66,7 @@ const router = createRouter({
 
       {
         path: '/add_people_page',
+        name: "AddPeoplePage",
         component: AddPeoplePage
       },
 
@@ -74,6 +79,7 @@ const router = createRouter({
 
       {
         path: '/assign_pat_doc_page',
+        name: "AssignPatDocPage",
         component: AssignPatDocPage
       },
 
@@ -86,10 +92,12 @@ const router = createRouter({
 
       { 
         path: '/all_patients',
+        name: "AllPatientsPage",
         component: AllPatientsPage
       },
       { 
         path: '/all_doctors',
+        name: "AllDoctorsPage",
         component: AllDoctorsPage
       },
       
