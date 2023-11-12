@@ -158,7 +158,7 @@ export default {
     position: relative;
     top: 10em;
     left: 0rem;
-    /* border-radius: 60px; */
+    border-radius: 60px;
 }
 
 /* th, tr {
