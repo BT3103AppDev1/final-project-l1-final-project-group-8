@@ -1,5 +1,5 @@
 <template>
-<div id = "mega">
+<div id = "mega" >
     <div id = "rectangle">
         <div id = "content">
             <div id = "Title">
@@ -59,13 +59,16 @@ export default {
             selectedDoctor: null,
             selectedPatient: null,
             selectedDate: null,
+
+            user: false,
+            useremail:false
         }
     },
 
     async created() {
         try {
             // DOCTOR RETRIEVAL
-            const clinicDocRef = doc(db, 'clinic1', 'doctors'); // clinic1 hard coded for now
+            const clinicDocRef = doc(db, this.useremail, 'doctors'); // clinic1 hard coded for now
             const clinicDocSnapshot = await getDoc(clinicDocRef);
             
             if (clinicDocSnapshot.exists()) {
