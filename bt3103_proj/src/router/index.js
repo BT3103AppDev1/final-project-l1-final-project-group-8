@@ -13,6 +13,8 @@ import AssignPatDocPage from '@/views/AssignPatDocPage.vue';
 import IndivUserDetPage from '@/views/IndivUserDetPage.vue';
 import AllPatientsPage from '@/views/AllPatientsPage.vue';
 import AllDoctorsPage from '@/views/AllDoctorsPage.vue';
+import SignUpPage from '@/views/SignupPage.vue';
+
 
 import { extractIdentifiers } from 'vue/compiler-sfc';
 
@@ -23,6 +25,11 @@ const router = createRouter({
       {
         path: '/',
         component: LoginPage
+      },
+
+      {
+        path: '/signup',
+        component: SignUpPage,
       },
 
       {
