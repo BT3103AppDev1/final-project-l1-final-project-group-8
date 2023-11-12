@@ -268,7 +268,7 @@ export default {
         })
     
         async function display() {
-            let allDocs = await getDoc(doc(db,this.useremail,"patients")) //clinic1 for the time being
+            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data();
             let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART

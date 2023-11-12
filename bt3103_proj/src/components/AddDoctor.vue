@@ -75,7 +75,7 @@ export default {
 <style scoped>
 #rectangle {
     /* height: 150px; */
-    width: 700px;
+    width: 650px;
     background: #F7F7F7; 
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
