@@ -26,9 +26,33 @@
   <script>
   import { ref } from 'vue';
   import { loginUser } from '@/uifirebase'; // Import the loginUser function
+  import firebase from '@/uifirebase.js'
+  import 'firebase/compat/auth';
+
+  import { getAuth } from 'firebase/auth';
+  import { initializeApp } from 'firebase/app';
+  import * as firebaseui from 'firebaseui';
+  import 'firebaseui/dist/firebaseui.css';
+
+
   
   export default {
     name: "LoginFields",
+
+  //   mounted() {
+  //   var ui = firebaseui.auth.AuthUI.getInstance();
+  //   if (!ui) {
+  //     ui = new firebaseui.auth.AuthUI(firebase.auth());
+  //   }
+
+  //   var uiConfig = {
+  //     signInSuccessUrl: '/all_appoint_page',
+  //     signInOptions: [
+  //       firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  //     ]
+  //   };
+  //   ui.start("#fierbaseui-auth-container", uiConfig)
+  // },
   
     data() {
       return {
@@ -59,6 +83,8 @@
       },
     },
   };
+
+  
   </script>
   
   <style scoped>
@@ -98,6 +124,11 @@
       color: white;
       font-weight: bold;
       border-radius: 5px;
+  }
+
+  #firebaseui-auth-container{
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
   </style>
   

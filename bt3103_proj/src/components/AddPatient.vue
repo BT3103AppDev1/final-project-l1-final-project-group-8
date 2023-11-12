@@ -67,6 +67,8 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -105,15 +107,20 @@ export default {
         }
     },
 
-    // mounted() {
-    //         const auth = getAuth();
-    //         onAuthStateChanged(auth, (user) => {
-    //             if (user) {
-    //                 this.user = user;
-    //                 this.useremail = auth.currentUser.email;
-    //         }
-    //     })
-    // }
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    }
 }
 </script>
 

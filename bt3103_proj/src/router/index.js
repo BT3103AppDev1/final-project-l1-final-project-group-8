@@ -1,6 +1,6 @@
 // import Vue from 'vue';
 import {createRouter, createWebHistory} from 'vue-router'
-// import store from './store'; // Vuex store instance
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import LoginPage from '@/views/LoginPage.vue';
 import CreateAppointPage from '@/views/CreateAppointPage.vue';
@@ -26,24 +26,28 @@ const router = createRouter({
         path: '/',
         name: "Login",
         component: LoginPage,
+        meta: { requiresAuth: false },
       },
 
       {
         path: '/signup',
         name: "signup",
         component: SignUpPage,
+        meta: { requiresAuth: false },
       },
 
       {
         path: '/all_appoint_page',
         name: "AllAppointPage",
-        component: AllAppointPage
+        component: AllAppointPage,
+        meta: { requiresAuth: true },
       },
       
       {
         path: '/create_appoint_page',
         name: "CreateAppointPage",
-        component: CreateAppointPage
+        component: CreateAppointPage,
+        meta: { requiresAuth: true },
       },
 
       {
@@ -54,68 +58,78 @@ const router = createRouter({
         // },
         props: true,
         name: 'editApptPage',
-        component: EditAppointPage
+        component: EditAppointPage,
+        meta: { requiresAuth: true },
       },
 
       {
         path: '/view_doctor_appt_page/:doctorName',
         props: true,
         name: 'doctorApptPage',
-        component: ViewDoctorAppointPage
+        component: ViewDoctorAppointPage,
+        meta: { requiresAuth: true },
       },
 
       {
         path: '/add_people_page',
         name: "AddPeoplePage",
-        component: AddPeoplePage
+        component: AddPeoplePage,
+        meta: { requiresAuth: true },
       },
 
       {
         path: '/view_patient_appt_page/:patientId',
         props: true,
         name: 'patientApptPage',
-        component: ViewPatientAppointPage
+        component: ViewPatientAppointPage,
+        meta: { requiresAuth: true },
       },
 
       {
         path: '/assign_pat_doc_page',
         name: "AssignPatDocPage",
-        component: AssignPatDocPage
+        component: AssignPatDocPage,
+        meta: { requiresAuth: true },
       },
 
       {
         path: '/indiv_user_det_page/:patientId',
         props: true,
         name: 'indivDetails',
-        component: IndivUserDetPage
+        component: IndivUserDetPage,
+        meta: { requiresAuth: true },
       },
 
       { 
         path: '/all_patients',
         name: "AllPatientsPage",
-        component: AllPatientsPage
+        component: AllPatientsPage,
+        meta: { requiresAuth: true },
       },
       { 
         path: '/all_doctors',
         name: "AllDoctorsPage",
-        component: AllDoctorsPage
+        component: AllDoctorsPage,
+        meta: { requiresAuth: true },
       },
       
   ],
   history: createWebHistory(),
 });
 
-// router.beforeEach((to, from, next) => {
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//   const isAuthenticated = store.state.user.isAuthenticated;
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const auth = getAuth();
 
-//   if (requiresAuth && !isAuthenticated) {
-//     // User is not authenticated, redirect to login page
-//     next('/');
-//   } else {
-//     // User is authenticated or view does not require authentication, proceed
-//     next();
-//   }
-// });
+  onAuthStateChanged(auth, (user) => {
+    if (requiresAuth && !user) {
+      // Redirect to login if authentication is required and user is not logged in
+      next('/');
+    } else {
+      // Proceed to the route if no authentication is required or user is logged in
+      next();
+    }
+  });
+});
 
 export default router;
