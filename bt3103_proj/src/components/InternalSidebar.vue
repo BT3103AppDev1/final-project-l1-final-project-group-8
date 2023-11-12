@@ -26,18 +26,6 @@
             <div id="createApptBlock"><p>Create Appointment</p></div>
         </router-link>
         
-        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/edit_appoint_page">
-            <div id="editApptBlock"><p>Edit Appointment</p></div>
-        </router-link> -->
-
-        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
-            <div id="viewPatientApptBlock"><p>View Patient Appointments</p></div>
-        </router-link> -->
-
-        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/view_doctor_appt_page">
-            <div id="viewDoctorApptBlock"><p>View Doctor Appointments</p></div>
-        </router-link> -->
-
         <router-link class="routerElement" style="text-decoration: none;" to="/add_people_page">
             <div id="addPeopleBlock"><p>Add Doctors/Patients</p></div>
         </router-link>
@@ -45,11 +33,6 @@
         <router-link class="routerElement" style="text-decoration: none;" to="/assign_pat_doc_page">
             <div id="assignPatDocBlock"><p>Assign Patients to Doctors</p></div>
         </router-link>
-
-        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/indiv_user_det_page">
-            <div id="indivUserDetBlock"><p>View Indiv. User Details</p></div>
-        </router-link> -->
-
     </div>
 </template>
 
