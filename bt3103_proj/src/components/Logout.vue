@@ -1,5 +1,5 @@
 <template>
-    <button id = "btn" @click="signOut()" v-if="user"> Logout </button>
+    <button id = "saveButton" @click="signOut()" v-if="user"> Logout </button>
 </template>
 
 <script>
@@ -36,5 +36,17 @@ export default {
 </script>
 
 <style scoped>
-/* insert CSS for button here */
+  #saveButton {
+    background-color: rgb(140, 195, 140);
+    padding: 10px 15px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #saveButton:hover {
+    background-color: rgb(120, 175, 120);
+  }
 </style>
