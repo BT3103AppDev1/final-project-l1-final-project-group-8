@@ -6,6 +6,7 @@
         </div>
         <div class="inputWrapper">
           <input class="textBox" type="password" v-model="password" placeholder="Password" required />
+          <span v-if="passwordError" class="error">{{ passwordError }}</span>
         </div>
         <br />
         <button id="saveButton" type="submit">Sign Up</button>
@@ -21,10 +22,19 @@
       return {
         email: '',
         password: '',
+        passwordError: null,
       };
     },
     methods: {
       async signup() {
+        // Validate password length
+        if (this.password.length < 6) {
+          this.passwordError = 'Password must be at least 6 characters';
+          return;
+        } else {
+          this.passwordError = null;
+        }
+  
         try {
           await registerUser(this.email, this.password);
           this.$router.push('/');
