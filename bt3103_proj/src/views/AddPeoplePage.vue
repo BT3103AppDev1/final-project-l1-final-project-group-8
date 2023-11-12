@@ -21,9 +21,9 @@
                     </div>
                 </div>
 
-                <!---<div id = "toGoBack" v-if="cancel = cancel">
-                    <button id = "back" type="button" @click="closeAdd">Cancel</button>
-                </div>-->
+                -<div id = "toGoBack" v-if="cancel = cancel">
+                    <button id = "back" type="button" @click="reloadPage">Cancel</button>
+                </div>
             </div>
         </div>
     
@@ -60,6 +60,9 @@ export default {
     },
 
     methods:{
+        reloadPage() {
+            window.location.reload();
+        },
         createPatient() {
             this.patient = true
             this.doctor = false
@@ -96,9 +99,9 @@ button {
     display: inline;
     border: none;
     padding: 7px;
-    font-family: Inter-Regular, Arial, Helvetica, sans-serif;
-    background: #6DA34D;
-    font-weight: 300;
+    font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;
+    background: #8FBC94;
+    font-weight: 400;
 }
 
 button:hover {
@@ -107,14 +110,26 @@ button:hover {
 
 #AddPat {
     position: relative;
-    right:1rem;
+    left: 20rem;
+    right:5rem;
+    width: 200px;
+    top: 10em;
+}
+
+#AddDoc {
+    position: relative;
+    left: 30rem;
+    right:5rem;
+    width: 200px;
+    top: 10em;
 }
 
 #back {
-    background: red;
+    background:white;
+    border: solid black 1px;
     position: relative;
-    left: 40rem;
-    bottom: 2rem;
+    left: 19rem;
+    top: 20rem;
 }
 
 #app-container {

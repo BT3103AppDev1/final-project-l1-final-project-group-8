@@ -1,12 +1,7 @@
 <template>
     <div id="rectangle">
-        <div id="apptTitle">Doctor's Appointment - {{doctorName}}</div>
-        <!-- <div id="apptDetail">Showing N appointment</div><br> -->
-        
-        <div id="button">
-            <button id="backButton" type="button">Back to All Doctors</button>
-        </div>
-        
+        <div id="apptTitle">Doctor's Appointment - {{info.doctorName}}</div>
+        <div id="count">Showing {{this.count}} appointment</div><br>     
         <table id="table">
                 <tr>
                     <th>DATE</th>
@@ -16,6 +11,7 @@
                     <th>ACTIONS</th>
                 </tr>
         </table><br>
+        
     </div>
 </template>
 
@@ -23,21 +19,15 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp, deleteField, deleteDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
-// import router from "@/router/index.js"
 const db = getFirestore(firebaseApp);
 
 export default {
-    // props: {
-    //     doctorName: {
-    //         type: String,
-    //         required: true,
-    //     },
-    // },
+    props: ['info'],
 
     data() {
         return {
-            doctorName: 'Adam',
-            // selectedPatientId: '',
+            doctorName: this.info.doctorName,
+            count: 0,
         };
     },
 
@@ -62,79 +52,83 @@ export default {
         async function display() {
             let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors")) // hardcoded for now
             allDoctorDocuments = allDoctorDocuments.data()
-            let doctorDocuments = allDoctorDocuments['Adam'] // hardcoded for now
-            
+            let doctorDocuments = allDoctorDocuments[self.doctorName] 
+
             let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             
             let index = 1
-
-            // this.patientName = data.patientName
-            // this.count = allDocuments.size
+            let total = 0
         
             doctorDocuments.forEach((docs) => {
-                // let data = docs.data()
+                total += 1;
                 let patientId = docs
                 let patientData = allPatientDocuments[patientId]
                 let patientName = patientData.name
-                const apptDateTime = patientData.appoint_date
-                console.log(apptDateTime)
-                let apptDate = apptDateTime.slice(0, 10)
-                let apptTime = apptDateTime.slice(11, )
 
-                let table = document.getElementById("table")
-                let row = table.insertRow(index)
-                
-                let infoArray = [
-                    apptDate,
-                    apptTime,
-                    patientName,
-                    patientId,
-                ]
+                if (patientData.upcoming_appoint = true) {
+                    const apptDateTime = patientData.appoint_date
+                    console.log(apptDateTime)
+                    let apptDate = apptDateTime.slice(0, 10)
+                    let apptTime = apptDateTime.slice(11, )
 
-                for (let cellIndex = 0; cellIndex < 4; cellIndex++) {
-                    let currCell = row.insertCell(cellIndex);
-                    currCell.innerHTML = infoArray[cellIndex];
+                    let table = document.getElementById("table")
+                    let row = table.insertRow(index)
+                    
+                    let info = [
+                        apptDate,
+                        apptTime,
+                        patientName,
+                        patientId,
+                    ]
+
+                    for (let cellIndex = 0; cellIndex < 4; cellIndex++) {
+                        let currCell = row.insertCell(cellIndex);
+                        currCell.innerHTML = info[cellIndex];
+                    }
+
+                    let cell9 = row.insertCell();
+                    
+                    let deleteButton = document.createElement("button")
+                    deleteButton.id = String(patientId)
+                    deleteButton.className = "bwt"
+                    deleteButton.innerHTML = "Cancel Appointment"
+                    deleteButton.style.cssText = 'width:190px;height: 50px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; left: 20px;top: 2px'
+
+                    let editButton = document.createElement("button")
+                    editButton.id = String(patientId)
+                    editButton.className = "bwt"
+                    editButton.innerHTML = "Edit Appointment"
+                    editButton.style.cssText = 'width:145px;height: 50px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; top: 2px'
+
+                    cell9.appendChild(editButton)
+                    editButton.onclick = function() {
+                        self.selectedPatient = String(patientId)
+                        // self.$router.push("/edit_appoint_page")
+                        self.$router.push({name: 'editApptPage', params: {doctorName: self.doctorName, patientId: self.selectedPatient}})
+                    }
+                    cell9.appendChild(deleteButton)
+                    deleteButton.onclick = function() {
+                        deleteEntry(patientId)
+                    }
+
+                    index += 1
                 }
-
-                let cell9 = row.insertCell();
-                
-                let deleteButton = document.createElement("button")
-                deleteButton.id = String(patientId)
-                deleteButton.className = "bwt"
-                deleteButton.innerHTML = "Delete Appointment"
-                deleteButton.style.cssText = 'width:190px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; left: 50px'
-
-                let editButton = document.createElement("button")
-                editButton.id = String(patientId)
-                editButton.className = "bwt"
-                editButton.innerHTML = "Edit Appointment"
-                editButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
-
-                cell9.appendChild(editButton)
-                editButton.onclick = function() {
-                    self.$router.push("/edit_appoint_page")
-                }
-                cell9.appendChild(deleteButton)
-                deleteButton.onclick = function() {
-                    self.deleteEntry(patientId)
-                }
-
-                index += 1
-            })            
+            })
+            self.count = total           
         }
 
         display()
 
         async function deleteEntry(patientId) {
-            alert("Deleting appointment with patient " + patientId)
+            if (confirm("Cancelling appointment with patient " + patientId)) {
             const doctorRef = doc(db, 'clinic1', 'doctors')
             const doctorSnapshot = await getDoc(doctorRef)
             const doctorData = doctorSnapshot.data()
-            let updatedDoctorData = doctorData['Adam'].filter(function(e) { return e != patientId })
+            let updatedDoctorData = doctorData[self.doctorName].filter(function(e) { return e != patientId })
             console.log(updatedDoctorData)
             await updateDoc(doctorRef, {
-                ['Adam']: updatedDoctorData,
+                [self.doctorName]: updatedDoctorData,
             });
 
             const patientRef = doc(db, 'clinic1', 'patients')
@@ -167,17 +161,19 @@ export default {
             }
             display()
         }
+            
+        }
     }
 }
 </script>
 
 <style scoped>
 #rectangle {
-    width: 80%;
+    width: 83%;
     height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
-    border-radius: 20px;
+    border-radius: 67px;
     align-content: center;
     position: absolute;
     left: 15em;
@@ -196,14 +192,14 @@ export default {
     word-wrap: break-word
 }
 
-/* #apptDetail {
+#count {
     position:relative;
     color: black;
     font-size: 20px;
     font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;   
     top: 4.5em;
     left: 4.9rem;
-} */
+}
 
 #table {
     font-family: Poppins, Arial, Helvetica, sans-serif;

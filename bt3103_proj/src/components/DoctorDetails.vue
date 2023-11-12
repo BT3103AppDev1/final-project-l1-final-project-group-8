@@ -1,19 +1,19 @@
 <template>
     <div id="rectangle">
-        <div id="header">All Patients</div>
-        <div id = 'count'> Showing {{ this.count }} patients</div>
+        <div id="header">All Doctors</div>
+        <div id = 'count'> Showing {{ this.count }} doctors</div>
         <div id="button">
-            <button id="addPatient" to="/add-patient">Add Patient</button>
+            <router-link 
+            to='/add_people_page'
+            custom v-slot="{navigate}">
+            <button @click="navigate" role="link">
+                Add Doctors</button></router-link>
         </div>
         <table id="table">
             <tr>
                 <th>ID</th>
                 <th>NAME</th>
-                <th>GENDER</th>
-                <th>PATIENT ID</th>
-                <th>D.O.B.</th>
-                <th>CONTACT NUM.</th>
-                <th>ACTIONS</th>
+                <th>APPOINTMENTS</th>
             </tr>
         </table><br>
     </div>
@@ -29,6 +29,7 @@ export default {
     data() {
         return {
             count: 0
+            // doctorName: 'Adam',
         };
     },
 
@@ -47,22 +48,18 @@ export default {
         //         display(this.useremail)
         //     }
         // })
+        
         const self = this;
         async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "patients"))
+            let allDocuments = await getDoc(doc(db, "clinic1", "doctors"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
 
             Object.keys(allDocuments).forEach((doc) => {
-                total += 1
-                let data = allDocuments[doc]
-                let id = doc
-                let name = data.name
-                let gender = data.gender
-                let patient_id = data.id
-                let dob = new Date(data.dob).toLocaleDateString()
-                let contactNum = data.contact_num
+                total += 1;
+                let id = index
+                let name = doc
                 
                 let table = document.getElementById("table")
                 let row = table.insertRow(index)
@@ -70,62 +67,43 @@ export default {
                 let infoArray = [
                     id,
                     name,
-                    gender,
-                    patient_id,
-                    dob,
-                    contactNum
                 ]
 
-                for (let cellIndex = 0; cellIndex < 6; cellIndex++) {
+                for (let cellIndex = 0; cellIndex < 2; cellIndex++) {
                     let currCell = row.insertCell(cellIndex);
                     currCell.innerHTML = infoArray[cellIndex];
                 }
 
-                let healthRecordsButton = document.createElement("Button");
-                healthRecordsButton.id = String(id)
-                healthRecordsButton.className = "healthButton"
-                healthRecordsButton.innerHTML = "Health Records"
-                healthRecordsButton.style.cssText = 'width:145px;height:60px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
+                let upcomingApptsButton = document.createElement("Button");
+                upcomingApptsButton.id = String(id)
+                upcomingApptsButton.className = "upcomingAppts"
+                upcomingApptsButton.innerHTML = "Upcoming Appointments"
+                upcomingApptsButton.style.cssText = 'width:250px;height: 60px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
                 let cell6 = row.insertCell();
-                cell6.appendChild(healthRecordsButton)
-                healthRecordsButton.onclick = function() {
-                    self.$router.push({name: 'indivDetails', params: {patientId: id}})
+                cell6.appendChild(upcomingApptsButton)
+                upcomingApptsButton.onclick = function() {
+                    self.$router.push({name: 'doctorApptPage', params: {doctorName: name}})
                 }
+                
+                // let deleteButton = document.createElement("Button");
+                // deleteButton.id = String(id)
+                // deleteButton.className = "deleteBtn"
+                // deleteButton.innerHTML = "Delete Patient"
+                // deleteButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
 
-                let upcomingApptButton = document.createElement("Button");
-                upcomingApptButton.id = String(id)
-                upcomingApptButton.className = "upcomingApptButton"
-                upcomingApptButton.innerHTML = "Upcoming Appointments"
-                upcomingApptButton.style.cssText = 'width:220px;height:60px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position: relative; left:20px'
-                cell6.appendChild(upcomingApptButton)
-                upcomingApptButton.onclick = function() {
-                    self.$router.push({name: 'patientApptPage', params: {patientId: id}})
-                }
+
+                // let cell7 = row.insertCell();
+                // cell7.appendChild(deleteButton)
+                // deleteButton.onclick = function() {
+                //     deletePatient(id)
+                // }
 
                 index += 1;
             })   
-            self.count = total;     
+             self.count = total    
         }
-
+        
         display()
-
-        // async function deletePatient(patientId) {
-        //     alert("Deleting patient " + patientId)
-        //     const docRef = getDoc(doc(db, "clinic1", "patients", "patientId"))
-    
-        //     // Object.keys(docs).forEach(function(key) {
-        //     //     if (docs[key] == patientId) {
-        //     //         docs[patientId] ;
-        //     //     }
-        //     // });
-        //     console.log("Succesfully deleted patient ", patientId)
-
-        //     let tb = document.getElementById("table")
-        //     while (tb.rows.length > 1) {
-        //         tb.deleteRow(1)
-        //     }
-        //     display()
-        // }
     }
 }
 </script>
@@ -178,9 +156,9 @@ export default {
     background-color:white;
     color: black;
     position: relative;
-    top: 9em;
+    top: 10em;
     left: 0rem;
-    border-radius: 60px;
+    /* border-radius: 60px; */
 }
 
 /* th, tr {

@@ -2,7 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><Patient_edit/></div>  
+        <div class="main-page-elements"><Patient_edit :info="{patientId: String(this.patientId)}"/></div>  
   
       </div>
     </div>
@@ -17,7 +17,12 @@ export default {
         InternalSidebar,
         Patient_edit
     },
-
+    props: {
+        patientId: {
+            type:String,
+            required:true
+        }
+  },
     data() {
         return {
             isMounted: false,
@@ -27,6 +32,7 @@ export default {
 
     mounted() {
         this.isMounted = true
+        this.$emit(this.patientId)
     }
 }
 </script>

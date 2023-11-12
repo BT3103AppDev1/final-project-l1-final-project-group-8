@@ -1,6 +1,6 @@
 <template>
     <div id = "mega">
-        <div id = "searchBar">
+        <!-- <div id = "searchBar">
             <div id = "smallRec">
                 <div id = "searchContent">
                     <label>Enter Patient's IC Number</label>
@@ -11,20 +11,20 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
 
 
         <div id = "rectangle">
-            <div id = "patTitle">Patient's Health Records - </div>
+            <div id = "patTitle">Patient's Health Records - {{ this.name }}</div><br>
             <div id = "patDet">
                 <div id = "name">
                     <div class = "title">NAME:</div>
-                    <div id = "nameText">x</div> <!--Hard code for now-->
+                    <div id = "nameText">{{ this.name }}</div> <!--Hard code for now-->
                 </div>
 
                 <div id = "dob">
                     <div class = "title">DATE OF BIRTH:</div>
-                    <div id = "dobText">test</div> <!--Hard code for now-->
+                    <div id = "dobText">{{this.dob}}</div> <!--Hard code for now-->
                 </div>     
                 
                 <div id = "contactNum" v-if="edit = edit">
@@ -36,22 +36,22 @@
 
                 <div v-else id = "contactNum" >
                     <div class = "title">CONTACT NUM:</div>
-                    <div id = "numText">1234</div> <!--Hard code for now-->
+                    <div id = "numText">{{this.contact_num}}</div> <!--Hard code for now-->
                 </div>
 
                 <div id = "ic">
                     <div class = "title">PATIENT IC:</div>
-                    <div id = "icText">1234</div> <!--Hard code for now-->
+                    <div id = "icText">{{ info.patientId }}</div> <!--Hard code for now-->
                 </div>
 
                 <div id = "gender">
                     <div class = "title">GENDER:</div>
-                    <div id = "genderText">1234</div> <!--Hard code for now-->
+                    <div id = "genderText">{{ this.gender }}</div> <!--Hard code for now-->
                 </div>
 
                 <div id = "blood">
                     <div class = "title">BLOOD TYPE:</div>
-                    <div id = "bloodText">1234</div> <!--Hard code for now-->
+                    <div id = "bloodText">{{this.blood}}</div> <!--Hard code for now-->
                 </div>
             </div>
 
@@ -98,13 +98,13 @@
             <div class = "textContent" v-else> <!--display version (default)-->
                 <div class = "DiagTreat">
                     <label id = "diagTreatLabel">Diagnosis & Treatment:</label>
-                    <div id = "diagContent">loremipsum</div>
-                    <div id = "treatContent">loremipsum</div>
+                    <div id = "diagContent">{{this.diagnosis}}</div>
+                    <div id = "treatContent">{{this.treatment}}</div>
                 </div>
 
                 <div class = "logText">
                     <label id = "logLabel">Log</label>
-                    <div id = "logContent">loremipsum</div>
+                    <div id = "logContent">{{this.logs}}</div>
                 </div>
 
                 <div id = "buttonWrapper2">
@@ -125,11 +125,21 @@ import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
+    props: ['info'],
     data() {
         return {
             edit : false,
             pat : false,
-            edit2: false
+            edit2: false,
+            blood: '',
+            contact_num: 0,
+            diagnosis: '',
+            treatment: '',
+            logs: '',
+            gender: '',
+            patientId: this.info.patientId,
+            name: '',
+            dob: '',
         }
     },
 
@@ -237,6 +247,8 @@ export default {
         }
     },
     mounted() {
+        const self = this;
+
 
         // const auth = getAuth();
         // onAuthStateChanged(auth, (user) => {
@@ -250,32 +262,42 @@ export default {
             let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data();
-            let docData = allDocs["11"]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
-            let id = docData.id
+            let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
+            // let id = docData.id
             let name = docData.name
             let contact_num = docData.contact_num
             let dob = docData.dob
-            dob = dob.slice(0,10)
+            if (new Date(dob) != 'Invalid Date') {
+                dob = dob.slice(0,10)
+            }
             //dob = dob.toDate().toDateString()
             let gender = docData.gender
             let blood = docData.blood
             let diagnosis = docData.diagnosis
             let treatment = docData.treatment
             let logs = docData.logs
-            let upcoming_appoint = docData.upcoming_appoint
-            let appoint_date = docData.appoint_date 
-            document.getElementById("nameText").innerHTML=name   
-            document.getElementById("dobText").innerHTML=dob
-            document.getElementById("numText").innerHTML=contact_num
-            document.getElementById("icText").innerHTML=id
-            document.getElementById("genderText").innerHTML=gender
-            document.getElementById("bloodText").innerHTML=blood
-            document.getElementById("patTitle").innerHTML="Patient's Health Records - " + name
+            // let upcoming_appoint = docData.upcoming_appoint
+            // let appoint_date = docData.appoint_date 
+            // document.getElementById("nameText").innerHTML=name   
+            // document.getElementById("dobText").innerHTML=dob
+            // document.getElementById("numText").innerHTML=contact_num
+            // document.getElementById("icText").innerHTML=id
+            // document.getElementById("genderText").innerHTML=gender
+            // document.getElementById("bloodText").innerHTML=blood
+            // document.getElementById("patTitle").innerHTML="Patient's Health Records - " + name
 
-            document.getElementById("diagContent").innerHTML = "Diagnosis: " + diagnosis
-            document.getElementById("treatContent").innerHTML = "Current Treatment: " + treatment
-            document.getElementById("logContent").innerHTML = logs
-
+            // document.getElementById("diagContent").innerHTML = "Diagnosis: " + diagnosis
+            // document.getElementById("treatContent").innerHTML = "Current Treatment: " + treatment
+            // document.getElementById("logContent").innerHTML = logs
+            // self.id = id,
+            self.name = name,
+            self.blood = blood,
+            self.contact_num = contact_num,
+            self.diagnosis = "Diagnosis: " + diagnosis,
+            self.treatment = "Current Treatment: " + treatment,
+            self.logs = logs,
+            self.gender = gender,
+            self.dob = dob
         }
         display()
     }
@@ -289,22 +311,24 @@ export default {
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     border-radius: 67px;
+    position: relative;
+    top: 0em;
 }
 
-#smallRec {
+/* #smallRec {
     position: absolute;
     bottom: 23em;
     width: 300px;
     height: 100px;
     background: #F7F7F7; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
-    border-radius: 40px;
+    border-radius: 40px; */
 
-}
+/* } */
 
 #rectangle2 {
-    position: absolute;
-    top:24em;
+    position: relative;
+    top:2em;
     width: 951px;
     height: 300px;
     background: #ECFFD6; 
@@ -312,11 +336,11 @@ export default {
     border-radius: 67px;
 }
 
-#searchContent {
+/* #searchContent {
     position: absolute;
     left:2em;
     top:1em;
-}
+} */
 
 #submit {
     position: relative;
@@ -382,8 +406,8 @@ button:hover {
 
 #mega {
     position: absolute;
-    left: 20em;
-    top:13em;
+    left: 15em;
+    top:0.7em;
 }
 
 .title {

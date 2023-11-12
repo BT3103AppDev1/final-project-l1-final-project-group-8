@@ -11,7 +11,8 @@ import ViewPatientAppointPage from '@/views/ViewPatientAppointPage.vue';
 import ViewDoctorAppointPage from '@/views/ViewDoctorAppointPage.vue';
 import AssignPatDocPage from '@/views/AssignPatDocPage.vue';
 import IndivUserDetPage from '@/views/IndivUserDetPage.vue';
-import EditDoctorAppointment from '@/views/EditDoctorAppointment.vue';
+import AllPatientsPage from '@/views/AllPatientsPage.vue';
+import AllDoctorsPage from '@/views/AllDoctorsPage.vue';
 
 import { extractIdentifiers } from 'vue/compiler-sfc';
 
@@ -35,8 +36,21 @@ const router = createRouter({
       },
 
       {
-        path: '/edit_appoint_page',
+        path: '/edit_appoint_page/:doctorName/:patientId',
+        // params: {
+        //   doctorName: 'Adam',
+        //   patientId: 'pat1'
+        // },
+        props: true,
+        name: 'editApptPage',
         component: EditAppointPage
+      },
+
+      {
+        path: '/view_doctor_appt_page/:doctorName',
+        props: true,
+        name: 'doctorApptPage',
+        component: ViewDoctorAppointPage
       },
 
       {
@@ -45,13 +59,10 @@ const router = createRouter({
       },
 
       {
-        path: '/view_patient_appt_page',
+        path: '/view_patient_appt_page/:patientId',
+        props: true,
+        name: 'patientApptPage',
         component: ViewPatientAppointPage
-      },
-
-      {
-        path: '/view_doctor_appt_page',
-        component: ViewDoctorAppointPage
       },
 
       {
@@ -60,15 +71,19 @@ const router = createRouter({
       },
 
       {
-        path: '/indiv_user_det_page',
+        path: '/indiv_user_det_page/:patientId',
+        props:true,
+        name: 'indivDetails',
         component: IndivUserDetPage
       },
 
       { 
-        path: '/edit_doctor_appt/:doctorName/:patientId',
-        name: 'edit_doctor_appt',
-        component: EditDoctorAppointment,
-        props: true
+        path: '/all_patients',
+        component: AllPatientsPage
+      },
+      { 
+        path: '/all_doctors',
+        component: AllDoctorsPage
       },
       
   ],

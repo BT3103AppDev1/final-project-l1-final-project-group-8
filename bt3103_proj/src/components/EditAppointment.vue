@@ -1,15 +1,15 @@
 <template>
     <div id = "rectangle">
-        <div id = "apptTitle">Editing Apointment - {{ doctorName }} and {{ patientId }}</div>
+        <div id = "apptTitle">Editing Apointment - {{ infoArray.doctorName }} and {{ infoArray.patientId }}</div>
         <div id = "apptDetail">
             <div id = "doctorName">
                 <div class = "title">Doctor Name</div>
-                <div id = "doctorName">{{doctorName}}</div> <!--Hard code for now-->
+                <div id = "doctorName">{{infoArray.doctorName}}</div> <!--Hard code for now-->
             </div><br><br>
             <div id = "patientName">
-                <div class = "title">Patient Name</div>
-                <div id = "patientName">{{patientId}}</div> <!--Hard code for now-->
-            </div><br><br><br>
+                <div class = "title">Patient Id</div>
+                <div id = "patientName">{{infoArray.patientId}}</div> <!--Hard code for now-->
+            </div><br><br>
             <div>
                 <div class="title">Select Appointment Date & Time</div>
                 <div class="subtitle">Set apppointment date for the patient and the doctor</div>
@@ -23,7 +23,7 @@
         <div id = "button">
             <div id = "actionEditBtn">
                 <button id = "submitButton" type="button" @click="submitEdit">Submit</button>
-                <button id = "cancelButton" type = "button" @click="cancelEdit">Cancel</button>
+                <button id = "cancelButton" type = "button" @click="$router.go(-1)">Cancel</button>
             </div>
         </div>
     </div>
@@ -33,37 +33,46 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
-import route from '@/router/index.js'
+import router from '@/router/index.js'
 const db = getFirestore(firebaseApp);
 
 export default {
     // name: 'EditAppointment',
-    props: {
-    doctorId: {
-      type: String, // Adjust the type based on your data type
-      required: true,
+//     props: {
+//     doctorName: {
+//       type: String, // Adjust the type based on your data type
+//       required: true,
+//     },
+//     patientId: {
+//       type: String, // Adjust the type based on your data type
+//       required: true,
+//     },
+//   },
+    props: ['infoArray'],
+    mounted() {
+        console.log("child ", this.infoArray.doctorName, this.infoArray.patientId)
     },
-    patientId: {
-      type: String, // Adjust the type based on your data type
-      required: true,
-    },
-  },
     data() {
         return {
-            doctorName: this.$route.params.doctorName,
-            patientId: this.$route.params.patientId,
+            // doctorName: this.$router.params.doctorName,
+            // patientId: this.$router.params.patientId,
             // edit : true,
+            doctorName: this.infoArray.doctorName,
+            patientId: this.infoArray.patientId,
         };
     },
+    // mounted(){
+        // const self = this;
+        // function update() {
+        //     console.log(self.$router.params.doctorName, self.$router.params.patientId)
+            // self.doctorName = self.$router.params.doctorName,
+            // self.patientId = self.$router.params.patientId,
+            
+    //     }
 
+    //     update()
+    // },
     methods: {
-        allowEdit() {
-            this.edit = true
-        },
-
-        cancelEdit() {
-            this.edit = false
-        },
         async submitEdit() {
             const patientDocRef = doc(db, 'clinic1', 'patients')
             const patientSnapshot = await getDoc(patientDocRef)
@@ -82,26 +91,6 @@ export default {
             let upcoming_appoint = docData.upcoming_appoint
             let appoint_date = newDatetime
             let contact_num = docData.contact_num
-            // let updatedPatientData = {
-
-            //     // [this.patientID] : {
-            //         "appoint_date" : newDatetime,
-            //         "blood" : patientData[this.patientID].blood,
-            //         "diagnosis" : patientData[this.patientID].diagnosis,
-            //         "dob" : patientData[this.patientID].dob,
-            //         "gender" : patientData[this.patientID].gender,
-            //         "id" : this.patientID,
-            //         "logs" : patientData[this.patientID].logs,
-            //         "name" : patientData[this.patientID].name,
-            //         "treatment" : patientData[this.patientID].treatment,
-            //         "upcoming_appoint" : patientData[this.patientId].upcoming_appoint,
-            //         "contact_num" : patientData[this.patientID].contact_num
-            //     // }
-            // }
-            // console.log(updatedPatientData)
-            // await updateDoc(patientRef, {
-            //     [this.patientId]: updatedPatientData,
-            // });
 
             let updateData = {
                 [this.patientId] : {
@@ -139,7 +128,7 @@ export default {
 
 <style scoped>
 #rectangle {
-    width: 80%;
+    width: 83%;
     height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
@@ -168,7 +157,7 @@ button:hover {
 
 #button {
     position: relative;
-    top: 16em;
+    top: 12em;
 }
 
 #editButton {

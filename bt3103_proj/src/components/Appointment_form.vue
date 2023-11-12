@@ -158,15 +158,15 @@ export default {
         }
     },
 
-    mounted() {
-            const auth = getAuth();
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    this.user = user;
-                    this.useremail = auth.currentUser.email;
-            }
-        })
-    }
+//     mounted() {
+//             const auth = getAuth();
+//             onAuthStateChanged(auth, (user) => {
+//                 if (user) {
+//                     this.user = user;
+//                     this.useremail = auth.currentUser.email;
+//             }
+//         })
+//     }
 }
 </script>
 
@@ -176,6 +176,8 @@ export default {
     background: #DFFFE3; 
     padding: 20px;
     border-radius: 20px; 
+    position: relative;
+    left: 10rem;
 }
 
 form {

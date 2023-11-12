@@ -14,21 +14,29 @@
             <div id="allApptBlock"><p>All Appoinments</p></div>
         </router-link>
 
+        <router-link class="routerElement" style="text-decoration: none;" to="/all_patients">
+            <div id="viewAllPatientsBlock"><p>All Patients</p></div>
+        </router-link>
+        
+        <router-link class="routerElement" style="text-decoration: none;" to="/all_doctors">
+            <div id="viewAllDoctorsBlock"><p>All Doctors</p></div>
+        </router-link>
+
         <router-link class="routerElement" style="text-decoration: none;" to="/create_appoint_page">
             <div id="createApptBlock"><p>Create Appointment</p></div>
         </router-link>
         
-        <router-link class="routerElement" style="text-decoration: none;" to="/edit_appoint_page">
+        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/edit_appoint_page">
             <div id="editApptBlock"><p>Edit Appointment</p></div>
-        </router-link>
+        </router-link> -->
 
         <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
             <div id="viewPatientApptBlock"><p>View Patient Appointments</p></div>
         </router-link>
 
-        <router-link class="routerElement" style="text-decoration: none;" to="/view_doctor_appt_page">
+        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/view_doctor_appt_page">
             <div id="viewDoctorApptBlock"><p>View Doctor Appointments</p></div>
-        </router-link>
+        </router-link> -->
 
         <router-link class="routerElement" style="text-decoration: none;" to="/add_people_page">
             <div id="addPeopleBlock"><p>Add Doctors/Patients</p></div>
@@ -38,14 +46,15 @@
             <div id="assignPatDocBlock"><p>Assign Patients to Doctors</p></div>
         </router-link>
 
-        <router-link class="routerElement" style="text-decoration: none;" to="/indiv_user_det_page">
+        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/indiv_user_det_page">
             <div id="indivUserDetBlock"><p>View Indiv. User Details</p></div>
-        </router-link>
+        </router-link> -->
 
     </div>
 </template>
 
 <script>
+// import { or } from 'firebase/firestore'
 export default {
     name: "internal_sidebar",
 
@@ -55,6 +64,14 @@ export default {
 
     methods: {
         changeSelection() {
+            console.log(this.tabName)
+            let tname = this.tabName
+            if ((this.tabName == 'viewDoctorApptBlock') || (this.tabName == 'editApptBlock')) {
+                tname = "viewAllDoctorsBlock"
+            }
+            if (this.tabName == 'indivUserDetBlock') {
+                tname = "viewAllPatientsBlock"
+            }
             const allTabs = document.querySelectorAll('.routerElement')
             allTabs.forEach((tab) => {
                 const divs = tab.querySelectorAll('div');
@@ -67,7 +84,7 @@ export default {
                 });
             });
 
-            const currSelected = document.getElementById(this.tabName)
+            const currSelected = document.getElementById(tname)
             currSelected.style.backgroundColor = 'white'     
             const paraElem = currSelected.querySelector('p');
             paraElem.style.fontWeight = 'bold'
@@ -98,7 +115,7 @@ body {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: rgb(140, 195, 140);
-    width: 220px;
+    width: 15%;
     height: 100%;
     top: 0;
     left: 0;
