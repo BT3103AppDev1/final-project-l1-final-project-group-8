@@ -72,6 +72,12 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
 
 export default {
+    data() {
+        return {
+            user : false,
+            useremail : false
+        }
+    },
     methods: {
         async newPat() {
             let name = document.getElementById("name").value;
@@ -83,7 +89,7 @@ export default {
             let gender = document.getElementById("gender").value;
             let blood = document.getElementById("blood").value;
 
-            let patRef = doc(db,"clinic1","patients") //clinic1 will be replaced by email 
+            let patRef = doc(db,String(this.useremail),"patients") //clinic1 will be replaced by email 
             const newData = {
                 [icNum] : {
                     "appoint_date" : null,

@@ -30,14 +30,16 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            close : true
+            close : true,
+            user :false,
+            useremail: " "
         }
     },
     methods : {
         async newDoc() {
             let doctName = document.getElementById("docName").value;
-            let docRef = doc(db,"clinic1","doctors") //clinic1 is hardcoded for now. will be email later
-            console.log(doctName)
+            let docRef = doc(db,String(this.useremail),"doctors") //clinic1 is hardcoded for now. will be email later
+            console.log(this.useremail)
             const newData = {
                 [doctName] : []
             }
@@ -53,7 +55,7 @@ export default {
     },
 
     mounted() {
-        const auth = getAuth(app);
+        const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log('User is logged in:', user);
