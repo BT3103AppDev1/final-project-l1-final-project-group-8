@@ -11,7 +11,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "buffer": "^6.0.3",
-    "firebase": "^10.5.0",
+    "firebase": "^10.6.0",
     "firebaseui": "^6.1.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"

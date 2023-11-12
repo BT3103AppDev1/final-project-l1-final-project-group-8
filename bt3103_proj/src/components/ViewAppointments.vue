@@ -56,7 +56,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDoc, doc, deleteDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -73,71 +73,76 @@ export default {
       const clinicDocRef = doc(db, 'clinic1', 'doctors');
       const clinicPatientRef = doc(db, 'clinic1', 'patients');
       let allDocuments = await getDoc(clinicPatientRef);
-      let docDocuments = await getDoc(clinicPatientRef);
+      let docDocuments = await getDoc(clinicDocRef);
       let index = 1;
       let noOfAppointments = 0;
+
         // Appointment records from Patient, get doctor id by searching patient in doctors
         // Date, Time Patient Name, Pat ID, Doct ID Edit, Remove
-      allDocuments.forEach((docs) => {
-        let data = docs.data();
+      let patientData = allDocuments.data();
+      for (const patientId in patientData) {
+        let data = patientData[patientId];
         if(data.upcoming_appoint == true) {
-        let appointDate = data.appoint_date;
-        appointDate = appointDate.toDate().toDateString()
-        let patientName = data.name;
-        let patientID = data.id;
-        let doctorNameF = null;
-        // Get Doctor
-        const doctorData = docDocuments.data();
-            for (const doctorName in doctorData) {
+          let appointDate = data.appoint_date;
+          // appointDate = appointDate.toDate().toDateString()
+          let patientName = data.name;
+          let patientID = data.id;
+          let doctorNameF = null;
+          
+          // Get Doctor
+          const doctorData = docDocuments.data();
+              
+          for (const doctorName in doctorData) {
                 if (Array.isArray(doctorData[doctorName])) {
                     const individualDoc = doctorData[doctorName];
-                    for(let i = 0; i < individualDoc.length(); i++) {
+                    for(let i = 0; i < individualDoc.length; i++) {
                         if(individualDoc[i] == patientID) {
                             doctorNameF = Object.keys(doctorName);
                         }
                     }
                 }
             }
-        let table = document.getElementById("appointTable");
-        let row = table.insertRow(index);
+          
+              let table = document.getElementById("appointTable");
+          let row = table.insertRow(index);
 
-        let infoArray = [appointDate, patientName, patientID, doctorName];
+          let infoArray = [appointDate, patientName, patientID, doctorNameF];
 
-        for (let cellIndex = 0; cellIndex < 4; cellIndex++) {
-          let currCell = row.insertCell(cellIndex);
-          currCell.innerHTML = infoArray[cellIndex];
-        }
-        // Edit and Delete Buttons
-        let editButton = document.createElement("Button");
-        //editButton.id = String(patientID);
-        editButton.className = "btn btn-primary";
-        editButtonButton.innerHTML = "Edit";
+          for (let cellIndex = 0; cellIndex < 4; cellIndex++) {
+            let currCell = row.insertCell(cellIndex);
+            currCell.innerHTML = infoArray[cellIndex];
+          }
+          // Edit and Delete Buttons
+          let editButton = document.createElement("Button");
+          //editButton.id = String(patientID);
+          editButton.className = "btn btn-primary";
+          editButtonButton.innerHTML = "Edit";
 
-        let cell7 = row.insertCell();
-        cell8.appendChild(editButton);
-        editButton.onclick = function () {
-            // this.$router.push("/editAppointment")
-          // redirect to editing appointments
-        };
+          let cell7 = row.insertCell();
+          cell8.appendChild(editButton);
+          editButton.onclick = function () {
+              // this.$router.push("/editAppointment")
+            // redirect to editing appointments
+          };
 
-        let deleteButton = document.createElement("Button");
-        // deleteButton.id = String(patientID);
-        deleteButton.className = "btn btn-danger";
-        deleteButton.innerHTML = "Remove";
+          let deleteButton = document.createElement("Button");
+          // deleteButton.id = String(patientID);
+          deleteButton.className = "btn btn-danger";
+          deleteButton.innerHTML = "Remove";
 
-        let cell8 = row.insertCell();
+          let cell8 = row.insertCell();
 
-        cell8.appendChild(deleteButton);
-        deleteButton.onclick = function () {
-          // delete appointment
-        };
-        index += 1;
-        noOfAppointments += 1;
+          cell8.appendChild(deleteButton);
+          deleteButton.onclick = function () {
+            // delete appointment
+          };
+          index += 1;
+          noOfAppointments += 1;
         }
         
         document.getElementById("appointNumber").innerHTML= noOfAppointments + " Appointments"  
 
-      });
+      };
     }
 
     display(this.useremail);
@@ -145,5 +150,4 @@ export default {
 };
 </script>
 <style scoped>
-@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css';
 </style>
