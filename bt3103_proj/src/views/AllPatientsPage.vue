@@ -2,7 +2,7 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><PatientDetails/>></div>  
+        <div class="main-page-elements"><PatientDetails/></div>  
   
       </div>
     </div>
