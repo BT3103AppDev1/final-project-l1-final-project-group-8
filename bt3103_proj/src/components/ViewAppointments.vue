@@ -69,6 +69,14 @@ export default {
   },
 
   mounted() {
+        //     const auth = getAuth();
+        //     onAuthStateChanged(auth, (user) => {
+        //         if (user) {
+        //             this.user = user;
+        //             this.useremail = auth.currentUser.email;
+        //     }
+        // })
+
     async function display() {
       const clinicDocRef = doc(db, 'clinic1', 'doctors');
       const clinicPatientRef = doc(db, 'clinic1', 'patients');

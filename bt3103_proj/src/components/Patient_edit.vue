@@ -249,6 +249,15 @@ export default {
     mounted() {
         const self = this;
 
+
+        // const auth = getAuth();
+        // onAuthStateChanged(auth, (user) => {
+        //     if (user) {
+        //         this.user = user;
+        //         this.useremail = auth.currentUser.email;
+        //     }
+        // })
+    
         async function display() {
             let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
             //should be email in actual
