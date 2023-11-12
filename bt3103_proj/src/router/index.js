@@ -79,7 +79,7 @@ const router = createRouter({
 
       {
         path: '/indiv_user_det_page/:patientId',
-        props:true,
+        props: true,
         name: 'indivDetails',
         component: IndivUserDetPage
       },
@@ -103,7 +103,7 @@ const router = createRouter({
 
 //   if (requiresAuth && !isAuthenticated) {
 //     // User is not authenticated, redirect to login page
-//     next('/login');
+//     next('/');
 //   } else {
 //     // User is authenticated or view does not require authentication, proceed
 //     next();
