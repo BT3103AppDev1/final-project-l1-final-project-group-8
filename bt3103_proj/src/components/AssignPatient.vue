@@ -7,11 +7,26 @@
             </div>
 
             <div id="searchContainer">
-                <div id = "searchBar">
+                <!--<div id = "searchBar">
                     <form action="">
                             <input type="text" name="docID" id="docID" placeholder="Enter Doctor ID" size="25">
                             <input type="text" name="patID" id="patID" placeholder="Enter Patient IC" size="25">
                     </form>
+                </div>-->
+
+                <div id="selDoc">
+                    <label for="chooseDoc">Select Doctor</label><br>
+                    <select id="docID" name="docID" v-model="selectedDoctor" required>
+                        <option v-for="doctor in doctors" :key="doctor.value" :value="doctor.value">{{ doctor.label }}</option>
+                    </select>
+                </div>
+
+                <div id = "selPat">
+                    <label for="choosePat">Select Patient</label><br>
+                    <!-- <input type="text" name="choosePat" id="choosePat" required> -->
+                    <select id="patID" name="patID" v-model="selectedPatient" required>
+                        <option v-for="patient in patients" :key="patient.value" :value="patient.value">{{ patient.label }}</option>
+                    </select>
                 </div>
                 
                 <div id = "searchButt">
@@ -30,9 +45,63 @@
 import firebaseApp from '../firebase.js';
 import {arrayUnion, getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
+    data() {
+        return {
+            selectedDoctor: 'default',
+            doctors: [],
+            patients: [],
+
+            selectedDoctor: null,
+            selectedPatient: null,
+            selectedDate: null,
+        }
+    },
+
+    async created() {
+        try {
+            // DOCTOR RETRIEVAL
+            const clinicDocRef = doc(db, 'clinic1', 'doctors'); // clinic1 hard coded for now
+            const clinicDocSnapshot = await getDoc(clinicDocRef);
+            
+            if (clinicDocSnapshot.exists()) {
+                const clinicData = clinicDocSnapshot.data();
+                for (const doctorName in clinicData) {
+                    if (Array.isArray(clinicData[doctorName])) {
+                        this.doctors.push({
+                            value: doctorName,
+                            label: doctorName, // can use diff field if have
+                        });
+                    }
+                }
+            }
+
+            // PATIENT RETRIEVAL
+            const clinicPatientRef = doc(db, 'clinic1', 'patients'); // clinic1 hard coded for now
+            const clinicPatientSnapshot = await getDoc(clinicPatientRef);
+            
+            if (clinicPatientSnapshot.exists()) {
+                const clinicData = clinicPatientSnapshot.data();
+                for (const patientName in clinicData) {
+                    if (!clinicData[patientName].upcoming_appoint) {
+                        this.patients.push({
+                            value: patientName,
+                            label: patientName, // can use diff field if have
+                        });
+                    }
+                }
+            }
+        }
+        
+        catch (error) {
+            console.error('Error fetching data from Firestore: ', error);
+        }
+    },
+    
     methods: {
         async assignPat() {
             let docID = document.getElementById("docID").value
@@ -56,15 +125,20 @@ export default {
         }
     },
 
-    // mounted() {
-    //         const auth = getAuth();
-    //         onAuthStateChanged(auth, (user) => {
-    //             if (user) {
-    //                 this.user = user;
-    //                 this.useremail = auth.currentUser.email;
-    //         }
-    //     })
-    // }
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    }
 }
 </script>
 
@@ -74,10 +148,12 @@ export default {
     width: 400px;
     background: #F7F7F7; 
     border-radius: 20px;
+    font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;
+    font-size: 32px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     padding: 20px;
-    position: relative;
-    left: 10rem;
+    position: absolute;
+    left: 20rem;
 }
 
 
@@ -103,6 +179,7 @@ export default {
     border: 1px #C5C5C5 solid;
     height: 25px;
     /* width: 200px; */
+    width: 10em;
     
 }
 
@@ -114,6 +191,7 @@ export default {
     /* width: 200px; */
     margin-bottom: 1em;
     margin-right: 20px;
+    width: 10em;
 }
 
 #searchButton {
@@ -123,6 +201,7 @@ export default {
     width: 86px;
     border: none;
     font-weight: 600;
+    margin-top: 1em;
 }
 
 #searchButton:hover {
