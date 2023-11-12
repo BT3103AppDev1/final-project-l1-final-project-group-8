@@ -117,19 +117,24 @@ const router = createRouter({
   history: createWebHistory(),
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const auth = getAuth();
 
-  onAuthStateChanged(auth, (user) => {
-    if (requiresAuth && !user) {
-      // Redirect to login if authentication is required and user is not logged in
-      next('/');
-    } else {
-      // Proceed to the route if no authentication is required or user is logged in
-      next();
-    }
+  const user = await new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      resolve(user);
+    });
   });
+
+  if (requiresAuth && !user) {
+    // Redirect to login if authentication is required and user is not logged in
+    next('/');
+  } else {
+    // Proceed to the route if no authentication is required or user is logged in
+    next();
+  }
 });
+
 
 export default router;
