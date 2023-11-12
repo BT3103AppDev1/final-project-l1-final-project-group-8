@@ -10,7 +10,7 @@
 
                 <div id="selDoc">
                     <!--<label for="docID">Select Doctor</label><br>-->
-                    <div class = "title" style="font-size: 16px;">Select Doctor:</div>
+                    <div class = "title" style="font-size: 16px; color: black;">Select Doctor:</div>
                     <form action="">
                         <input type="text" name="docID" id="docID">
                     </form>
@@ -165,6 +165,9 @@ export default {
     left: 20rem;
 }
 
+#title,label {
+    color: black;
+}
 
 
 #Title {

@@ -147,7 +147,7 @@ export default {
 
 #mega {
     position: absolute;
-    left: 20em;
+    left: 35em;
     top:5em;
 }
 
@@ -165,7 +165,7 @@ export default {
 #Patic, #patGender, #patBlood {
     position: relative;
     left: 20em;
-    bottom: 11em;
+    bottom: 13.5em;
 }
 
 .padding {
@@ -174,7 +174,7 @@ export default {
 
 #buttonWrapper {
     position: absolute;
-    bottom: 8em;
+    bottom: 10em;
 }
 
 #submitButt {
