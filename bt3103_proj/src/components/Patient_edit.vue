@@ -267,8 +267,10 @@ export default {
             // let id = docData.id
             let name = docData.name
             let contact_num = docData.contact_num
-            let dob = new Date(docData.dob)
-            if (dob != 'Invalid Date') {
+            let dob = docData.dob
+            let Testdob = dob
+            Testdob = new Date(Testdob)
+            if (Testdob != 'Invalid Date') {
                 dob = dob.slice(0,10)
             }
             //dob = dob.toDate().toDateString()
