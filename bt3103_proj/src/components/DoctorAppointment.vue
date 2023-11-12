@@ -1,7 +1,10 @@
 <template>
     <div id="rectangle">
         <div id="apptTitle">Doctor's Appointment - {{info.doctorName}}</div>
-        <div id="count">Showing {{this.count}} appointment</div><br>     
+        <div id="count">Showing {{this.count}} appointments</div><br>     
+        <div id = "button">
+            <button id = "cancelButton" type = "button" @click="$router.go(-1)">Back to All Doctors</button>
+        </div>   
         <table id="table">
                 <tr>
                     <th>DATE</th>
@@ -154,7 +157,7 @@ export default {
                 [patientId]: updatedPatientData,
             });
 
-            console.log("Succesfully deleted appointment with patient ", patientId)
+            console.log("Succesfully cancelled appointment with patient ", patientId)
             let tb = document.getElementById("table")
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)

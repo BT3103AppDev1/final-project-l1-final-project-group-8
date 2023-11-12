@@ -30,9 +30,9 @@
             <div id="editApptBlock"><p>Edit Appointment</p></div>
         </router-link> -->
 
-        <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
+        <!-- <router-link class="routerElement" style="text-decoration: none;" to="/view_patient_appt_page">
             <div id="viewPatientApptBlock"><p>View Patient Appointments</p></div>
-        </router-link>
+        </router-link> -->
 
         <!-- <router-link class="routerElement" style="text-decoration: none;" to="/view_doctor_appt_page">
             <div id="viewDoctorApptBlock"><p>View Doctor Appointments</p></div>
@@ -66,10 +66,13 @@ export default {
         changeSelection() {
             console.log(this.tabName)
             let tname = this.tabName
-            if ((this.tabName == 'viewDoctorApptBlock') || (this.tabName == 'editApptBlock')) {
+            if (this.tabName == 'viewDoctorApptBlock') {
                 tname = "viewAllDoctorsBlock"
             }
-            if (this.tabName == 'indivUserDetBlock') {
+            if ((this.tabName == 'editApptBlock')) {
+                tname = "allApptBlock"
+            }
+            if (this.tabName == 'indivUserDetBlock' || this.tabName == 'viewPatientApptBlock') {
                 tname = "viewAllPatientsBlock"
             }
             const allTabs = document.querySelectorAll('.routerElement')

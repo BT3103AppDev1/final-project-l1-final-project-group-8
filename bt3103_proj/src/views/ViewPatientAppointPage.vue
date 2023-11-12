@@ -2,7 +2,9 @@
     <div>
       <div id="app-container">
         <div class="sidebar-container"><InternalSidebar v-if="isMounted" :tabName="name"/></div>
-        <div class="main-page-elements"><h1>[Retrieve and view individual patient appointments component goes here]</h1></div>  
+        <div class="main-page-elements">
+          <PatientAppointment :info="{patientId: this.patientId}"/>
+        </div>
   
       </div>
     </div>
@@ -10,12 +12,19 @@
   
   <script>
   import InternalSidebar from '@/components/InternalSidebar.vue'
+  import PatientAppointment from '../components/PatientAppointment.vue'
   
   export default {
     components: {
       InternalSidebar,
+      PatientAppointment
     }, 
-
+    props: {
+      patientId: {
+        type:String,
+        required:true
+      }
+    },
     data() {
         return {
             isMounted: false,
@@ -24,6 +33,7 @@
     },
 
     mounted() {
+      this.$emit(this.patientId)
         this.isMounted = true
     },
   }

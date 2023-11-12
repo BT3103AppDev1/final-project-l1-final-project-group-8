@@ -65,6 +65,7 @@
             <div v-else id="button" >
                 <div id = "actionBtn">
                     <button id = "editButton" type="button" v-on:click="allowEdit">Edit Details</button>
+                    <button id = "backButton" type="button" @click="$router.go(-1)">Back to All Patients</button>
                 </div>
             </div>
         </div>
@@ -266,8 +267,8 @@ export default {
             // let id = docData.id
             let name = docData.name
             let contact_num = docData.contact_num
-            let dob = docData.dob
-            if (new Date(dob) != 'Invalid Date') {
+            let dob = new Date(docData.dob)
+            if (dob != 'Invalid Date') {
                 dob = dob.slice(0,10)
             }
             //dob = dob.toDate().toDateString()
@@ -276,20 +277,7 @@ export default {
             let diagnosis = docData.diagnosis
             let treatment = docData.treatment
             let logs = docData.logs
-            // let upcoming_appoint = docData.upcoming_appoint
-            // let appoint_date = docData.appoint_date 
-            // document.getElementById("nameText").innerHTML=name   
-            // document.getElementById("dobText").innerHTML=dob
-            // document.getElementById("numText").innerHTML=contact_num
-            // document.getElementById("icText").innerHTML=id
-            // document.getElementById("genderText").innerHTML=gender
-            // document.getElementById("bloodText").innerHTML=blood
-            // document.getElementById("patTitle").innerHTML="Patient's Health Records - " + name
-
-            // document.getElementById("diagContent").innerHTML = "Diagnosis: " + diagnosis
-            // document.getElementById("treatContent").innerHTML = "Current Treatment: " + treatment
-            // document.getElementById("logContent").innerHTML = logs
-            // self.id = id,
+            
             self.name = name,
             self.blood = blood,
             self.contact_num = contact_num,
@@ -383,7 +371,13 @@ button:hover {
 
 #editButton {
     position: relative;
-    left: 30em;
+    left: 20em;
+}
+
+#backButton {
+    position: relative;
+    width: 200px;
+    left: 25em;
 }
 
 #actionEditBtn {

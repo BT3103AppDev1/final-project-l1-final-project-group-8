@@ -30,8 +30,7 @@
         return {
             isMounted: false,
             name: "viewDoctorApptBlock",
-          tabName: 'viewAllDoctorsBlock'
-        }
+          }
     },
 
     mounted() {

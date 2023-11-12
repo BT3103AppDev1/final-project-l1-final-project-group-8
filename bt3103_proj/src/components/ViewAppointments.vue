@@ -24,7 +24,7 @@
                   <th>Patient Name</th>
                   <th>Patient ID</th>
                   <th>Doctor ID</th>
-                  <th></th>
+                  <th>Edit Appointment</th>
                 </tr>
               </table>
             </div>
@@ -77,6 +77,7 @@ export default {
     //             this.useremail = auth.currentUser.email;
     //     }
     // })
+    const self = this;
 
     async function display() {
       const clinicDocRef = doc(db, "clinic1", "doctors");
@@ -98,7 +99,7 @@ export default {
           let appointTime = new Date(appointDate).toLocaleTimeString();
           let patientName = data.name;
           let patientID = data.id;
-          let doctorNameF = null;
+          let doctorNameF = '';
           // Get Doctor
           Object.keys(docDocuments).forEach((doctor) => {
             let docData = docDocuments[doctor]; // should be an array
@@ -130,10 +131,13 @@ export default {
           //editButton.id = String(patientID);
           editButton.className = "btn btn-primary";
           editButton.innerHTML = "Edit";
+          // editButton.style.cssText = 'width:60px;height:40px;color:black;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
+
 
           let cell7 = row.insertCell();
           cell7.appendChild(editButton);
           editButton.onclick = function () {
+            self.$router.push({name: 'editApptPage', params: {doctorName: doctorNameF, patientId: patientID}})
             // this.$router.push("/editAppointment")
             // redirect to editing appointments
           };
@@ -146,6 +150,7 @@ export default {
       });
       //this.appointCount = noOfAppointments;
     }
+
     display();
   },
 };
