@@ -180,11 +180,11 @@ export default {
 <style scoped>
 
 #createAppointment {
-    background: #DFFFE3; 
-    padding: 20px;
-    border-radius: 20px; 
+    background: #ECFFD6; 
     position: relative;
-    left: 10rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
+    border-radius: 25px;
+    padding: 20px;
 }
 
 form {
