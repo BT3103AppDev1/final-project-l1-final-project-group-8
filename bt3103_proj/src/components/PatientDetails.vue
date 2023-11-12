@@ -13,8 +13,7 @@
                 <th>PATIENT ID</th>
                 <th>D.O.B.</th>
                 <th>CONTACT NUM.</th>
-                <th>HEALTH RECORD</th>
-                <!-- <th>ACTIONS</th> -->
+                <th>ACTIONS</th>
             </tr>
         </table><br>
     </div>
@@ -91,6 +90,16 @@ export default {
                 cell6.appendChild(healthRecordsButton)
                 healthRecordsButton.onclick = function() {
                     self.$router.push({name: 'indivDetails', params: {patientId: id}})
+                }
+
+                let upcomingApptButton = document.createElement("Button");
+                upcomingApptButton.id = String(id)
+                upcomingApptButton.className = "upcomingApptButton"
+                upcomingApptButton.innerHTML = "Upcoming Appointments"
+                upcomingApptButton.style.cssText = 'width:220px;height:60px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position: relative; left:20px'
+                cell6.appendChild(upcomingApptButton)
+                upcomingApptButton.onclick = function() {
+                    self.$router.push({name: 'patientApptPage', params: {patientId: id}})
                 }
 
                 index += 1;

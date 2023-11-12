@@ -59,7 +59,9 @@ const router = createRouter({
       },
 
       {
-        path: '/view_patient_appt_page',
+        path: '/view_patient_appt_page/:patientId',
+        props: true,
+        name: 'patientApptPage',
         component: ViewPatientAppointPage
       },
 

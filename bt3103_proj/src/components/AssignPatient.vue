@@ -76,6 +76,8 @@ export default {
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     padding: 20px;
+    position: relative;
+    left: 10rem;
 }
 
 
