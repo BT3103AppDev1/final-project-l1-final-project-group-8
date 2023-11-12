@@ -1,5 +1,5 @@
 <template>
-<div id = "mega">
+<div id = "mega" >
     <div id = "rectangle">
         <div id = "content">
             <div id = "Title">
@@ -7,22 +7,20 @@
             </div>
 
             <div id="searchContainer">
-                <!--<div id = "searchBar">
-                    <form action="">
-                            <input type="text" name="docID" id="docID" placeholder="Enter Doctor ID" size="25">
-                            <input type="text" name="patID" id="patID" placeholder="Enter Patient IC" size="25">
-                    </form>
-                </div>-->
 
                 <div id="selDoc">
-                    <label for="chooseDoc">Select Doctor</label><br>
-                    <select id="docID" name="docID" v-model="selectedDoctor" required>
-                        <option v-for="doctor in doctors" :key="doctor.value" :value="doctor.value">{{ doctor.label }}</option>
-                    </select>
+                    <!--<label for="docID">Select Doctor</label><br>-->
+                    <div class = "title" style="font-size: 16px;">Select Doctor:</div>
+                    <form action="">
+                        <input type="text" name="docID" id="docID">
+                    </form>
                 </div>
 
+            
+
+
                 <div id = "selPat">
-                    <label for="choosePat">Select Patient</label><br>
+                    <label for="patID" style="font-size: 16px;">Select Patient</label><br>
                     <!-- <input type="text" name="choosePat" id="choosePat" required> -->
                     <select id="patID" name="patID" v-model="selectedPatient" required>
                         <option v-for="patient in patients" :key="patient.value" :value="patient.value">{{ patient.label }}</option>
@@ -52,47 +50,58 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            selectedDoctor: 'default',
+            //selectedDoctor: 'default',
             doctors: [],
             patients: [],
 
             selectedDoctor: null,
             selectedPatient: null,
             selectedDate: null,
+
+            user: false,
+            useremail:false
         }
     },
 
     async created() {
         try {
             // DOCTOR RETRIEVAL
-            const clinicDocRef = doc(db, 'clinic1', 'doctors'); // clinic1 hard coded for now
+            const clinicDocRef = doc(db, String(this.useremail), 'doctors'); // clinic1 hard coded for now
             const clinicDocSnapshot = await getDoc(clinicDocRef);
             
             if (clinicDocSnapshot.exists()) {
                 const clinicData = clinicDocSnapshot.data();
                 for (const doctorName in clinicData) {
-                    if (Array.isArray(clinicData[doctorName])) {
-                        this.doctors.push({
-                            value: doctorName,
-                            label: doctorName, // can use diff field if have
-                        });
-                    }
+                    //if (Array.isArray(clinicData[doctorName])) {
+                    //    this.doctors.push({
+                    //        value: doctorName,
+                    //        label: doctorName, // can use diff field if have
+                    //    });
+                    //}
+                    this.doctors.push({
+                        value: doctorName,
+                        label: doctorName,
+                    });
                 }
             }
 
             // PATIENT RETRIEVAL
-            const clinicPatientRef = doc(db, 'clinic1', 'patients'); // clinic1 hard coded for now
+            const clinicPatientRef = doc(db, String(this.useremail), 'patients'); // clinic1 hard coded for now
             const clinicPatientSnapshot = await getDoc(clinicPatientRef);
             
             if (clinicPatientSnapshot.exists()) {
                 const clinicData = clinicPatientSnapshot.data();
                 for (const patientName in clinicData) {
-                    if (!clinicData[patientName].upcoming_appoint) {
-                        this.patients.push({
-                            value: patientName,
-                            label: patientName, // can use diff field if have
-                        });
-                    }
+                    //if (!clinicData[patientName].upcoming_appoint) {
+                    //    this.patients.push({
+                    //        value: patientName,
+                    //        label: patientName, // can use diff field if have
+                    //    });
+                    //}
+                    this.patients.push({
+                        value:patientName,
+                        label:patientName,
+                    });
                 }
             }
         }
@@ -106,7 +115,7 @@ export default {
         async assignPat() {
             let docID = document.getElementById("docID").value
             let patID = document.getElementById("patID").value
-            let docRef = doc(db,"clinic1","doctors") //clinic1 hardcoded, will be email
+            let docRef = doc(db,String(this.useremail),"doctors") //clinic1 hardcoded, will be email
 
             try {
                 const updateData = {
