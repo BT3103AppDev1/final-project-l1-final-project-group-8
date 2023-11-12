@@ -23,12 +23,21 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp, deleteField, deleteDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+// import router from "@/router/index.js"
 const db = getFirestore(firebaseApp);
 
 export default {
+    // props: {
+    //     doctorName: {
+    //         type: String,
+    //         required: true,
+    //     },
+    // },
+
     data() {
         return {
             doctorName: 'Adam',
+            // selectedPatientId: '',
         };
     },
 
@@ -168,11 +177,11 @@ export default {
     height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
-    border-radius: 67px;
+    border-radius: 20px;
     align-content: center;
     position: absolute;
     left: 15em;
-    top: 0.5em;
+    top: 0em;
 }
 
 #apptTitle {

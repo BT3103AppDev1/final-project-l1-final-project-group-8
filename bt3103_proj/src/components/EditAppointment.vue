@@ -20,16 +20,10 @@
             </div>
         </div>
 
-        <div id = "button" v-if="edit = edit">
+        <div id = "button">
             <div id = "actionEditBtn">
                 <button id = "submitButton" type="button" @click="submitEdit">Submit</button>
                 <button id = "cancelButton" type = "button" @click="cancelEdit">Cancel</button>
-            </div>
-        </div>
-            
-        <div v-else id="button">
-            <div id = "actionBtn">
-                <button id = "editButton" type="button" v-on:click="allowEdit">Edit Details</button>
             </div>
         </div>
     </div>
@@ -39,14 +33,26 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import route from '@/router/index.js'
 const db = getFirestore(firebaseApp);
 
 export default {
+    // name: 'EditAppointment',
+    props: {
+    doctorId: {
+      type: String, // Adjust the type based on your data type
+      required: true,
+    },
+    patientId: {
+      type: String, // Adjust the type based on your data type
+      required: true,
+    },
+  },
     data() {
         return {
-            doctorName: 'Adam',
-            patientId: 'pat1',
-            edit : false,
+            doctorName: this.$route.params.doctorName,
+            patientId: this.$route.params.patientId,
+            // edit : true,
         };
     },
 
@@ -118,6 +124,16 @@ export default {
             console.log("Succesfully updated appointment with patient", this.patientId)
         }
     },
+
+    mounted() {
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    this.user = user;
+                    this.useremail = auth.currentUser.email;
+            }
+        })
+    }
 }
 </script>
 

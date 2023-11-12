@@ -156,6 +156,16 @@ export default {
         refreshPage() {
             window.location.reload();
         }
+    },
+
+    mounted() {
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    this.user = user;
+                    this.useremail = auth.currentUser.email;
+            }
+        })
     }
 }
 </script>

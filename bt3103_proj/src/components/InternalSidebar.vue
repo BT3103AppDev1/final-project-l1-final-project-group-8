@@ -102,8 +102,9 @@ body {
     height: 100%;
     top: 0;
     left: 0;
+    position:absolute;
 
-    overflow-y: auto;
+    /* overflow-y: auto; */
 }
 
 #lineDiv {
