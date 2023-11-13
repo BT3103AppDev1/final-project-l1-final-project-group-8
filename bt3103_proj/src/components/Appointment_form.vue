@@ -110,7 +110,7 @@ export default {
                 for (const patientName in patientData) {
                     if (!patientData[patientName].upcoming_appoint) {
                         self.patients.push({
-                            value: patientData[patientName].name,
+                            value: patientName,
                             label: patientData[patientName].name, // can use diff field if have
                         });
                     }
