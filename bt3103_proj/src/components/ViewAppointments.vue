@@ -162,7 +162,7 @@ export default {
       //     noOfAppointments + " Appointments";
       //this.appointCount = noOfAppointments;
     };
-
+  
     // refresh();
     // display();
 
@@ -203,7 +203,7 @@ export default {
 
             console.log("Succesfully cancelled appointment with doctor ", doctorName, " and patient ", patientId)
             let tb = document.getElementById("allApptTable")
-            while (tb.rows.length >= 1) {
+            while (tb.rows.length > 1) {
                 tb.deleteRow(1)
             }
             display(email)

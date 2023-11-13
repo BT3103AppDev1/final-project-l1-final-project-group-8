@@ -246,7 +246,7 @@ export default {
                 }
             }
 
-            await setDoc(docRef, updateData,{merge : true})
+            await setDoc(docRef, updateData)
             alert("Update Succesful")
             window.location.reload()
         }

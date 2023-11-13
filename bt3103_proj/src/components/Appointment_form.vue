@@ -165,7 +165,8 @@ export default {
                     });
 
                     alert("Successfully updated appointment!")
-                    this.refreshPage();
+                    this.$router.push({name:'AllAppointPage'})
+                    // this.refreshPage();
 
                 } else {
                     alert("Error: did you select all fields?")

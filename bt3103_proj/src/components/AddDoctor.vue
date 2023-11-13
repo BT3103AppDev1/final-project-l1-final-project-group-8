@@ -81,8 +81,8 @@ export default {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 
     padding: 20px;
     position: relative;
-    left: 250px;
-    top: 100px
+    left: 1rem;
+    top: 1rem
 }
 
 #title {
