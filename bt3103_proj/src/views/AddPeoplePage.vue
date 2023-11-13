@@ -126,9 +126,9 @@ button:hover {
 
 #back {
     background:white;
-    position: relative;
-    left: 5rem;
-    bottom: 1rem;
+    position: absolute;
+    left: 65em;
+    bottom: 53em;
     background-color: #FF0000;
 }
 

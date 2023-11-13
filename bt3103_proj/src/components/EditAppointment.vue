@@ -100,7 +100,7 @@ export default {
                 }
             }
 
-            await setDoc(patientDocRef, updateData)
+            await setDoc(patientDocRef, updateData,{merge:true})
 
             alert("Succesfully updated appointment with patient", this.patientId)
             // this.$router.push({name:'AllAppointPage'})

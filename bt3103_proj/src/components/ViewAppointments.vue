@@ -28,7 +28,7 @@ import {
   getDocs,
   doc,
   deleteDoc,
-  getDoc, updateDoc
+  getDoc, updateDoc, setDoc
 } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
@@ -186,6 +186,7 @@ export default {
             const patientRef = doc(db, String(email), 'patients')
             const patientSnapshot = await getDoc(patientRef)
             const patientData = patientSnapshot.data()
+            //patientData = patientData[patientId]
             console.log(patientData)
             let updatedPatientData = {
                 [patientId] : {
@@ -203,9 +204,10 @@ export default {
                 }
             }
             console.log(updatedPatientData)
-            await updateDoc(patientRef, {
-                [patientId]: updatedPatientData,
-            });
+            await setDoc(patientRef, updatedPatientData, {merge:true})
+            //await updateDoc(patientRef, {
+            //    [patientId]: updatedPatientData,
+            //});
 
             console.log("Succesfully cancelled appointment with doctor ", doctorName, " and patient ", patientId)
             let tb = document.getElementById("allApptTable")
