@@ -23,13 +23,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
-import {
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  getDoc,
-} from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, getDoc,} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -55,13 +49,9 @@ export default {
     
     const self = this;
 
-    // function refresh() {
-    //   window.location.reload()
-    // }
-
     async function display() {
-      const clinicDocRef = doc(db, "clinic1", "doctors");
-      const clinicPatientRef = doc(db, "clinic1", "patients");
+      const clinicDocRef = doc(db, String(self.useremail), "doctors");
+      const clinicPatientRef = doc(db, String(self.useremail), "patients");
       const allDoc = await getDoc(clinicPatientRef);
       const docDoc = await getDoc(clinicDocRef);
       let index = 1;
@@ -79,91 +69,83 @@ export default {
           const patientId = String(idid)
           const data = allDocuments[doc]
           // let upcoming_appoint = data.upcoming_appoint
-          console.log(data)
-          // let upcoming_appoint = data.upcoming_appoint
-          // console.log(upcoming_appoint)
-          if (data != null) {
-          if (data.upcoming_appoint == true) {
-            let appointDate = data.appoint_date;
-            let appointTime = new Date(appointDate).toLocaleTimeString();
-            appointDate = new Date(appointDate).toLocaleDateString();
-            let patientName = data.name;
+          // console.log(data)
 
-            let table = document.getElementById("table");
-            let row = table.insertRow(index);
+          if (data != null) {
+            if (data.upcoming_appoint == true) {
+                let appointDate = data.appoint_date;
+                let appointTime = new Date(appointDate).toLocaleTimeString();
+                appointDate = new Date(appointDate).toLocaleDateString();
+                let patientName = data.name;
+
+                let table = document.getElementById("table");
+                let row = table.insertRow(index);
 
                 let infoArray = [
-                  appointDate,
-                  appointTime,
-                  patientName,
-                  patientId,
-                  doctorName,
+                    appointDate,
+                    appointTime,
+                    patientName,
+                    patientId,
+                    doctorName,
                 ];
 
-              for (let cellIndex = 0; cellIndex < 5; cellIndex++) {
-                let currCell = row.insertCell(cellIndex);
-                currCell.innerHTML = infoArray[cellIndex];
-                currCell.style.padding = "15px"
-              }
-              // Edit and Delete Buttons
-              let editButton = document.createElement("Button");
-              //editButton.id = String(patientID);
-              editButton.className = "btn btn-primary";
-              editButton.innerHTML = "Edit Appointment";
+                for (let cellIndex = 0; cellIndex < 5; cellIndex++) {
+                  let currCell = row.insertCell(cellIndex);
+                  currCell.innerHTML = infoArray[cellIndex];
+                  currCell.style.padding = "15px"
+                }
+                
+                let editButton = document.createElement("Button");
+                editButton.className = "btn btn-primary";
+                editButton.innerHTML = "Edit Appointment";
 
-              editButton.style.borderRadius = '6px'
-              editButton.style.border = "none"
-              editButton.style.backgroundColor = "#d7e7d9"
-              editButton.style.fontWeight = "bold"
-              editButton.style.width = "165px"
-              editButton.style.height = "50px"
-              editButton.style.fontSize = "14px"
-              editButton.style.margin = "10px"
+                editButton.style.borderRadius = '6px'
+                editButton.style.border = "none"
+                editButton.style.backgroundColor = "#d7e7d9"
+                editButton.style.fontWeight = "bold"
+                editButton.style.width = "165px"
+                editButton.style.height = "50px"
+                editButton.style.fontSize = "14px"
+                editButton.style.margin = "10px"
 
-              let cell7 = row.insertCell();
-              cell7.appendChild(editButton);
-              editButton.onclick = function () {
-                self.$router.push({name: 'editApptPage', params: {doctorName: doctorName, patientId: patientId}})
-                // this.$router.push("/editAppointment")
-                // redirect to editing appointments
-              };
+                let cell7 = row.insertCell();
+                cell7.appendChild(editButton);
+                editButton.onclick = function () {
+                  self.$router.push({name: 'editApptPage', params: {doctorName: doctorName, patientId: patientId}})
+                };
 
-              let deleteButton = document.createElement("button")
-              deleteButton.id = String(self.patientId)
-              deleteButton.className = "bwt"
-              deleteButton.innerHTML = "Cancel Appointment"
-              
-              deleteButton.style.borderRadius = '6px'
-              deleteButton.style.border = "none"
-              deleteButton.style.backgroundColor = "#d7e7d9"
-              deleteButton.style.fontWeight = "bold"
-              deleteButton.style.width = "165px"
-              deleteButton.style.height = "50px"
-              deleteButton.style.fontSize = "14px"
-              deleteButton.style.margin = "10px"
-              
-              cell7.appendChild(deleteButton)
-              deleteButton.onclick = function() {
-                  deleteEntry(doctorName, patientId)
-              }
+                let deleteButton = document.createElement("button")
+                deleteButton.id = String(self.patientId)
+                deleteButton.className = "bwt"
+                deleteButton.innerHTML = "Cancel Appointment"
+                
+                deleteButton.style.borderRadius = '6px'
+                deleteButton.style.border = "none"
+                deleteButton.style.backgroundColor = "#d7e7d9"
+                deleteButton.style.fontWeight = "bold"
+                deleteButton.style.width = "165px"
+                deleteButton.style.height = "50px"
+                deleteButton.style.fontSize = "14px"
+                deleteButton.style.margin = "10px"
+                
+                cell7.appendChild(deleteButton)
+                deleteButton.onclick = function() {
+                    deleteEntry(doctorName, patientId)
+                }
 
-              index += 1;
-              noOfAppointments += 1;
+                index += 1;
+                noOfAppointments += 1;
         }}})
         
         self.count = noOfAppointments
       });
-      // document.getElementById("appointNumber").innerHTML =
-      //     noOfAppointments + " Appointments";
-      //this.appointCount = noOfAppointments;
     };
 
-    // refresh();
     display();
 
     async function deleteEntry(doctorName, patientId) {
             if (confirm("Cancelling doctor " + doctorName + "'s Appointment with patient " + patientId)) {
-            const doctorRef = doc(db, 'clinic1', 'doctors')
+            const doctorRef = doc(db, String(self.useremail), 'doctors')
             const doctorSnapshot = await getDoc(doctorRef)
             const doctorData = doctorSnapshot.data()
             let updatedDoctorData = doctorData[doctorName].filter(function(e) { return e != patientId })
@@ -172,7 +154,7 @@ export default {
                 [doctorName]: updatedDoctorData,
             });
 
-            const patientRef = doc(db, 'clinic1', 'patients')
+            const patientRef = doc(db, String(self.useremail), 'patients')
             const patientSnapshot = await getDoc(patientId)
             const patientData = patientSnapshot.data()
             let updatedPatientData = {
@@ -195,7 +177,7 @@ export default {
                 [patientId]: updatedPatientData,
             });
 
-            console.log("Succesfully cancelled appointment with doctor ", doctorName, " and patient ", patientId)
+            alert("Succesfully cancelled appointment with doctor ", doctorName, " and patient ", patientId)
             let tb = document.getElementById("table")
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)

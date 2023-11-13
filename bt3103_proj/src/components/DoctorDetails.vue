@@ -30,16 +30,11 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            count: 0
-            // doctorName: 'Adam',
+            count: 0,
+            user: false,
+            useremail: false
         };
     },
-
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
 
     mounted() {
         const auth = getAuth();
@@ -58,7 +53,7 @@ export default {
         
         const self = this;
         async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+            let allDocuments = await getDoc(doc(db, String(self.useremail), "doctors"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -92,22 +87,9 @@ export default {
                     self.$router.push({name: 'doctorApptPage', params: {doctorName: name}})
                 }
                 
-                // let deleteButton = document.createElement("Button");
-                // deleteButton.id = String(id)
-                // deleteButton.className = "deleteBtn"
-                // deleteButton.innerHTML = "Delete Patient"
-                // deleteButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
-
-
-                // let cell7 = row.insertCell();
-                // cell7.appendChild(deleteButton)
-                // deleteButton.onclick = function() {
-                //     deletePatient(id)
-                // }
-
                 index += 1;
             })   
-             self.count = total    
+            self.count = total    
         }
         
         display()

@@ -33,14 +33,10 @@ export default {
             patientId: this.info.patientId,
             count: 0,
             patientName: '',
+            user: false,
+            useremail: false
         };
     },
-
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
 
     mounted() {
         const auth = getAuth();
@@ -59,12 +55,12 @@ export default {
         const self = this;
 
         async function display() {
-            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients")) // hardcoded for now
+            let allPatientDocuments = await getDoc(doc(db, String(self.useremail), "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             const patientDocuments = allPatientDocuments[self.patientId] 
             self.patientName = patientDocuments.name
 
-            const docRef = await getDoc(doc(db, "clinic1", "doctors")) // hardcoded for now
+            const docRef = await getDoc(doc(db, String(self.useremail), "doctors")) // hardcoded for now
             const allDoctorDocuments = docRef.data()
             
             let index = 1
@@ -131,39 +127,40 @@ export default {
 
         async function deleteEntry(doctorName) {
             if (confirm("Cancelling appointment with doctor " + doctorName)) {
-            const doctorRef = doc(db, 'clinic1', 'doctors')
-            const doctorSnapshot = await getDoc(doctorRef)
-            const doctorData = doctorSnapshot.data()
-            let updatedDoctorData = doctorData[doctorName].filter(function(e) { return e != this.patientId })
-            console.log(updatedDoctorData)
-            await updateDoc(doctorRef, {
-                [doctorName]: updatedDoctorData,
-            });
+                const doctorRef = doc(db, String(self.useremail), 'doctors')
+                const doctorSnapshot = await getDoc(doctorRef)
+                const doctorData = doctorSnapshot.data()
+                let updatedDoctorData = doctorData[doctorName].filter(function(e) { return e != this.patientId })
+                console.log(updatedDoctorData)
+                await updateDoc(doctorRef, {
+                    [doctorName]: updatedDoctorData,
+                }
+            );
 
-            const patientRef = doc(db, 'clinic1', 'patients')
+            const patientRef = doc(db, String(self.useremail), 'patients')
             const patientSnapshot = await getDoc(this.patientId)
             const patientData = patientSnapshot.data()
             let updatedPatientData = {
-                [this.patientID] : {
+                [self.patientId] : {
                     "appoint_date" : null,
-                    "blood" : patientData[this.patientId].blood,
-                    "diagnosis" : patientData[this.patientId].diagnosis,
-                    "dob" : patientData[this.patientId].dob,
-                    "gender" : patientData[this.patientId].gender,
-                    "id" : this.patientId,
-                    "logs" : patientData[this.patientId].logs,
-                    "name" : patientData[this.patientId].name,
-                    "treatment" : patientData[this.patientId].treatment,
+                    "blood" : patientData[self.patientId].blood,
+                    "diagnosis" : patientData[self.patientId].diagnosis,
+                    "dob" : patientData[self.patientId].dob,
+                    "gender" : patientData[self.patientId].gender,
+                    "id" : self.patientId,
+                    "logs" : patientData[self.patientId].logs,
+                    "name" : patientData[self.patientId].name,
+                    "treatment" : patientData[self.patientId].treatment,
                     "upcoming_appoint" : false,
-                    "contact_num" : patientData[this.patientId].contact_num
+                    "contact_num" : patientData[self.patientId].contact_num
                 }
             }
             console.log(updatedPatientData)
             await updateDoc(patientRef, {
-                [this.patientId]: updatedPatientData,
+                [self.patientId]: updatedPatientData,
             });
 
-            console.log("Succesfully cancelled appointment with doctor ", doctorName)
+            alert("Succesfully cancelled appointment with doctor ", doctorName)
             let tb = document.getElementById("table")
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)

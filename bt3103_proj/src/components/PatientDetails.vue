@@ -30,15 +30,11 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            count: 0
+            count: 0,
+            user: false,
+            useremail: false
         };
     },
-
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
 
     mounted() {
         const auth = getAuth();
@@ -56,7 +52,7 @@ export default {
     
         const self = this;
         async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "patients"))
+            let allDocuments = await getDoc(doc(db, String(self.useremail), "patients"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -134,24 +130,6 @@ export default {
         }
 
         display()
-
-        // async function deletePatient(patientId) {
-        //     alert("Deleting patient " + patientId)
-        //     const docRef = getDoc(doc(db, "clinic1", "patients", "patientId"))
-    
-        //     // Object.keys(docs).forEach(function(key) {
-        //     //     if (docs[key] == patientId) {
-        //     //         docs[patientId] ;
-        //     //     }
-        //     // });
-        //     console.log("Succesfully deleted patient ", patientId)
-
-        //     let tb = document.getElementById("table")
-        //     while (tb.rows.length > 1) {
-        //         tb.deleteRow(1)
-        //     }
-        //     display()
-        // }
     }
 }
 </script>
