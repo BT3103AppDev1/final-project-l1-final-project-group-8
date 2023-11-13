@@ -98,7 +98,7 @@
 
             <div class = "textContent" v-else> <!--display version (default)-->
                 <div class = "DiagTreat">
-                    <label id = "diagTreatLabel">Diagnosis & Treatment:</label>
+                    <div id = "diagTreatLabel" style="color: black;font-size: 16px;font-family:Arial, Helvetica, sans-serif;font-weight: 700;">Diagnosis & Treatment:</div>
                     <div id = "diagContent">{{this.diagnosis}}</div>
                     <div id = "treatContent">{{this.treatment}}</div>
                 </div>
@@ -144,7 +144,7 @@ export default {
             name: '',
             dob: '',
             user : false,
-            useremail : false
+            useremail : ''
         }
     },
 
@@ -260,6 +260,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -267,35 +268,45 @@ export default {
             }
         })
     
-        async function display() {
-            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
+        async function display(email) {
+            let allDocs = await getDoc(doc(db,String(email),"patients")) //clinic1 for the time being
             //should be email in actual
-            allDocs = allDocs.data();
-            let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
-            // let id = docData.id
-            let name = docData.name
-            let contact_num = docData.contact_num
-            let dob = docData.dob
-            let Testdob = dob
-            Testdob = new Date(Testdob)
-            if (Testdob != 'Invalid Date') {
-                dob = dob.slice(0,10)
-            }
-            //dob = dob.toDate().toDateString()
-            let gender = docData.gender
-            let blood = docData.blood
-            let diagnosis = docData.diagnosis
-            let treatment = docData.treatment
-            let logs = docData.logs
             
-            self.name = name,
-            self.blood = blood,
-            self.contact_num = contact_num,
-            self.diagnosis = "Diagnosis: " + diagnosis,
-            self.treatment = "Current Treatment: " + treatment,
-            self.logs = logs,
-            self.gender = gender,
-            self.dob = dob
+            try {
+                if (allDocs.exists()) {
+                    allDocs = allDocs.data();
+                    let patID = document.getElementById("icText").innerHTML
+                    let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART self.patientId
+                    // let id = docData.id
+                    let name = docData.name
+                    let contact_num = docData.contact_num
+                    let dob = docData.dob
+                    let Testdob = dob
+                    Testdob = new Date(Testdob)
+                    if (Testdob != 'Invalid Date') {
+                        dob = dob.slice(0,10)
+                    }
+                    //dob = dob.toDate().toDateString()
+                    let gender = docData.gender
+                    let blood = docData.blood
+                    let diagnosis = docData.diagnosis
+                    let treatment = docData.treatment
+                    let logs = docData.logs
+
+                    self.name = name,
+                    self.blood = blood,
+                    self.contact_num = contact_num,
+                    self.diagnosis = "Diagnosis: " + diagnosis,
+                    self.treatment = "Current Treatment: " + treatment,
+                    self.logs = logs,
+                    self.gender = gender,
+                    self.dob = dob
+                }
+            } catch (error) {
+                console.error('Error fetching data from Firestore: ', error);
+            }
+            
+            
         }
         display()
     }
@@ -518,6 +529,7 @@ button:hover {
 
 #nameText, #dobText, #numText, #icText, #genderText, #bloodText, #diagContent, #treatContent, #logContent {
     font-family: Arial, Helvetica, sans-serif;
+    color: black;
 }
 
 #buttonWrapper2Edit {
