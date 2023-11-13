@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                -<div id = "toGoBack" v-if="cancel = cancel">
+                <div id = "toGoBack" v-if="cancel = cancel">
                     <button id = "back" type="button" @click="reloadPage">Cancel</button>
                 </div>
             </div>

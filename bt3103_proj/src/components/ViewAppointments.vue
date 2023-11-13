@@ -73,6 +73,12 @@ export default {
       let noOfAppointments = 0;
       const allDocuments = allDoc.data();
       const docDocuments = docDoc.data();
+
+      let table = document.getElementById("allApptTable");
+      while (table.rows.length > 1) {
+        table.deleteRow(1);
+      }
+
       // Appointment records from Patient, get doctor id by searching patient in doctors
       // Date, Time Patient Name, Pat ID, Doct ID Edit, Remove
       Object.keys(docDocuments).forEach((docs) => {
