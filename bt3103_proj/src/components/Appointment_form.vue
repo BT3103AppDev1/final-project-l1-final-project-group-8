@@ -111,7 +111,7 @@ export default {
                     if (!patientData[patientName].upcoming_appoint) {
                         self.patients.push({
                             value: patientName,
-                            label: patientName, // can use diff field if have
+                            label: patientData[patientName].name, // can use diff field if have
                         });
                     }
                 }
