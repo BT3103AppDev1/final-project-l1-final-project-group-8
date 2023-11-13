@@ -110,7 +110,7 @@ button:hover {
 
 #AddPat {
     position: relative;
-    left: 20rem;
+    left: 2rem;
     right:5rem;
     width: 200px;
     top: 10em;
@@ -118,7 +118,7 @@ button:hover {
 
 #AddDoc {
     position: relative;
-    left: 30rem;
+    left: 10rem;
     right:5rem;
     width: 200px;
     top: 10em;
@@ -127,7 +127,7 @@ button:hover {
 #back {
     background:white;
     position: relative;
-    left: 60rem;
+    left: 5rem;
     bottom: 1rem;
     background-color: #FF0000;
 }

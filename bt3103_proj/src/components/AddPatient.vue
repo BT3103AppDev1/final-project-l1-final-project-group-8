@@ -146,9 +146,9 @@ export default {
 }
 
 #mega {
-    position: absolute;
-    left: 35em;
-    top:5em;
+    position: relative;
+    left: 1em;
+    top:2em;
 }
 
 #patTitle {
