@@ -201,7 +201,7 @@ export default {
                 }
             }
 
-            await setDoc(docRef, updateData)
+            await setDoc(docRef, updateData, {merge: true})
 
             //await updateDoc(docRef, {
             //    "[patID].contact_num" : Number(newNum) //hardcode id of patient for now
@@ -246,7 +246,7 @@ export default {
                 }
             }
 
-            await setDoc(docRef, updateData)
+            await setDoc(docRef, updateData, {merge:true})
             alert("Update Succesful")
             window.location.reload()
         }
