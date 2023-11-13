@@ -5,7 +5,7 @@
        <!-- <div id = "button">
           <button id = "cancelButton" type = "button" @click="$router.go(-1)">Back to All Patients</button>
       </div> -->
-      <table id="table">
+      <table id="allApptTable">
               <tr>
                   <th>Date</th>
                   <th>Time</th>
@@ -28,7 +28,7 @@ import {
   getDocs,
   doc,
   deleteDoc,
-  getDoc,
+  getDoc, updateDoc
 } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
@@ -94,7 +94,7 @@ export default {
             appointDate = new Date(appointDate).toLocaleDateString();
             let patientName = data.name;
 
-            let table = document.getElementById("table");
+            let table = document.getElementById("allApptTable");
             let row = table.insertRow(index);
 
                 let infoArray = [
@@ -149,7 +149,7 @@ export default {
               
               cell7.appendChild(deleteButton)
               deleteButton.onclick = function() {
-                  deleteEntry(doctorName, patientId)
+                  deleteEntry(email, doctorName, patientId)
               }
 
               index += 1;
@@ -166,9 +166,9 @@ export default {
     // refresh();
     // display();
 
-    async function deleteEntry(doctorName, patientId) {
+    async function deleteEntry(email, doctorName, patientId) {
             if (confirm("Cancelling doctor " + doctorName + "'s Appointment with patient " + patientId)) {
-            const doctorRef = doc(db, String(self.useremail), 'doctors')
+            const doctorRef = doc(db, String(email), 'doctors')
             const doctorSnapshot = await getDoc(doctorRef)
             const doctorData = doctorSnapshot.data()
             let updatedDoctorData = doctorData[doctorName].filter(function(e) { return e != patientId })
@@ -177,9 +177,10 @@ export default {
                 [doctorName]: updatedDoctorData,
             });
 
-            const patientRef = doc(db, String(self.useremail), 'patients')
-            const patientSnapshot = await getDoc(patientId)
+            const patientRef = doc(db, String(email), 'patients')
+            const patientSnapshot = await getDoc(patientRef)
             const patientData = patientSnapshot.data()
+            console.log(patientData)
             let updatedPatientData = {
                 [patientId] : {
                     "appoint_date" : null,
@@ -201,11 +202,11 @@ export default {
             });
 
             console.log("Succesfully cancelled appointment with doctor ", doctorName, " and patient ", patientId)
-            let tb = document.getElementById("table")
+            let tb = document.getElementById("allApptTable")
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)
             }
-            display(self.useremail)
+            display(email)
         }
       }
     }}
@@ -242,7 +243,7 @@ export default {
 }
 
 
-#table {
+#allApptTable {
     border-collapse: collapse;
     width: 100%;
     height: 10%;

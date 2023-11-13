@@ -52,10 +52,6 @@ const router = createRouter({
 
       {
         path: '/edit_appoint_page/:doctorName/:patientId',
-        // params: {
-        //   doctorName: 'Adam',
-        //   patientId: 'pat1'
-        // },
         props: true,
         name: 'editApptPage',
         component: EditAppointPage,

@@ -69,7 +69,7 @@ export default {
             const patientDocRef = doc(db, String(this.useremail), 'patients')
             const patientSnapshot = await getDoc(patientDocRef)
             const patientData = patientSnapshot.data()
-            let newDatetime = document.getElementById("newdate").value
+            let newDatetime = String(document.getElementById("newdate").value)
             console.log(newDatetime)
             
             let docData = patientData[this.patientId]
@@ -100,9 +100,11 @@ export default {
                 }
             }
 
-            await setDoc(patientDocRef, updateData,{merge : true})
+            await setDoc(patientDocRef, updateData)
 
             alert("Succesfully updated appointment with patient", this.patientId)
+            // this.$router.push({name:'AllAppointPage'})
+            this.$router.go(-1)
         }
     },
 }

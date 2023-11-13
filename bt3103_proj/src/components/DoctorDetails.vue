@@ -9,7 +9,7 @@
             <button id="addDoctor" @click="navigate" role="link">
                 Add Doctors</button></router-link>
         </div>
-        <table id="table">
+        <table id="doctable">
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -64,7 +64,7 @@ export default {
                 let id = index
                 let name = doc
                 
-                let table = document.getElementById("table")
+                let table = document.getElementById("doctable")
                 let row = table.insertRow(index)
 
                 let infoArray = [
@@ -139,7 +139,7 @@ export default {
     left: 4.9rem;
 }
 
-#table {
+#doctable {
     border-collapse: collapse;
     width: 100%;
     height: 10%;

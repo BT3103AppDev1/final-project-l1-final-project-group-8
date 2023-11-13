@@ -144,7 +144,7 @@ export default {
             name: '',
             dob: '',
             user : false,
-            useremail : false
+            useremail : ''
         }
     },
 
@@ -201,7 +201,7 @@ export default {
                 }
             }
 
-            await setDoc(docRef, updateData,{merge : true})
+            await setDoc(docRef, updateData)
 
             //await updateDoc(docRef, {
             //    "[patID].contact_num" : Number(newNum) //hardcode id of patient for now
@@ -260,6 +260,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -267,8 +268,8 @@ export default {
             }
         })
     
-        async function display() {
-            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
+        async function display(email) {
+            let allDocs = await getDoc(doc(db,String(email),"patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data();
             let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
@@ -297,7 +298,7 @@ export default {
             self.gender = gender,
             self.dob = dob
         }
-        display()
+        // display()
     }
 }
 </script>

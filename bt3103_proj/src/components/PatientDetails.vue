@@ -3,9 +3,9 @@
         <div id="header">All Patients</div>
         <div id = 'count'> Showing {{ this.count }} patients</div>
         <div id="button">
-            <button id="addPatient" to="/add-patient">Add Patient</button>
+            <button id="addPatient" @click="$router.push('/add_people_page')" type="button">Add Patient</button>
         </div>
-        <table id="table">
+        <table id="pattable">
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -74,7 +74,7 @@ export default {
                 let dob = new Date(data.dob).toLocaleDateString()
                 let contactNum = data.contact_num
                 
-                let table = document.getElementById("table")
+                let table = document.getElementById("pattable")
                 let row = table.insertRow(index)
 
                 let infoArray = [
@@ -135,26 +135,6 @@ export default {
             })   
             self.count = total;     
         }
-
-        // display()
-
-        // async function deletePatient(patientId) {
-        //     alert("Deleting patient " + patientId)
-        //     const docRef = getDoc(doc(db, "clinic1", "patients", "patientId"))
-    
-        //     // Object.keys(docs).forEach(function(key) {
-        //     //     if (docs[key] == patientId) {
-        //     //         docs[patientId] ;
-        //     //     }
-        //     // });
-        //     console.log("Succesfully deleted patient ", patientId)
-
-        //     let tb = document.getElementById("table")
-        //     while (tb.rows.length > 1) {
-        //         tb.deleteRow(1)
-        //     }
-        //     display()
-        // }
     }
 }
 </script>
@@ -191,7 +171,7 @@ export default {
     left: 4.9rem;
 }
 
-#table {
+#pattable {
     border-collapse: collapse;
     width: 100%;
     height: 10%;
