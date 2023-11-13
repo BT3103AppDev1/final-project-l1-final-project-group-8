@@ -21,7 +21,16 @@
                     </select>
                 </div>
 
-            
+
+                <!--<div id = "selDoc">
+                    <label for="docID" style="font-size: 16px;">Select Doctor</label><br>
+                    <input type="text" name="choosePat" id="choosePat" required>
+                    <select id="docID" name="docID" v-model="selectedDoctor" required>
+                        <option v-for="doctor in doctors" :key="doctor.value" :value="doctor.value">{{ patient.label }}</option>
+                    </select>
+                </div>-->
+
+
 
 
                 <div id = "selPat">
