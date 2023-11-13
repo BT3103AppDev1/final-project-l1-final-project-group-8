@@ -2,10 +2,11 @@
     <div>
       <div id="app-container">
         <!--<Appointment_form/>-->
-        <div class="login-sidebar-container"><login_sidebar/></div>
-        <div class="main-page-elements"><LoginFields/></div>
-  
-  
+        <div class="login-sidebar-container"><login_sidebar v-if="isMounted" :tabName="name"/></div>
+        <div class="main-page-elements">
+          <h1 style="font-weight: bold;">Clinic Staff Login</h1>
+          <LoginFields/>
+        </div>  
       </div>
     </div>
 </template>
@@ -18,7 +19,18 @@
     components: {
       login_sidebar,
       LoginFields,
-    }
+    },
+
+    data() {
+        return {
+            isMounted: false,
+            name: "loginBlock",
+          }
+    },
+
+    mounted() {
+      this.isMounted = true
+    },
   }
   </script>
   
