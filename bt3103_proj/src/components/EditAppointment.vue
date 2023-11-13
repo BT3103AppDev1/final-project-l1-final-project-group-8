@@ -33,48 +33,40 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
-import router from '@/router/index.js'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
-    // name: 'EditAppointment',
-//     props: {
-//     doctorName: {
-//       type: String, // Adjust the type based on your data type
-//       required: true,
-//     },
-//     patientId: {
-//       type: String, // Adjust the type based on your data type
-//       required: true,
-//     },
-//   },
     props: ['infoArray'],
-    mounted() {
-        console.log("child ", this.infoArray.doctorName, this.infoArray.patientId)
-    },
+    
     data() {
         return {
-            // doctorName: this.$router.params.doctorName,
-            // patientId: this.$router.params.patientId,
-            // edit : true,
             doctorName: this.infoArray.doctorName,
             patientId: this.infoArray.patientId,
+            user: false,
+            useremail: false
         };
     },
-    // mounted(){
-        // const self = this;
-        // function update() {
-        //     console.log(self.$router.params.doctorName, self.$router.params.patientId)
-            // self.doctorName = self.$router.params.doctorName,
-            // self.patientId = self.$router.params.patientId,
-            
-    //     }
-
-    //     update()
-    // },
+    
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    },
+    
     methods: {
         async submitEdit() {
-            const patientDocRef = doc(db, 'clinic1', 'patients')
+            const patientDocRef = doc(db, String(this.useremail), 'patients')
             const patientSnapshot = await getDoc(patientDocRef)
             const patientData = patientSnapshot.data()
             let newDatetime = document.getElementById("newdate").value
@@ -110,19 +102,9 @@ export default {
 
             await setDoc(patientDocRef, updateData,{merge : true})
 
-            console.log("Succesfully updated appointment with patient", this.patientId)
+            alert("Succesfully updated appointment with patient", this.patientId)
         }
     },
-
-    // mounted() {
-    //         const auth = getAuth();
-    //         onAuthStateChanged(auth, (user) => {
-    //             if (user) {
-    //                 this.user = user;
-    //                 this.useremail = auth.currentUser.email;
-    //         }
-    //     })
-    // }
 }
 </script>
 

@@ -126,10 +126,14 @@ button:hover {
 
 #back {
     background:white;
-    border: solid black 1px;
     position: relative;
-    left: 19rem;
-    top: 20rem;
+    left: 60rem;
+    bottom: 1rem;
+    background-color: #FF0000;
+}
+
+#back:hover {
+    background: #d7e7d9;
 }
 
 #app-container {
@@ -146,6 +150,7 @@ button:hover {
     padding-left: 6em;
     padding-top: 6em;
 }
+
 
 </style>
 

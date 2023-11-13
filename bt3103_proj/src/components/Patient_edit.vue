@@ -123,6 +123,8 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -141,6 +143,8 @@ export default {
             patientId: this.info.patientId,
             name: '',
             dob: '',
+            user : false,
+            useremail : false
         }
     },
 
@@ -163,10 +167,10 @@ export default {
 
         async saveInput() {
             let newNum = document.getElementById("phoneNum").value;
-            const docRef = doc(db,"clinic1","patients")
+            const docRef = doc(db,String(this.useremail),"patients")
             let patID = document.getElementById("icText").innerHTML
 
-            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data()
 
@@ -210,10 +214,10 @@ export default {
             let newTreat = document.getElementById("newTreat").value
             let newLog = document.getElementById("newLog").value
 
-            const docRef = doc(db,"clinic1","patients") //climic1 hardcoded. Will be email
+            const docRef = doc(db,String(this.useremail),"patients") //climic1 hardcoded. Will be email
             let patID = document.getElementById("icText").innerHTML
 
-            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data()
 
@@ -250,25 +254,31 @@ export default {
     mounted() {
         const self = this;
 
-
-        // const auth = getAuth();
-        // onAuthStateChanged(auth, (user) => {
-        //     if (user) {
-        //         this.user = user;
-        //         this.useremail = auth.currentUser.email;
-        //     }
-        // })
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
     
         async function display() {
-            let allDocs = await getDoc(doc(db,"clinic1","patients")) //clinic1 for the time being
+            let allDocs = await getDoc(doc(db,String(this.useremail),"patients")) //clinic1 for the time being
             //should be email in actual
             allDocs = allDocs.data();
             let docData = allDocs[self.patientId]//hardcode. This part will be the patient id !!CHANGE ONCE LINKED TO OTHER PART
             // let id = docData.id
             let name = docData.name
             let contact_num = docData.contact_num
-            let dob = new Date(docData.dob)
-            if (dob != 'Invalid Date') {
+            let dob = docData.dob
+            let Testdob = dob
+            Testdob = new Date(Testdob)
+            if (Testdob != 'Invalid Date') {
                 dob = dob.slice(0,10)
             }
             //dob = dob.toDate().toDateString()

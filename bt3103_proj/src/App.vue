@@ -3,6 +3,8 @@
 </template>
 
 <script>
+console.log("in App")
+
 export default {
   name: "App"
 }
@@ -10,7 +12,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 #app-container {
     display: flex;
@@ -26,4 +27,5 @@ export default {
     padding-left: 6em;
     padding-top: 6em;
 }
+
 </style>

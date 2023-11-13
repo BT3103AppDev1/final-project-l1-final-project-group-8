@@ -45,6 +45,8 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 
 const db = getFirestore(firebaseApp);
 
@@ -58,13 +60,16 @@ export default {
             selectedDoctor: null,
             selectedPatient: null,
             selectedDate: null,
+
+            user: false,
+            useremail : false
         };
     },
 
     async created() {
         try {
             // DOCTOR RETRIEVAL
-            const clinicDocRef = doc(db, 'clinic1', 'doctors'); // clinic1 hard coded for now
+            const clinicDocRef = doc(db, String(this.useremail), 'doctors'); // clinic1 hard coded for now
             const clinicDocSnapshot = await getDoc(clinicDocRef);
             
             if (clinicDocSnapshot.exists()) {
@@ -80,7 +85,7 @@ export default {
             }
 
             // PATIENT RETRIEVAL
-            const clinicPatientRef = doc(db, 'clinic1', 'patients'); // clinic1 hard coded for now
+            const clinicPatientRef = doc(db, String(this.useremail), 'patients'); // clinic1 hard coded for now
             const clinicPatientSnapshot = await getDoc(clinicPatientRef);
             
             if (clinicPatientSnapshot.exists()) {
@@ -104,7 +109,7 @@ export default {
     methods : {
         async newDoc() {
             let doctName = document.getElementById("docName").value;
-            let docRef = doc(db,"clinic1","doctors") //clinic1 is hardcoded for now. will be email later
+            let docRef = doc(db,String(this.useremail),"doctors") //clinic1 is hardcoded for now. will be email later
             console.log(doctName)
             const newData = {
                 [doctName] : []
@@ -117,12 +122,12 @@ export default {
 
         async handleSubmit() {
             try {
-                const doctorRef = doc(db, 'clinic1', 'doctors');
+                const doctorRef = doc(db, String(this.useremail), 'doctors');
                 const doctorSnapshot = await getDoc(doctorRef);
                 const doctorData = doctorSnapshot.data()
 
                 // Update the patient's document
-                const patientDocRef = doc(db, 'clinic1', 'patients');
+                const patientDocRef = doc(db, String(this.useremail), 'patients');
                 const patientSnapshot = await getDoc(patientDocRef);
                 const patientData = patientSnapshot.data()
 
@@ -158,26 +163,31 @@ export default {
         }
     },
 
-//     mounted() {
-//             const auth = getAuth();
-//             onAuthStateChanged(auth, (user) => {
-//                 if (user) {
-//                     this.user = user;
-//                     this.useremail = auth.currentUser.email;
-//             }
-//         })
-//     }
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    }
 }
 </script>
 
 <style scoped>
 
 #createAppointment {
-    background: #DFFFE3; 
-    padding: 20px;
-    border-radius: 20px; 
+    background: #ECFFD6; 
     position: relative;
-    left: 10rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
+    border-radius: 25px;
+    padding: 20px;
 }
 
 form {

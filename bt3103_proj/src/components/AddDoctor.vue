@@ -19,22 +19,27 @@
 </template>
 
 <script>
+import { getApps } from 'firebase/app';
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
     data() {
         return {
-            close : true
+            close : true,
+            user :false,
+            useremail: " "
         }
     },
     methods : {
         async newDoc() {
             let doctName = document.getElementById("docName").value;
-            let docRef = doc(db,"clinic1","doctors") //clinic1 is hardcoded for now. will be email later
-            console.log(doctName)
+            let docRef = doc(db,String(this.useremail),"doctors") //clinic1 is hardcoded for now. will be email later
+            console.log(this.useremail)
             const newData = {
                 [doctName] : []
             }
@@ -49,15 +54,20 @@ export default {
         }
     },
 
-    // mounted() {
-    //         const auth = getAuth();
-    //         onAuthStateChanged(auth, (user) => {
-    //             if (user) {
-    //                 this.user = user;
-    //                 this.useremail = auth.currentUser.email;
-    //         }
-    //     })
-    // }
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    }
 }
 </script>
 
@@ -65,7 +75,7 @@ export default {
 <style scoped>
 #rectangle {
     /* height: 150px; */
-    width: 700px;
+    width: 650px;
     background: #F7F7F7; 
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50); 

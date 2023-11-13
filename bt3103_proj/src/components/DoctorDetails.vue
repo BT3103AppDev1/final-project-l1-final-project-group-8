@@ -23,35 +23,37 @@
 import firebaseApp from '../firebase.js';
 import {deleteDoc, deleteField, getFirestore, setDoc, Timestamp} from "firebase/firestore"
 import {collection, query, getDocs, doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
     data() {
         return {
-            count: 0
-            // doctorName: 'Adam',
+            count: 0,
+            user: false,
+            useremail: false
         };
     },
 
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
-
     mounted() {
-        // const auth = getAuth();
-        // onAuthStateChanged(auth, (user) => {
-        //     if (user) {
-        //         this.user = user;
-        //         this.useremail = auth.currentUser.email;
-        //         display(this.useremail)
-        //     }
-        // })
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    
         
         const self = this;
         async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+            let allDocuments = await getDoc(doc(db, String(self.useremail), "doctors"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -85,22 +87,9 @@ export default {
                     self.$router.push({name: 'doctorApptPage', params: {doctorName: name}})
                 }
                 
-                // let deleteButton = document.createElement("Button");
-                // deleteButton.id = String(id)
-                // deleteButton.className = "deleteBtn"
-                // deleteButton.innerHTML = "Delete Patient"
-                // deleteButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
-
-
-                // let cell7 = row.insertCell();
-                // cell7.appendChild(deleteButton)
-                // deleteButton.onclick = function() {
-                //     deletePatient(id)
-                // }
-
                 index += 1;
             })   
-             self.count = total    
+            self.count = total    
         }
         
         display()
@@ -158,7 +147,7 @@ export default {
     position: relative;
     top: 10em;
     left: 0rem;
-    /* border-radius: 60px; */
+    border-radius: 60px;
 }
 
 /* th, tr {

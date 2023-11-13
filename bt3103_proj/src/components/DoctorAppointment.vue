@@ -22,6 +22,8 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp, deleteField, deleteDoc} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -31,33 +33,35 @@ export default {
         return {
             doctorName: this.info.doctorName,
             count: 0,
+            user: false,
+            useremail: false
         };
     },
 
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
 
     mounted() {
-        // const auth = getAuth();
-        // onAuthStateChanged(auth, (user) => {
-        //     if (user) {
-        //         this.user = user;
-        //         this.useremail = auth.currentUser.email;
-        //         display(this.useremail)
-        //     }
-        // })
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    
 
         const self = this;
 
         async function display() {
-            let allDoctorDocuments = await getDoc(doc(db, "clinic1", "doctors")) // hardcoded for now
+            let allDoctorDocuments = await getDoc(doc(db, String(self.useremail), "doctors")) // hardcoded for now
             allDoctorDocuments = allDoctorDocuments.data()
             let doctorDocuments = allDoctorDocuments[self.doctorName] 
 
-            let allPatientDocuments = await getDoc(doc(db, "clinic1", "patients")) // hardcoded for now
+            let allPatientDocuments = await getDoc(doc(db, String(self.useremail), "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             
             let index = 1
@@ -125,7 +129,7 @@ export default {
 
         async function deleteEntry(patientId) {
             if (confirm("Cancelling appointment with patient " + patientId)) {
-            const doctorRef = doc(db, 'clinic1', 'doctors')
+            const doctorRef = doc(db, String(self.useremail), 'doctors')
             const doctorSnapshot = await getDoc(doctorRef)
             const doctorData = doctorSnapshot.data()
             let updatedDoctorData = doctorData[self.doctorName].filter(function(e) { return e != patientId })
@@ -134,7 +138,7 @@ export default {
                 [self.doctorName]: updatedDoctorData,
             });
 
-            const patientRef = doc(db, 'clinic1', 'patients')
+            const patientRef = doc(db, String(self.useremail), 'patients')
             const patientSnapshot = await getDoc(patientId)
             const patientData = patientSnapshot.data()
             let updatedPatientData = {
@@ -157,7 +161,7 @@ export default {
                 [patientId]: updatedPatientData,
             });
 
-            console.log("Succesfully cancelled appointment with patient ", patientId)
+            alert("Succesfully cancelled appointment with patient ", patientId)
             let tb = document.getElementById("table")
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)

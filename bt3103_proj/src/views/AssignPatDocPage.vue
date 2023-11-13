@@ -15,7 +15,7 @@ import AssignPatient from '@/components/AssignPatient.vue'
 export default {
     components : {
         InternalSidebar,
-        AssignPatient
+        AssignPatient,
     },
 
     data() {
@@ -43,7 +43,8 @@ export default {
 
 .main-page-elements {
     display: block;
-    padding-left: 6em;
+    position: absolute;
+    padding-left: 20em;
     padding-top: 6em;
 }
 </style>

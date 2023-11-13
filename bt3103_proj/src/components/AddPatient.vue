@@ -67,9 +67,17 @@
 import firebaseApp from '../firebase.js';
 import {getFirestore, setDoc, Timestamp} from "firebase/firestore"
 import {collection, getDocs,doc, updateDoc,getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
 
 export default {
+    data() {
+        return {
+            user : false,
+            useremail : false
+        }
+    },
     methods: {
         async newPat() {
             let name = document.getElementById("name").value;
@@ -81,7 +89,7 @@ export default {
             let gender = document.getElementById("gender").value;
             let blood = document.getElementById("blood").value;
 
-            let patRef = doc(db,"clinic1","patients") //clinic1 will be replaced by email 
+            let patRef = doc(db,String(this.useremail),"patients") //clinic1 will be replaced by email 
             const newData = {
                 [icNum] : {
                     "appoint_date" : null,
@@ -105,15 +113,20 @@ export default {
         }
     },
 
-    // mounted() {
-    //         const auth = getAuth();
-    //         onAuthStateChanged(auth, (user) => {
-    //             if (user) {
-    //                 this.user = user;
-    //                 this.useremail = auth.currentUser.email;
-    //         }
-    //     })
-    // }
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    }
 }
 </script>
 
@@ -134,7 +147,7 @@ export default {
 
 #mega {
     position: absolute;
-    left: 20em;
+    left: 35em;
     top:5em;
 }
 
@@ -152,7 +165,7 @@ export default {
 #Patic, #patGender, #patBlood {
     position: relative;
     left: 20em;
-    bottom: 11em;
+    bottom: 13.5em;
 }
 
 .padding {
@@ -161,7 +174,7 @@ export default {
 
 #buttonWrapper {
     position: absolute;
-    bottom: 8em;
+    bottom: 10em;
 }
 
 #submitButt {
