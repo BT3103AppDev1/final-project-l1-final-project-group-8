@@ -30,16 +30,11 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            count: 0
-            // doctorName: 'Adam',
+            count: 0,
+            user: false,
+            useremail: ''
         };
     },
-
-    // methods: {
-    //     async fetchAndUpdateData(useremail) {
-    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
-    //     }
-    // },
 
     mounted() {
         const auth = getAuth();
@@ -48,6 +43,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -57,8 +53,8 @@ export default {
     
         
         const self = this;
-        async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "doctors"))
+        async function display(email) {
+            let allDocuments = await getDoc(doc(db, String(email), "doctors"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -85,13 +81,13 @@ export default {
                 let upcomingApptsButton = document.createElement("Button");
                 upcomingApptsButton.id = String(id)
                 upcomingApptsButton.className = "upcomingAppts"
-                upcomingApptsButton.innerHTML = "Upcoming Appts."
+                upcomingApptsButton.innerHTML = "Upcoming Appointments"
                 
                 upcomingApptsButton.style.borderRadius = '6px'
                 upcomingApptsButton.style.border = "none"
                 upcomingApptsButton.style.backgroundColor = "#d7e7d9"
                 upcomingApptsButton.style.fontWeight = "bold"
-                upcomingApptsButton.style.width = "165px"
+                upcomingApptsButton.style.width = "200px"
                 upcomingApptsButton.style.height = "50px"
                 upcomingApptsButton.style.fontSize = "14px"
                 upcomingApptsButton.style.margin = "10px"
@@ -101,26 +97,12 @@ export default {
                 upcomingApptsButton.onclick = function() {
                     self.$router.push({name: 'doctorApptPage', params: {doctorName: name}})
                 }
-                
-                // let deleteButton = document.createElement("Button");
-                // deleteButton.id = String(id)
-                // deleteButton.className = "deleteBtn"
-                // deleteButton.innerHTML = "Delete Patient"
-                // deleteButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
-
-
-                // let cell7 = row.insertCell();
-                // cell7.appendChild(deleteButton)
-                // deleteButton.onclick = function() {
-                //     deletePatient(id)
-                // }
-
                 index += 1;
             })   
              self.count = total    
         }
         
-        display()
+        // display(self.useremail)
     }
 }
 </script>

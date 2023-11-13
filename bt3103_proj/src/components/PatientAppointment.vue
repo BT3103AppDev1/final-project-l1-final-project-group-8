@@ -34,7 +34,7 @@ export default {
             count: 0,
             patientName: '',
             user: false,
-            useremail: false
+            useremail: ''
         };
     },
 
@@ -45,6 +45,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -54,13 +55,13 @@ export default {
 
         const self = this;
 
-        async function display() {
-            let allPatientDocuments = await getDoc(doc(db, String(self.useremail), "patients")) // hardcoded for now
+        async function display(email) {
+            let allPatientDocuments = await getDoc(doc(db, String(email), "patients")) // hardcoded for now
             allPatientDocuments = allPatientDocuments.data()
             const patientDocuments = allPatientDocuments[self.patientId] 
             self.patientName = patientDocuments.name
 
-            const docRef = await getDoc(doc(db, String(self.useremail), "doctors")) // hardcoded for now
+            const docRef = await getDoc(doc(db, String(email), "doctors")) // hardcoded for now
             const allDoctorDocuments = docRef.data()
             
             let index = 1
@@ -99,13 +100,29 @@ export default {
                         deleteButton.id = String(self.patientId)
                         deleteButton.className = "bwt"
                         deleteButton.innerHTML = "Cancel Appointment"
-                        deleteButton.style.cssText = 'width:190px;height: 50px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; left: 20px;top: 2px'
+
+                        deleteButton.style.borderRadius = '6px'
+                        deleteButton.style.border = "none"
+                        deleteButton.style.backgroundColor = "#d7e7d9"
+                        deleteButton.style.fontWeight = "bold"
+                        deleteButton.style.width = "165px"
+                        deleteButton.style.height = "50px"
+                        deleteButton.style.fontSize = "14px"
+                        deleteButton.style.margin = "10px"
 
                         let editButton = document.createElement("button")
                         editButton.id = String(self.patientId)
                         editButton.className = "bwt"
                         editButton.innerHTML = "Edit Appointment"
-                        editButton.style.cssText = 'width:145px;height: 50px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;position:relative; top: 2px'
+
+                        editButton.style.borderRadius = '6px'
+                        editButton.style.border = "none"
+                        editButton.style.backgroundColor = "#d7e7d9"
+                        editButton.style.fontWeight = "bold"
+                        editButton.style.width = "165px"
+                        editButton.style.height = "50px"
+                        editButton.style.fontSize = "14px"
+                        editButton.style.margin = "10px"
 
                         cell9.appendChild(editButton)
                         editButton.onclick = function() {
@@ -123,7 +140,7 @@ export default {
             self.count = total           
         }
 
-        display()
+        // display()
 
         async function deleteEntry(doctorName) {
             if (confirm("Cancelling appointment with doctor " + doctorName)) {
@@ -165,7 +182,7 @@ export default {
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)
             }
-            display()
+            display(self.useremail)
         }
             
         }

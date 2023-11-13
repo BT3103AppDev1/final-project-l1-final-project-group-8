@@ -45,7 +45,7 @@ export default {
             doctorName: this.infoArray.doctorName,
             patientId: this.infoArray.patientId,
             user: false,
-            useremail: false
+            useremail: ''
         };
     },
     

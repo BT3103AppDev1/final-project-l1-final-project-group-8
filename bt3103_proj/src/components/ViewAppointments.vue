@@ -34,7 +34,11 @@ const db = getFirestore(firebaseApp);
 
 export default {
   data() {
-    return {count: 0};
+    return {
+      count: 0,
+      useremail: '',
+      user: false
+    };
   },
 
   // methods: {},
@@ -46,6 +50,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -59,9 +64,9 @@ export default {
     //   window.location.reload()
     // }
 
-    async function display() {
-      const clinicDocRef = doc(db, "clinic1", "doctors");
-      const clinicPatientRef = doc(db, "clinic1", "patients");
+    async function display(email) {
+      const clinicDocRef = doc(db, String(email), "doctors");
+      const clinicPatientRef = doc(db, String(email), "patients");
       const allDoc = await getDoc(clinicPatientRef);
       const docDoc = await getDoc(clinicDocRef);
       let index = 1;
@@ -159,11 +164,11 @@ export default {
     };
 
     // refresh();
-    display();
+    // display();
 
     async function deleteEntry(doctorName, patientId) {
             if (confirm("Cancelling doctor " + doctorName + "'s Appointment with patient " + patientId)) {
-            const doctorRef = doc(db, 'clinic1', 'doctors')
+            const doctorRef = doc(db, String(self.useremail), 'doctors')
             const doctorSnapshot = await getDoc(doctorRef)
             const doctorData = doctorSnapshot.data()
             let updatedDoctorData = doctorData[doctorName].filter(function(e) { return e != patientId })
@@ -172,7 +177,7 @@ export default {
                 [doctorName]: updatedDoctorData,
             });
 
-            const patientRef = doc(db, 'clinic1', 'patients')
+            const patientRef = doc(db, String(self.useremail), 'patients')
             const patientSnapshot = await getDoc(patientId)
             const patientData = patientSnapshot.data()
             let updatedPatientData = {
@@ -200,7 +205,7 @@ export default {
             while (tb.rows.length >= 1) {
                 tb.deleteRow(1)
             }
-            display()
+            display(self.useremail)
         }
       }
     }}

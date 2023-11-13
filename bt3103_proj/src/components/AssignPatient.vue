@@ -10,10 +10,15 @@
 
                 <div id="selDoc">
                     <!--<label for="docID">Select Doctor</label><br>-->
-                    <div class = "title" style="font-size: 16px; color: black;">Select Doctor:</div>
+                    <!-- <div class = "title" style="font-size: 16px; color: black;">Select Doctor:</div>
                     <form action="">
                         <input type="text" name="docID" id="docID">
-                    </form>
+                    </form> -->
+                    <label for="docID" style="font-size: 16px;">Select Doctor</label><br>
+                    <!-- <input type="text" name="choosePat" id="choosePat" required> -->
+                    <select id="docID" name="docID" v-model="selectedDoctor" required>
+                        <option v-for="doctor in doctors" :key="doctor.value" :value="doctor.value">{{ doctor.label }}</option>
+                    </select>
                 </div>
 
             
@@ -59,58 +64,77 @@ export default {
             selectedDate: null,
 
             user: false,
-            useremail:false
+            useremail: ''
         }
     },
 
-    async created() {
-        try {
-            // DOCTOR RETRIEVAL
-            const clinicDocRef = doc(db, String(this.useremail), 'doctors'); // clinic1 hard coded for now
-            const clinicDocSnapshot = await getDoc(clinicDocRef);
-            
-            if (clinicDocSnapshot.exists()) {
-                const clinicData = clinicDocSnapshot.data();
-                for (const doctorName in clinicData) {
-                    //if (Array.isArray(clinicData[doctorName])) {
-                    //    this.doctors.push({
-                    //        value: doctorName,
-                    //        label: doctorName, // can use diff field if have
-                    //    });
-                    //}
-                    this.doctors.push({
-                        value: doctorName,
-                        label: doctorName,
-                    });
-                }
-            }
-
-            // PATIENT RETRIEVAL
-            const clinicPatientRef = doc(db, String(this.useremail), 'patients'); // clinic1 hard coded for now
-            const clinicPatientSnapshot = await getDoc(clinicPatientRef);
-            
-            if (clinicPatientSnapshot.exists()) {
-                const clinicData = clinicPatientSnapshot.data();
-                for (const patientName in clinicData) {
-                    //if (!clinicData[patientName].upcoming_appoint) {
-                    //    this.patients.push({
-                    //        value: patientName,
-                    //        label: patientName, // can use diff field if have
-                    //    });
-                    //}
-                    this.patients.push({
-                        value:patientName,
-                        label:patientName,
-                    });
-                }
-            }
-        }
-        
-        catch (error) {
-            console.error('Error fetching data from Firestore: ', error);
-        }
-    },
     
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+                display(this.useremail)
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+
+        const self = this;
+
+        async function display(email) {
+            try {
+                // DOCTOR RETRIEVAL
+                const clinicDocRef = doc(db, String(email), 'doctors'); // clinic1 hard coded for now
+                const clinicDocSnapshot = await getDoc(clinicDocRef);
+                
+                if (clinicDocSnapshot.exists()) {
+                    const clinicData = clinicDocSnapshot.data();
+                    for (const doctorName in clinicData) {
+                        //if (Array.isArray(clinicData[doctorName])) {
+                        //    this.doctors.push({
+                        //        value: doctorName,
+                        //        label: doctorName, // can use diff field if have
+                        //    });
+                        //}
+                        self.doctors.push({
+                            value: doctorName,
+                            label: doctorName,
+                        });
+                    }
+                }
+
+                // PATIENT RETRIEVAL
+                const clinicPatientRef = doc(db, String(email), 'patients'); // clinic1 hard coded for now
+                const clinicPatientSnapshot = await getDoc(clinicPatientRef);
+                
+                if (clinicPatientSnapshot.exists()) {
+                    const clinicData = clinicPatientSnapshot.data();
+                    for (const patientName in clinicData) {
+                        //if (!clinicData[patientName].upcoming_appoint) {
+                        //    this.patients.push({
+                        //        value: patientName,
+                        //        label: patientName, // can use diff field if have
+                        //    });
+                        //}
+                        self.patients.push({
+                            value:patientName,
+                            label:patientName,
+                        });
+                    }
+                }
+            }
+            
+            catch (error) {
+                console.error('Error fetching data from Firestore: ', error);
+            }
+        }
+    },
+
     methods: {
         async assignPat() {
             let docID = document.getElementById("docID").value
@@ -133,21 +157,6 @@ export default {
 
         }
     },
-
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log('User is logged in:', user);
-                this.user = user;
-                this.useremail = auth.currentUser.email;
-            } else {
-                // User is not logged in
-                console.log('User is not logged in');
-                this.user = null;
-            }
-        })
-    }
 }
 </script>
 

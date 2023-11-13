@@ -30,7 +30,9 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            count: 0
+            count: 0,
+            user: false,
+            useremail: ''
         };
     },
 
@@ -47,6 +49,7 @@ export default {
                 console.log('User is logged in:', user);
                 this.user = user;
                 this.useremail = auth.currentUser.email;
+                display(this.useremail)
             } else {
                 // User is not logged in
                 console.log('User is not logged in');
@@ -55,8 +58,8 @@ export default {
         })
     
         const self = this;
-        async function display() {
-            let allDocuments = await getDoc(doc(db, "clinic1", "patients"))
+        async function display(email) {
+            let allDocuments = await getDoc(doc(db, String(email), "patients"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -112,13 +115,13 @@ export default {
                 let upcomingApptButton = document.createElement("Button");
                 upcomingApptButton.id = String(id)
                 upcomingApptButton.className = "upcomingApptButton"
-                upcomingApptButton.innerHTML = "Upcoming Appts."
+                upcomingApptButton.innerHTML = "Upcoming Appointments"
                 
                 upcomingApptButton.style.borderRadius = '6px'
                 upcomingApptButton.style.border = "none"
                 upcomingApptButton.style.backgroundColor = "#d7e7d9"
                 upcomingApptButton.style.fontWeight = "bold"
-                upcomingApptButton.style.width = "165px"
+                upcomingApptButton.style.width = "200px"
                 upcomingApptButton.style.height = "50px"
                 upcomingApptButton.style.fontSize = "14px"
                 upcomingApptButton.style.margin = "10px"
@@ -133,7 +136,7 @@ export default {
             self.count = total;     
         }
 
-        display()
+        // display()
 
         // async function deletePatient(patientId) {
         //     alert("Deleting patient " + patientId)

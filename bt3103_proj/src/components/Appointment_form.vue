@@ -62,21 +62,38 @@ export default {
             selectedDate: null,
 
             user: false,
-            useremail : false
+            useremail : ''
         };
     },
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                this.user = user;
+                this.useremail = auth.currentUser.email;
+                display(this.useremail)
+            } else {
+                // User is not logged in
+                console.log('User is not logged in');
+                this.user = null;
+            }
+        })
+    // },
 
-    async created() {
+    // async created() {
+    const self = this;
+    async function display(email) {
         try {
             // DOCTOR RETRIEVAL
-            const clinicDocRef = doc(db, String(this.useremail), 'doctors'); // clinic1 hard coded for now
+            const clinicDocRef = doc(db, String(email), 'doctors'); // clinic1 hard coded for now
             const clinicDocSnapshot = await getDoc(clinicDocRef);
             
             if (clinicDocSnapshot.exists()) {
                 const clinicData = clinicDocSnapshot.data();
                 for (const doctorName in clinicData) {
                     if (Array.isArray(clinicData[doctorName])) {
-                        this.doctors.push({
+                        self.doctors.push({
                             value: doctorName,
                             label: doctorName, // can use diff field if have
                         });
@@ -85,14 +102,14 @@ export default {
             }
 
             // PATIENT RETRIEVAL
-            const clinicPatientRef = doc(db, String(this.useremail), 'patients'); // clinic1 hard coded for now
+            const clinicPatientRef = doc(db, String(email), 'patients'); // clinic1 hard coded for now
             const clinicPatientSnapshot = await getDoc(clinicPatientRef);
             
             if (clinicPatientSnapshot.exists()) {
-                const clinicData = clinicPatientSnapshot.data();
-                for (const patientName in clinicData) {
-                    if (!clinicData[patientName].upcoming_appoint) {
-                        this.patients.push({
+                const patientData = clinicPatientSnapshot.data();
+                for (const patientName in patientData) {
+                    if (!patientData[patientName].upcoming_appoint) {
+                        self.patients.push({
                             value: patientName,
                             label: patientName, // can use diff field if have
                         });
@@ -104,7 +121,8 @@ export default {
         catch (error) {
             console.error('Error fetching data from Firestore: ', error);
         }
-    },
+    }
+},
 
     methods : {
         async newDoc() {
@@ -162,21 +180,6 @@ export default {
             window.location.reload();
         }
     },
-
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log('User is logged in:', user);
-                this.user = user;
-                this.useremail = auth.currentUser.email;
-            } else {
-                // User is not logged in
-                console.log('User is not logged in');
-                this.user = null;
-            }
-        })
-    }
 }
 </script>
 
