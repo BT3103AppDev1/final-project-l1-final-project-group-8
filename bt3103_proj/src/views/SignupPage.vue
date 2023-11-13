@@ -1,30 +1,52 @@
 <template>
-    <div id="formWrapper">
-      <form id="form" @submit.prevent="signup">
-        <div class="inputWrapper">
-          <input class="textBox" type="email" v-model="email" placeholder="Email" required />
-        </div>
-        <div class="inputWrapper">
-          <input class="textBox" type="password" v-model="password" placeholder="Password" required />
-          <span v-if="passwordError" class="error">{{ passwordError }}</span>
-        </div>
-        <br />
-        <button id="saveButton" type="submit">Sign Up</button>
-      </form>
+    <div>
+      <div id="app-container">
+        <div class="login-sidebar-container"><login_sidebar v-if="isMounted" :tabName="name"/></div>
+
+        <div class="main-page-elements">
+          <h1 style="font-weight: bold;">Clinic Signup</h1>
+          <div id="formWrapper">
+            <form id="form" @submit.prevent="signup">
+              <div class="inputWrapper">
+                <input class="textBox" type="email" v-model="email" placeholder="Email" required />
+              </div>
+              <div class="inputWrapper">
+                <input class="textBox" type="password" v-model="password" placeholder="Password" required />
+                <span v-if="passwordError" class="error">{{ passwordError }}</span>
+              </div>
+              <br />
+              <button id="saveButton" type="submit">Sign Up</button>
+            </form>
+          </div>
+        </div>  
+
+      </div>
     </div>
   </template>
   
   <script>
   import { registerUser } from '@/uifirebase';
+  import login_sidebar from '@/components/login_sidebar.vue'
   
   export default {
+    components: {
+      login_sidebar,
+    },
+
     data() {
       return {
         email: '',
         password: '',
         passwordError: null,
+        isMounted: false,
+        name: "signupBlock",
       };
     },
+
+    mounted() {
+      this.isMounted = true
+    },
+
     methods: {
       async signup() {
         // Validate password length
@@ -47,6 +69,21 @@
   </script>
   
   <style scoped>
+  #app-container {
+      display: flex;
+      height: 100vh;
+  }
+  
+  .login-sidebar-container {
+      display: block;
+  }
+  
+  .main-page-elements {
+      display: block;
+      padding-left: 6em;
+      padding-top: 6em;
+  }
+
   #errorMsg {
     color: red;
   }

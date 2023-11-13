@@ -6,14 +6,14 @@
             <router-link 
             to='/add_people_page'
             custom v-slot="{navigate}">
-            <button @click="navigate" role="link">
+            <button id="addDoctor" @click="navigate" role="link">
                 Add Doctors</button></router-link>
         </div>
         <table id="table">
             <tr>
                 <th>ID</th>
-                <th>NAME</th>
-                <th>APPOINTMENTS</th>
+                <th>Name</th>
+                <th>Appointments</th>
             </tr>
         </table><br>
     </div>
@@ -30,11 +30,16 @@ const db = getFirestore(firebaseApp);
 export default {
     data() {
         return {
-            count: 0,
-            user: false,
-            useremail: false
+            count: 0
+            // doctorName: 'Adam',
         };
     },
+
+    // methods: {
+    //     async fetchAndUpdateData(useremail) {
+    //         let allDocuments = await getDocs(collection(db, String(this.useremail)));
+    //     }
+    // },
 
     mounted() {
         const auth = getAuth();
@@ -53,7 +58,7 @@ export default {
         
         const self = this;
         async function display() {
-            let allDocuments = await getDoc(doc(db, String(self.useremail), "doctors"))
+            let allDocuments = await getDoc(doc(db, "clinic1", "doctors"))
             let index = 1
             let total = 0
             allDocuments = allDocuments.data()
@@ -74,22 +79,45 @@ export default {
                 for (let cellIndex = 0; cellIndex < 2; cellIndex++) {
                     let currCell = row.insertCell(cellIndex);
                     currCell.innerHTML = infoArray[cellIndex];
+                    currCell.style.padding = "10px 75px 10px 75px"
                 }
 
                 let upcomingApptsButton = document.createElement("Button");
                 upcomingApptsButton.id = String(id)
                 upcomingApptsButton.className = "upcomingAppts"
-                upcomingApptsButton.innerHTML = "Upcoming Appointments"
-                upcomingApptsButton.style.cssText = 'width:250px;height: 60px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
+                upcomingApptsButton.innerHTML = "Upcoming Appts."
+                
+                upcomingApptsButton.style.borderRadius = '6px'
+                upcomingApptsButton.style.border = "none"
+                upcomingApptsButton.style.backgroundColor = "#d7e7d9"
+                upcomingApptsButton.style.fontWeight = "bold"
+                upcomingApptsButton.style.width = "165px"
+                upcomingApptsButton.style.height = "50px"
+                upcomingApptsButton.style.fontSize = "14px"
+                upcomingApptsButton.style.margin = "10px"
+                
                 let cell6 = row.insertCell();
                 cell6.appendChild(upcomingApptsButton)
                 upcomingApptsButton.onclick = function() {
                     self.$router.push({name: 'doctorApptPage', params: {doctorName: name}})
                 }
                 
+                // let deleteButton = document.createElement("Button");
+                // deleteButton.id = String(id)
+                // deleteButton.className = "deleteBtn"
+                // deleteButton.innerHTML = "Delete Patient"
+                // deleteButton.style.cssText = 'width:145px;height: 35px;background: #d7e7d9;border: none;border-radius: 6px;font-weight:600;font-size: 16px;'
+
+
+                // let cell7 = row.insertCell();
+                // cell7.appendChild(deleteButton)
+                // deleteButton.onclick = function() {
+                //     deletePatient(id)
+                // }
+
                 index += 1;
             })   
-            self.count = total    
+             self.count = total    
         }
         
         display()
@@ -98,56 +126,50 @@ export default {
 </script>
 
 <style scoped>
+#addDoctor {
+    margin: 10px 0 20px 0;
+}
+
 #rectangle {
-    width: 83%;
-    height: 100%;
     background: #ECFFD6; 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
-    border-radius: 67px;
+    border-radius: 25px;
     align-content: center;
-    position: absolute;
-    left: 15em;
-    top: 0em;
+    padding: 30px; 
 }
 
 #header {
-    position: relative;
-    top: 2em;
-    left:4.9rem;
     color: black;
     font-size: 32px;
     font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;
     font-weight: 600;
     line-height: 20px;
-    word-wrap: break-word
+    word-wrap: break-word;
+    margin-bottom: 15px;
 }
 
 #count {
-    position:relative;
+    /* position:relative; */
     color: black;
     font-size: 20px;
-    font-family: Poppins, Inter-Bold,Arial, Helvetica, sans-serif;   
-    top: 4.5em;
+    font-family: Poppins, Inter-Bold, Arial, Helvetica, sans-serif;   
+    top: 6em;
     left: 4.9rem;
 }
 
 #table {
-    font-family: Poppins, Arial, Helvetica, sans-serif;
-    /* border-top: 1px solid;
-    border-bottom: 1px solid; */
     border-collapse: collapse;
     width: 100%;
-    /* height: 10%; */
+    height: 10%;
     align-content: center;
     text-align: center;
-    line-height: 400%;
-    padding: 5px;
+    line-height: 350%;
     background-color:white;
     color: black;
-    position: relative;
+    /* position: relative; */
     top: 10em;
     left: 0rem;
-    border-radius: 60px;
+    /* border-radius: 60px; */
 }
 
 /* th, tr {
@@ -165,14 +187,17 @@ button {
 }
 
 #button {
-    position: relative;
+    /* position: relative; */
     top: 7em;
     left: 4.9rem;
 }
 
 tr {
     background: #d7e7d9;
-    font-weight: 600; 
+}
+
+th {
+    font-weight: bold;
 }
 </style>
 
